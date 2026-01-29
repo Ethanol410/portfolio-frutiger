@@ -1,8 +1,9 @@
 'use client';
-import React, { useEffect, useState } from 'react'; // <-- Ajout imports
+import React from 'react';
 import { motion } from 'framer-motion';
 import { X, Minimize2, Maximize2 } from 'lucide-react';
 import { useOSStore, AppWindow } from '@/app/store/useOSStore';
+import { useIsMobile } from '@/app/hooks/useIsMobile'; // <-- Import Hook
 
 interface WindowFrameProps {
   window: AppWindow;
@@ -10,15 +11,7 @@ interface WindowFrameProps {
 
 export const WindowFrame = ({ window: appWindow }: WindowFrameProps) => {
   const { closeApp, focusApp, minimizeApp, toggleMaximizeApp } = useOSStore();
-  
-  // Détection Mobile simple
-  const [isMobile, setIsMobile] = useState(false);
-  useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth < 768);
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
+  const isMobile = useIsMobile(); // <-- Utilisation du Hook
 
   if (!appWindow.isOpen || appWindow.isMinimized) return null;
 
@@ -36,8 +29,8 @@ export const WindowFrame = ({ window: appWindow }: WindowFrameProps) => {
         x: isActuallyMaximized ? 0 : undefined,
         y: isActuallyMaximized ? 0 : undefined,
         width: isActuallyMaximized ? "100vw" : 600,
-        height: isActuallyMaximized ? "calc(100vh - 40px)" : "auto",
-        borderRadius: isActuallyMaximized ? 0 : 8 // Coins carrés en plein écran
+        height: isActuallyMaximized ? "calc(100vh - 40px)" : "auto", // -40px barre desktop (ou 48px mobile, à ajuster si besoin)
+        borderRadius: isActuallyMaximized ? 0 : 8
       }}
       onPointerDown={() => focusApp(appWindow.id)}
       style={{ zIndex: appWindow.zIndex, position: 'absolute' }}
@@ -45,7 +38,7 @@ export const WindowFrame = ({ window: appWindow }: WindowFrameProps) => {
     >
       {/* Barre de titre */}
       <div 
-        className="h-9 bg-gradient-to-r from-cyan-600 to-blue-600 flex items-center justify-between px-3 select-none touch-none" // touch-none pour éviter les bugs de scroll mobile
+        className="h-9 bg-gradient-to-r from-cyan-600 to-blue-600 flex items-center justify-between px-3 select-none touch-none"
         onDoubleClick={() => !isMobile && toggleMaximizeApp(appWindow.id)}
       >
         <div className="flex items-center gap-2 text-white font-bold text-sm drop-shadow-md">

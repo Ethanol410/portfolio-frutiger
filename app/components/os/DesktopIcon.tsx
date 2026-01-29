@@ -1,7 +1,8 @@
 import React from 'react';
 import { FileText, Folder } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { useSound } from '@/app/hooks/useSound'; // <-- Import
+import { useSound } from '@/app/hooks/useSound';
+import { useIsMobile } from '@/app/hooks/useIsMobile'; // <-- Import Hook
 
 interface DesktopIconProps {
   name: string;
@@ -11,27 +12,34 @@ interface DesktopIconProps {
 
 export const DesktopIcon = ({ name, type, onDoubleClick }: DesktopIconProps) => {
   const { playClick } = useSound();
+  const isMobile = useIsMobile(); // <-- Détection
 
-  const handleClick = () => {
+  const handleInteraction = () => {
     playClick();
-    onDoubleClick();
-  }
+    onDoubleClick(); // On déclenche l'action passée en prop
+  };
 
   return (
     <motion.div 
-      drag 
+      drag={!isMobile} // <-- Drag désactivé sur mobile
       dragMomentum={false} 
-      className="flex flex-col items-center gap-1 w-20 p-2 rounded hover:bg-white/20 hover:border hover:border-white/30 cursor-pointer group transition-colors active:cursor-grabbing"
-      onDoubleClick={handleClick} // <-- Utilisation
+      className="flex flex-col items-center gap-1 w-20 md:w-24 p-2 rounded hover:bg-white/10 border border-transparent hover:border-white/20 cursor-pointer group transition-colors active:cursor-grabbing active:scale-95"
+      // Sur mobile = onClick (Single Tap), Sur Desktop = onDoubleClick
+      onClick={isMobile ? handleInteraction : undefined}
+      onDoubleClick={!isMobile ? handleInteraction : undefined}
+      role="button"
+      aria-label={`Ouvrir ${name}`}
+      tabIndex={0}
     >
-      <div className="drop-shadow-lg text-blue-500 group-hover:scale-110 transition-transform pointer-events-none">
+      <div className="drop-shadow-xl transition-transform group-hover:scale-110 pointer-events-none">
         {type === 'folder' ? (
-          <Folder size={40} fill="#60a5fa" className="text-blue-600" />
+          <Folder size={isMobile ? 36 : 42} className="text-blue-500 fill-blue-400 drop-shadow-md" />
         ) : (
-          <FileText size={40} className="text-gray-200 fill-white" />
+          <FileText size={isMobile ? 36 : 42} className="text-gray-100 fill-white drop-shadow-md" />
         )}
       </div>
-      <span className="text-white text-xs text-center font-medium drop-shadow-md px-1 rounded bg-black/0 group-hover:bg-blue-600/60 line-clamp-2 pointer-events-none">
+      
+      <span className="text-white text-[10px] md:text-xs text-center font-medium px-2 py-0.5 rounded bg-black/40 shadow-sm backdrop-blur-[2px] line-clamp-2 w-full break-words pointer-events-none group-hover:bg-blue-600">
         {name}
       </span>
     </motion.div>

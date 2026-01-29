@@ -1,6 +1,6 @@
-import React, { useState } from 'react'; // <-- useState
+import React, { useState } from 'react';
 import { useOSStore } from '@/app/store/useOSStore';
-import { Lock, Terminal, Globe, Folder, Power, Settings, User as UserIcon, LayoutGrid, Music, Palette, Search } from 'lucide-react'; // <-- Palette & Search
+import { Lock, Terminal, Globe, Folder, Power, Settings, User as UserIcon, LayoutGrid, Music, Palette, Search } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 import { TerminalApp } from '@/app/apps/Terminal';
@@ -10,7 +10,7 @@ import { SettingsApp } from '@/app/apps/Settings';
 import { AboutApp } from '@/app/apps/About';
 import { ProjectsApp } from '@/app/apps/Projects';
 import { MusicPlayerApp } from '@/app/apps/MusicPlayer';
-import { PaintApp } from '@/app/apps/Paint'; // <-- Import Paint
+import { PaintApp } from '@/app/apps/Paint';
 import { LockScreen } from './LockScreen';
 
 interface StartMenuProps {
@@ -19,7 +19,7 @@ interface StartMenuProps {
 
 export const StartMenu = ({ onClose }: StartMenuProps) => {
   const { addWindow, windows, launchApp, setLocked } = useOSStore();
-  const [searchTerm, setSearchTerm] = useState(""); // <-- État recherche
+  const [searchTerm, setSearchTerm] = useState("");
 
   const handleLaunch = (appName: string) => {
     let id = appName.toLowerCase();
@@ -61,7 +61,7 @@ export const StartMenu = ({ onClose }: StartMenuProps) => {
       case 'MusicPlayer':
         addWindow({ ...baseWindow, id: 'musicplayer', title: 'Lecteur Musique', icon: Music, component: <MusicPlayerApp />, defaultPosition: { x: 50, y: 200 } });
         break;
-      case 'Paint': // <-- Cas Paint
+      case 'Paint':
         addWindow({ ...baseWindow, id: 'paint', title: 'Paint', icon: Palette, component: <PaintApp />, defaultPosition: { x: 80, y: 80 } });
         break;
       case 'LockScreen':
@@ -71,14 +71,13 @@ export const StartMenu = ({ onClose }: StartMenuProps) => {
     onClose();
   };
 
-  // Liste des apps pour filtrage
   const apps = [
     { name: 'Internet', icon: Globe, action: 'Browser', color: 'text-blue-500' },
     { name: 'Terminal', icon: Terminal, action: 'Terminal', color: 'text-gray-700' },
     { name: 'Documents', icon: Folder, action: 'Explorer', color: 'text-yellow-500' },
     { name: 'Mes Projets', icon: LayoutGrid, action: 'Projects', color: 'text-purple-600' },
     { name: 'Musique', icon: Music, action: 'MusicPlayer', color: 'text-pink-500' },
-    { name: 'Paint', icon: Palette, action: 'Paint', color: 'text-emerald-600' }, // <-- Ajout Paint
+    { name: 'Paint', icon: Palette, action: 'Paint', color: 'text-emerald-600' },
     { name: 'À Propos', icon: UserIcon, action: 'About', color: 'text-orange-500' },
   ];
 
@@ -89,9 +88,10 @@ export const StartMenu = ({ onClose }: StartMenuProps) => {
       initial={{ opacity: 0, y: 20, scale: 0.95 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
       exit={{ opacity: 0, y: 10, scale: 0.95 }}
-      className="absolute bottom-12 left-2 w-80 bg-gray-100/90 backdrop-blur-xl border border-white/50 rounded-lg shadow-2xl flex flex-col overflow-hidden z-[1000000]"
+      // Responsive width : full width - margin on mobile, fixed width on desktop
+      className="absolute bottom-12 left-2 w-[calc(100vw-16px)] sm:w-80 bg-white/95 backdrop-blur-2xl border border-gray-300/50 rounded-lg shadow-2xl flex flex-col overflow-hidden z-[1000000] text-gray-800"
     >
-      <div className="bg-blue-600 p-4 flex items-center gap-3 text-white">
+      <div className="bg-blue-600 p-4 flex items-center gap-3 text-white shadow-md z-10">
         <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center border-2 border-white/30">
           <UserIcon size={24} />
         </div>
@@ -101,13 +101,12 @@ export const StartMenu = ({ onClose }: StartMenuProps) => {
         </div>
       </div>
 
-      {/* Barre de recherche */}
-      <div className="px-3 pt-3 pb-1">
-          <div className="flex items-center gap-2 bg-white/60 border border-gray-300 rounded px-2 py-1.5 focus-within:ring-2 ring-blue-400">
-            <Search size={14} className="text-gray-500" />
+      <div className="px-3 pt-3 pb-1 bg-gray-50 border-b border-gray-200">
+          <div className="flex items-center gap-2 bg-white border border-gray-400 rounded px-2 py-1.5 focus-within:ring-2 ring-blue-500 focus-within:border-blue-500">
+            <Search size={14} className="text-gray-600" />
             <input 
                 autoFocus
-                className="bg-transparent border-none outline-none text-sm w-full placeholder-gray-500 text-gray-800"
+                className="bg-transparent border-none outline-none text-sm w-full placeholder-gray-500 text-gray-900 font-medium"
                 placeholder="Rechercher..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
@@ -116,8 +115,8 @@ export const StartMenu = ({ onClose }: StartMenuProps) => {
       </div>
 
       <div className="flex h-80">
-        <div className="flex-1 py-1 px-1 flex flex-col gap-1 bg-white/50 overflow-y-auto">
-          <div className="text-xs font-bold text-gray-500 px-3 py-1 uppercase">
+        <div className="flex-1 py-1 px-1 flex flex-col gap-1 bg-white overflow-y-auto">
+          <div className="text-xs font-bold text-gray-500 px-3 py-1 uppercase tracking-wider">
             {searchTerm ? 'Résultats' : 'Applications'}
           </div>
           
@@ -126,7 +125,7 @@ export const StartMenu = ({ onClose }: StartMenuProps) => {
                 <button 
                     key={app.name}
                     onClick={() => handleLaunch(app.action)} 
-                    className="flex items-center gap-2 px-3 py-2 hover:bg-blue-500 hover:text-white rounded transition-colors text-sm text-gray-800 text-left group"
+                    className="flex items-center gap-3 px-3 py-2 hover:bg-blue-600 hover:text-white rounded transition-colors text-sm text-gray-900 font-medium text-left group"
                 >
                     <app.icon size={18} className={`${app.color} group-hover:text-white`} /> {app.name}
                 </button>
@@ -135,8 +134,8 @@ export const StartMenu = ({ onClose }: StartMenuProps) => {
             <div className="text-center text-gray-500 text-xs py-4">Aucune application trouvée.</div>
           )}
         </div>
-
-        <div className="w-32 bg-blue-50/50 border-l border-white/50 py-2 flex flex-col gap-1">
+        
+        <div className="w-32 bg-slate-100 border-l border-gray-200 py-2 flex flex-col gap-1">
            <div className="text-xs font-bold text-gray-500 px-3 py-1 uppercase">Système</div>
            <button onClick={() => handleLaunch('Settings')} className="flex items-center gap-2 px-3 py-2 hover:bg-blue-200/50 transition-colors text-xs text-gray-600 text-left">
              <Settings size={14} /> Paramètres
