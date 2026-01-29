@@ -67,10 +67,10 @@ export const WindowFrame = ({ window: appWindow }: WindowFrameProps) => {
             <X size={12} color="white" />
           </button>
         </div>
-      </div>
+      </div> 
 
       {/* Contenu */}
-      <div className="flex-1 overflow-auto bg-white/80 p-1 relative h-full">
+      <div className="flex-1 overflow-auto bg-white p-1 relative h-full text-gray-900">
         {appWindow.component}
       </div>
     </motion.div>
