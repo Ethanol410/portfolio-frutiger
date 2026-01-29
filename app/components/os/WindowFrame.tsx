@@ -46,7 +46,7 @@ export const WindowFrame = ({ window: appWindow }: WindowFrameProps) => {
       {/* Barre de titre */}
       <div 
         className="h-9 bg-gradient-to-r from-cyan-600 to-blue-600 flex items-center justify-between px-3 select-none touch-none" // touch-none pour éviter les bugs de scroll mobile
-        onDoubleClick={() => !isMobile && toggleMaximizeApp(window.id)}
+        onDoubleClick={() => !isMobile && toggleMaximizeApp(appWindow.id)}
       >
         <div className="flex items-center gap-2 text-white font-bold text-sm drop-shadow-md">
           <appWindow.icon size={16} /> {appWindow.title}
