@@ -13,11 +13,21 @@ export interface AppWindow {
   defaultPosition?: { x: number; y: number };
 }
 
+export interface Notification {
+  id: string;
+  title: string;
+  message: string;
+  type: 'info' | 'success' | 'error';
+}
+
 interface OSState {
   windows: Record<string, AppWindow>;
   activeWindowId: string | null;
   maxZIndex: number;
   wallpaper: string;
+  notifications: Notification[];
+  isLocked: boolean;
+  isCrashed: boolean; // <-- Nouveau
 
   // Actions
   launchApp: (id: string) => void;
@@ -27,19 +37,26 @@ interface OSState {
   toggleMaximizeApp: (id: string) => void;
   addWindow: (window: AppWindow) => void;
   setWallpaper: (url: string) => void;
+  addNotification: (notif: Omit<Notification, 'id'>) => void; 
+  removeNotification: (id: string) => void; 
+  setLocked: (locked: boolean) => void;
+  setCrashed: (crashed: boolean) => void; // <-- Nouveau
 }
 
 export const useOSStore = create<OSState>()(
   persist(
     (set) => ({
-      windows: {}, // Sera rempli par votre config initiale ou dynamique
+      windows: {},
       activeWindowId: null,
       maxZIndex: 10,
-      wallpaper: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80', // Ton fond actuel par défaut
+      wallpaper: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80',
+      notifications: [],
+      isLocked: true,
+      isCrashed: false, // <-- Défaut
 
       launchApp: (id) => set((state) => {
         const win = state.windows[id];
-        if (!win) return state; // Sécurité si l'ID n'existe pas
+        if (!win) return state;
         return {
           activeWindowId: id,
           maxZIndex: state.maxZIndex + 1,
@@ -77,7 +94,6 @@ export const useOSStore = create<OSState>()(
       })),
 
       addWindow: (window) => set((state) => {
-        // Si la fenêtre existe déjà (ex: ID unique pour le navigateur), on la met juste au premier plan
         if (state.windows[window.id]) {
             return {
                 activeWindowId: window.id,
@@ -93,7 +109,6 @@ export const useOSStore = create<OSState>()(
                 }
             };
         }
-        // Sinon on l'ajoute
         return {
           activeWindowId: window.id,
           maxZIndex: state.maxZIndex + 1,
@@ -105,11 +120,26 @@ export const useOSStore = create<OSState>()(
       }),
 
       setWallpaper: (url: string) => set({ wallpaper: url }),
+
+      addNotification: (notif: Omit<Notification, 'id'>) => {
+        const { title, message, type } = notif;
+        const id = Math.random().toString(36).substring(7);
+        set((state) => ({ notifications: [...state.notifications, { id, title, message, type }] }));
+        setTimeout(() => {
+          set((s) => ({ notifications: s.notifications.filter((n) => n.id !== id) }));
+        }, 5000);
+      },
+
+      removeNotification: (id) => set((state) => ({
+        notifications: state.notifications.filter((n) => n.id !== id)
+      })),
+      
+      setLocked: (locked) => set({ isLocked: locked }),
+      setCrashed: (crashed) => set({ isCrashed: crashed }), // <-- Action
     }),
+
     {
-      name: 'ethanos-storage', // Nom unique pour le localStorage
-      // IMPORTANT : On ne sauvegarde QUE le wallpaper. 
-      // Sauvegarder 'windows' ferait planter l'app car on ne peut pas stocker de composants React (JSX) dans le localStorage.
+      name: 'ethanos-storage',
       partialize: (state) => ({ wallpaper: state.wallpaper }),
     }
   )

@@ -1,32 +1,41 @@
 "use client";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useOSStore } from "./store/useOSStore";
 import { WindowFrame } from "./components/os/WindowFrame";
 import { ContextMenu } from "./components/ui/ContextMenu";
 import { Taskbar } from "./components/os/Taskbar";
 import { DesktopIcon } from "./components/os/DesktopIcon";
 import { TerminalApp } from "./apps/Terminal";
-import { BrowserApp } from "./apps/Browser"; // <-- Import du navigateur
-import { ExplorerApp } from "./apps/Explorer"; // <-- Import de l'explorateur
+import { BrowserApp } from "./apps/Browser";
+import { ExplorerApp } from "./apps/Explorer";
 import { SettingsApp } from "./apps/Settings";
 import { ProjectsApp } from "./apps/Projects";
 import { myComputer } from "./data/fileSystem";
-import { Monitor, Terminal, Globe, Folder, Settings, LayoutGrid } from "lucide-react"; // Globe pour internet
+import { ContactApp } from "./apps/Contact";
+import { MusicPlayerApp } from "./apps/MusicPlayer";
+import { BootScreen } from "./components/os/BootScreen";
+import { NotificationToaster } from "./components/os/NotificationToaster";
+import { AnimatePresence } from "framer-motion";
+import { LockScreen } from "./components/os/LockScreen";
+import { PaintApp } from "./apps/Paint";
+import { Monitor, Terminal, Globe, Folder, Settings, LayoutGrid, Mail, Music, Palette } from "lucide-react";
+import { BSOD } from "./components/os/BSOD"; // <-- Import
+import { useSound } from "./hooks/useSound"; // <-- Import Hook
 
 export default function Desktop() {
-  const { windows, addWindow, wallpaper } = useOSStore(); // On utilise addWindow maintenant
+  const { windows, addWindow, wallpaper, isLocked, isCrashed, setCrashed } = useOSStore(); // Récupérer isCrashed
+  const [isBooting, setIsBooting] = useState(true);
+  const { playStartup } = useSound();
 
-  // Fonction pour lancer des apps spécifiques
   const handleLaunch = (appName: string, initialData?: any) => {
     const id = appName.toLowerCase();
     
-    // Config de base pour une nouvelle fenêtre
     const baseWindow = {
         isOpen: true,
         isMinimized: false,
         isMaximized: false,
         zIndex: 10,
-        defaultPosition: { x: 150 + Math.random() * 50, y: 100 + Math.random() * 50 } // Position un peu aléatoire pour l'effet cascade
+        defaultPosition: { x: 150 + Math.random() * 50, y: 100 + Math.random() * 50 }
     };
 
     switch (appName) {
@@ -42,8 +51,10 @@ export default function Desktop() {
         case 'Projects':
             addWindow({ ...baseWindow, id: 'projects', title: 'Mes Projets', icon: LayoutGrid, component: <ProjectsApp /> });
             break;
+        case 'MusicPlayer':
+            addWindow({ ...baseWindow, id: 'musicplayer', title: 'Lecteur Musique', icon: Music, component: <MusicPlayerApp />, defaultPosition: { x: 50, y: 200 } });
+            break;
         case 'Explorer':
-            // Pour l'explorateur, on peut avoir plusieurs fenêtres si on veut (id unique)
             const folderId = initialData || 'root';
             const winId = `explorer-${folderId}-${Date.now()}`;
             addWindow({ 
@@ -54,11 +65,16 @@ export default function Desktop() {
                 component: <ExplorerApp initialPath={folderId} /> 
             });
             break;
+        case 'Contact':
+            addWindow({ ...baseWindow, id: 'contact', title: 'Me Contacter', icon: Mail, component: <ContactApp />, defaultPosition: { x: 300, y: 100 } });
+        break;
+        case 'Paint':
+            addWindow({ ...baseWindow, id: 'paint', title: 'Paint', icon: Palette, component: <PaintApp />, defaultPosition: { x: 200, y: 150 } });
+        break;
     }
   };
 
   useEffect(() => {
-    // On initialise juste le message de bienvenue au démarrage
     addWindow({
        id: 'welcome',
        title: 'Bienvenue',
@@ -73,40 +89,69 @@ export default function Desktop() {
        zIndex: 1,
        defaultPosition: { x: 100, y: 50 }
     });
+    
+    // Jouer le son de démarrage un peu après
+    setTimeout(() => {
+        playStartup();
+    }, 1000);
+
+    setTimeout(() => {
+      useOSStore.getState().addNotification({
+        title: "Système prêt",
+        message: "Bienvenue sur EthanOS. Tous les systèmes sont opérationnels.",
+        type: 'info'
+      });
+    }, 4500); 
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Si l'OS a crashé
+  if (isCrashed) {
+    return <BSOD onRestart={() => window.location.reload()} />;
+  }
+
+  // Affichage du Boot Screen
+  if (isBooting) {
+    return <BootScreen onComplete={() => setIsBooting(false)} />;
+  }
 
   return (
     <div 
-  className="h-screen w-screen overflow-hidden relative bg-cover transition-all duration-500 font-sans select-none"
-  style={{ backgroundImage: `url('${wallpaper}')` }} // <-- C'est ici que la magie opère
-  >
-      <ContextMenu />
+      className="h-screen w-screen overflow-hidden relative bg-cover transition-all duration-500 font-sans select-none"
+      style={{ backgroundImage: `url('${wallpaper}')` }}
+    >
+      <AnimatePresence>
+        {isLocked && <LockScreen />}
+      </AnimatePresence>
       
-      {/* Grille des icônes */}
-      <div className="absolute top-0 left-0 p-4 flex flex-col flex-wrap gap-4 h-[calc(100vh-40px)] content-start z-0">
+      <div className={`h-full w-full ${isLocked ? "blur-sm scale-105 transition-all duration-700" : "transition-all duration-700 scale-100 blur-0"}`}>
         
-        {/* Apps Système */}
-        <DesktopIcon name="Terminal" type="app" onDoubleClick={() => handleLaunch('Terminal')} />
-        <DesktopIcon name="Internet" type="app" onDoubleClick={() => handleLaunch('Browser')} />
-        <DesktopIcon name="Mes Projets" type="app" onDoubleClick={() => handleLaunch('Projects')} />
+        <NotificationToaster />
+        <ContextMenu />
+      
+        <div className="absolute top-0 left-0 p-4 flex flex-col flex-wrap gap-4 h-[calc(100vh-40px)] content-start z-0">
+          <DesktopIcon name="Terminal" type="app" onDoubleClick={() => handleLaunch('Terminal')} />
+          <DesktopIcon name="Internet" type="app" onDoubleClick={() => handleLaunch('Browser')} />
+          <DesktopIcon name="Mes Projets" type="app" onDoubleClick={() => handleLaunch('Projects')} />
+          <DesktopIcon name="Musique" type="app" onDoubleClick={() => handleLaunch('MusicPlayer')} />
+          <DesktopIcon name="Paramètres" type="app" onDoubleClick={() => handleLaunch('Settings')} />
+          <DesktopIcon name="Contact" type="app" onDoubleClick={() => handleLaunch('Contact')} />
+          
+          {myComputer.map((node) => (
+            <DesktopIcon
+              key={node.id}
+              name={node.name}
+              type={node.type as any}
+              onDoubleClick={() => handleLaunch('Explorer', node.id)}
+            />
+          ))}
+        </div>
 
-        {/* Dossiers du FileSystem */}
-        {myComputer.map((node) => (
-          <DesktopIcon 
-            key={node.id} 
-            name={node.name} 
-            type={node.type as any} 
-            onDoubleClick={() => handleLaunch('Explorer', node.id)} 
-          />
+        {Object.values(windows).map((win) => (
+          <WindowFrame key={win.id} window={win} />
         ))}
+        
+        <Taskbar />
       </div>
-
-      {/* Fenêtres */}
-      {Object.values(windows).map((win) => (
-        <WindowFrame key={win.id} window={win} />
-      ))}
-
-      <Taskbar />
     </div>
   );
 }

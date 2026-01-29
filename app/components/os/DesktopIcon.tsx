@@ -1,6 +1,7 @@
 import React from 'react';
 import { FileText, Folder } from 'lucide-react';
-import { motion } from 'framer-motion'; // <-- Import
+import { motion } from 'framer-motion';
+import { useSound } from '@/app/hooks/useSound'; // <-- Import
 
 interface DesktopIconProps {
   name: string;
@@ -9,14 +10,20 @@ interface DesktopIconProps {
 }
 
 export const DesktopIcon = ({ name, type, onDoubleClick }: DesktopIconProps) => {
+  const { playClick } = useSound();
+
+  const handleClick = () => {
+    playClick();
+    onDoubleClick();
+  }
+
   return (
     <motion.div 
-      drag // <-- Active le drag & drop
-      dragMomentum={false} // Arrête l'icône dès qu'on lâche (plus précis)
+      drag 
+      dragMomentum={false} 
       className="flex flex-col items-center gap-1 w-20 p-2 rounded hover:bg-white/20 hover:border hover:border-white/30 cursor-pointer group transition-colors active:cursor-grabbing"
-      onDoubleClick={onDoubleClick}
+      onDoubleClick={handleClick} // <-- Utilisation
     >
-      {/* On empêche le drag sur l'icône interne pour éviter les bugs de clic */}
       <div className="drop-shadow-lg text-blue-500 group-hover:scale-110 transition-transform pointer-events-none">
         {type === 'folder' ? (
           <Folder size={40} fill="#60a5fa" className="text-blue-600" />
