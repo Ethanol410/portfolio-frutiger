@@ -3,6 +3,7 @@ import { FileText, Folder } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useSound } from '@/app/hooks/useSound';
 import { useIsMobile } from '@/app/hooks/useIsMobile';
+import { useHaptics } from '@/app/hooks/useHaptics';
 
 interface DesktopIconProps {
   name: string;
@@ -14,9 +15,11 @@ interface DesktopIconProps {
 export const DesktopIcon = ({ name, type, onDoubleClick, iconSrc }: DesktopIconProps) => {
   const { playClick } = useSound();
   const isMobile = useIsMobile();
+  const { tap } = useHaptics();
 
   const handleInteraction = () => {
     playClick();
+    tap();
     onDoubleClick();
   };
 

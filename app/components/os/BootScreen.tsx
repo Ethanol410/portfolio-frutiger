@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useHaptics } from '@/app/hooks/useHaptics';
 
 interface BootScreenProps {
   onComplete: () => void;
@@ -6,6 +7,7 @@ interface BootScreenProps {
 
 export const BootScreen = ({ onComplete }: BootScreenProps) => {
   const [lines, setLines] = useState<string[]>([]);
+  const { tap } = useHaptics();
 
   useEffect(() => {
     const bootSequence = [
@@ -38,14 +40,14 @@ export const BootScreen = ({ onComplete }: BootScreenProps) => {
 
   // Skip on any key or click
   useEffect(() => {
-    const skip = () => onComplete();
+    const skip = () => { tap(); onComplete(); };
     document.addEventListener('keydown', skip, { once: true });
     document.addEventListener('click', skip, { once: true });
     return () => {
       document.removeEventListener('keydown', skip);
       document.removeEventListener('click', skip);
     };
-  }, [onComplete]);
+  }, [onComplete]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <div className="fixed inset-0 bg-black z-[99999] p-8 font-mono text-white text-sm cursor-none select-none">

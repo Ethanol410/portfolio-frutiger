@@ -3,7 +3,12 @@
     "allow": [
       "Bash(find D:portfolio-frutiger -maxdepth 1 -name tailwind* -o -name next.* -o -name .next*)",
       "Bash(npm run:*)",
-      "Bash(npx tsc:*)"
+      "Bash(npx tsc:*)",
+      "WebFetch(domain:haptics.lochie.me)",
+      "WebSearch",
+      "WebFetch(domain:github.com)",
+      "Bash(npm install:*)",
+      "Bash(python3 -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\(json.dumps\\(d.get\\(''''exports'''',{}\\), indent=2\\)\\)\")"
     ]
   }
 }

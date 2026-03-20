@@ -8,10 +8,12 @@ import { MusicPlayerApp } from './MusicPlayer';
 import { ContactApp } from './Contact';
 import { AboutApp } from './About';
 import { useSound } from '@/app/hooks/useSound';
+import { useHaptics } from '@/app/hooks/useHaptics';
 
 export const TerminalApp = () => {
   const { addWindow, setWallpaper, closeApp, windows, setCrashed } = useOSStore();
   const { playError } = useSound();
+  const { error: hapticError, nudge: hapticNudge } = useHaptics();
   const [history, setHistory] = useState<string[]>([
     "Bienvenue sur EthanOS v1.1.0",
     "Tapez 'help' pour afficher les commandes disponibles."
@@ -80,8 +82,10 @@ export const TerminalApp = () => {
               defaultPosition: { x: 150 + Math.random() * 100, y: 80 + Math.random() * 80 }
             });
             response = `Ouverture de ${app.title}...`;
+            hapticNudge();
           } else {
             playError();
+            hapticError();
             response = `App inconnue: '${args[1]}'. Utilisez: browser, terminal, settings, projects, music, contact, about`;
           }
           break;
@@ -111,10 +115,12 @@ export const TerminalApp = () => {
 
         case 'rm':
           if (args[1] === '-rf' && args[2] === '/') {
+            hapticError();
             setCrashed(true);
             return;
           }
           playError();
+          hapticError();
           response = "Permission denied.";
           break;
 
@@ -129,6 +135,7 @@ export const TerminalApp = () => {
 
         default:
           playError();
+          hapticError();
           response = `Commande inconnue: '${cmd}'. Tapez 'help'.`;
       }
 

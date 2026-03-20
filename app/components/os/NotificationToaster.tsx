@@ -1,10 +1,21 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useOSStore } from '@/app/store/useOSStore';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Bell, CheckCircle, AlertCircle } from 'lucide-react';
+import { useHaptics } from '@/app/hooks/useHaptics';
 
 export const NotificationToaster = () => {
   const { notifications, removeNotification } = useOSStore();
+  const { nudge, error: hapticError } = useHaptics();
+  const prevCountRef = useRef(notifications.length);
+
+  useEffect(() => {
+    if (notifications.length > prevCountRef.current) {
+      const latest = notifications[notifications.length - 1];
+      latest?.type === 'error' ? hapticError() : nudge();
+    }
+    prevCountRef.current = notifications.length;
+  }, [notifications.length]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <div

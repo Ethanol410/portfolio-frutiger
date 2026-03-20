@@ -3,7 +3,8 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { X, Minimize2, Maximize2 } from 'lucide-react';
 import { useOSStore, AppWindow } from '@/app/store/useOSStore';
-import { useIsMobile } from '@/app/hooks/useIsMobile'; // <-- Import Hook
+import { useIsMobile } from '@/app/hooks/useIsMobile';
+import { useHaptics } from '@/app/hooks/useHaptics';
 
 interface WindowFrameProps {
   window: AppWindow;
@@ -11,7 +12,8 @@ interface WindowFrameProps {
 
 export const WindowFrame = ({ window: appWindow }: WindowFrameProps) => {
   const { closeApp, focusApp, minimizeApp, toggleMaximizeApp } = useOSStore();
-  const isMobile = useIsMobile(); // <-- Utilisation du Hook
+  const isMobile = useIsMobile();
+  const { soft, nudge } = useHaptics();
 
   if (!appWindow.isOpen || appWindow.isMinimized) return null;
 
@@ -32,7 +34,7 @@ export const WindowFrame = ({ window: appWindow }: WindowFrameProps) => {
         height: isActuallyMaximized ? "calc(100vh - 40px)" : "auto", // -40px barre desktop (ou 48px mobile, à ajuster si besoin)
         borderRadius: isActuallyMaximized ? 0 : 8
       }}
-      onPointerDown={() => focusApp(appWindow.id)}
+      onPointerDown={() => { focusApp(appWindow.id); }}
       style={{ zIndex: appWindow.zIndex, position: 'absolute' }}
       className={`flex flex-col aero-glass overflow-hidden shadow-2xl`}
     >
@@ -45,7 +47,7 @@ export const WindowFrame = ({ window: appWindow }: WindowFrameProps) => {
           <appWindow.icon size={16} /> {appWindow.title}
         </div>
         <div className="flex gap-2">
-          <button onClick={(e) => { e.stopPropagation(); minimizeApp(appWindow.id); }} className="p-1 hover:bg-white/20 rounded">
+          <button onClick={(e) => { e.stopPropagation(); soft(); minimizeApp(appWindow.id); }} className="p-1 hover:bg-white/20 rounded">
             <Minimize2 size={12} color="white" />
           </button>
           
@@ -56,7 +58,7 @@ export const WindowFrame = ({ window: appWindow }: WindowFrameProps) => {
             </button>
           )}
 
-          <button onClick={(e) => { e.stopPropagation(); closeApp(appWindow.id); }} className="bg-red-500 hover:bg-red-600 p-1 rounded-sm border border-red-700">
+          <button onClick={(e) => { e.stopPropagation(); soft(); closeApp(appWindow.id); }} className="bg-red-500 hover:bg-red-600 p-1 rounded-sm border border-red-700">
             <X size={12} color="white" />
           </button>
         </div>

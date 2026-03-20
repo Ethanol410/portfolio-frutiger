@@ -2,12 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { useOSStore } from '@/app/store/useOSStore';
 import { User, ArrowRight, Lock } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { useHaptics } from '@/app/hooks/useHaptics';
 
 export const LockScreen = () => {
   const { setLocked, wallpaper } = useOSStore();
   const [password, setPassword] = useState("");
   const [error, setError] = useState(false);
   const [time, setTime] = useState(new Date());
+  const { error: hapticError, success: hapticSuccess } = useHaptics();
 
   // Horloge en temps réel
   useEffect(() => {
@@ -19,10 +21,12 @@ export const LockScreen = () => {
     e?.preventDefault();
     // Mot de passe fictif (ou vide pour laisser entrer tout le monde)
     if (password === "" || password === "admin") {
+        hapticSuccess();
         setLocked(false);
     } else {
+        hapticError();
         setError(true);
-        setTimeout(() => setError(false), 500); // Reset secousse
+        setTimeout(() => setError(false), 500);
         setPassword("");
     }
   };
