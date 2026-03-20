@@ -7,7 +7,11 @@ export const NotificationToaster = () => {
   const { notifications, removeNotification } = useOSStore();
 
   return (
-    <div className="fixed top-4 right-4 z-[10000] flex flex-col gap-2 pointer-events-none">
+    <div
+      className="fixed top-4 right-4 z-[10000] flex flex-col gap-2 pointer-events-none"
+      aria-live="polite"
+      role="status"
+    >
       <AnimatePresence>
         {notifications.map((notif) => (
           <motion.div
@@ -24,9 +28,10 @@ export const NotificationToaster = () => {
               <h4 className="font-bold text-sm text-gray-800">{notif.title}</h4>
               <p className="text-xs text-gray-600 leading-tight">{notif.message}</p>
             </div>
-            <button 
+            <button
               onClick={() => removeNotification(notif.id)}
               className="text-gray-400 hover:text-gray-600"
+              aria-label="Fermer la notification"
             >
               <X size={14} />
             </button>

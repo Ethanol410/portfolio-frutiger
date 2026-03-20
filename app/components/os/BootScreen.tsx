@@ -19,16 +19,32 @@ export const BootScreen = ({ onComplete }: BootScreenProps) => {
     ];
 
     let delay = 0;
+    const timers: ReturnType<typeof setTimeout>[] = [];
+
     bootSequence.forEach((line, index) => {
-      delay += Math.random() * 500 + 200; // Délai aléatoire
-      setTimeout(() => {
+      delay += Math.random() * 500 + 200;
+      const t = setTimeout(() => {
         setLines(prev => [...prev, line]);
-        // Fin du boot
         if (index === bootSequence.length - 1) {
-          setTimeout(onComplete, 800);
+          const t2 = setTimeout(onComplete, 800);
+          timers.push(t2);
         }
       }, delay);
+      timers.push(t);
     });
+
+    return () => timers.forEach(clearTimeout);
+  }, [onComplete]);
+
+  // Skip on any key or click
+  useEffect(() => {
+    const skip = () => onComplete();
+    document.addEventListener('keydown', skip, { once: true });
+    document.addEventListener('click', skip, { once: true });
+    return () => {
+      document.removeEventListener('keydown', skip);
+      document.removeEventListener('click', skip);
+    };
   }, [onComplete]);
 
   return (
@@ -39,6 +55,9 @@ export const BootScreen = ({ onComplete }: BootScreenProps) => {
           <div key={i}>{line}</div>
         ))}
         <div className="animate-pulse">_</div>
+      </div>
+      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 text-gray-500 text-xs animate-pulse">
+        Appuyez sur une touche ou cliquez pour passer...
       </div>
     </div>
   );

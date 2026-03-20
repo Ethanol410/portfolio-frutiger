@@ -1,15 +1,22 @@
 {
   "name": "Ethan Portfolio OS",
   "short_name": "EthanOS",
+  "description": "Portfolio interactif d'Ethan Dupont — OS simulé en React/Next.js",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#000000",
-  "theme_color": "#ffffff",
+  "theme_color": "#1e40af",
   "icons": [
     {
       "src": "/favicon.ico",
       "sizes": "64x64 32x32 24x24 16x16",
       "type": "image/x-icon"
+    },
+    {
+      "src": "/icons/vista_pc_1.ico",
+      "sizes": "192x192",
+      "type": "image/x-icon",
+      "purpose": "any maskable"
     }
   ]
 }

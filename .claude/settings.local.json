@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(find D:portfolio-frutiger -maxdepth 1 -name tailwind* -o -name next.* -o -name .next*)",
+      "Bash(npm run:*)",
+      "Bash(npx tsc:*)"
+    ]
+  }
+}

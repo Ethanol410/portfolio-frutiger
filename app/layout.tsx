@@ -13,9 +13,24 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Ethan Portfolio OS",
-  description: "Web OS Portfolio",
-  manifest: "/manifest.json", // <-- Ajout ici
+  title: "Ethan Dupont — Portfolio",
+  description: "Portfolio interactif d'Ethan Dupont, développeur front-end créatif. Découvrez mes projets et compétences dans un OS simulé inspiré de Windows Vista.",
+  manifest: "/manifest.json",
+  openGraph: {
+    title: "Ethan Dupont — Portfolio OS",
+    description: "Portfolio interactif inspiré de Windows Vista / Frutiger Aero. Développeur Front-End React / Next.js.",
+    url: "https://your-portfolio.vercel.app",
+    siteName: "EthanOS Portfolio",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "EthanOS — Portfolio interactif",
+      },
+    ],
+    type: "website",
+  },
 };
 
 export default function RootLayout({
@@ -24,7 +39,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="fr">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >

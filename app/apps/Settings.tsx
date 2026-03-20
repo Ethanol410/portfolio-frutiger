@@ -1,6 +1,7 @@
 import React from 'react';
 import { useOSStore } from '@/app/store/useOSStore';
-import { User, Monitor, Image as ImageIcon } from 'lucide-react';
+import { User, Monitor, Image as ImageIcon, Github, Linkedin, Mail, MapPin } from 'lucide-react';
+import { portfolio } from '@/app/data/portfolio';
 
 const wallpapers = [
   { id: 1, url: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80", name: "Abstrait Bleu" },
@@ -19,13 +20,13 @@ export const SettingsApp = () => {
     <div className="flex h-full bg-gray-100">
       {/* Sidebar */}
       <div className="w-48 bg-gray-200 border-r border-gray-300 flex flex-col pt-4 gap-1 px-2">
-        <button 
+        <button
           onClick={() => setActiveTab('display')}
           className={`flex items-center gap-2 px-3 py-2 text-sm rounded ${activeTab === 'display' ? 'bg-white shadow-sm font-medium' : 'hover:bg-gray-300/50'}`}
         >
           <Monitor size={16} /> Affichage
         </button>
-        <button 
+        <button
           onClick={() => setActiveTab('profile')}
           className={`flex items-center gap-2 px-3 py-2 text-sm rounded ${activeTab === 'profile' ? 'bg-white shadow-sm font-medium' : 'hover:bg-gray-300/50'}`}
         >
@@ -40,7 +41,7 @@ export const SettingsApp = () => {
             <h2 className="text-xl font-bold mb-4 flex items-center gap-2"><ImageIcon /> Fonds d'écran</h2>
             <div className="grid grid-cols-3 gap-4">
               {wallpapers.map((wp) => (
-                <div 
+                <div
                   key={wp.id}
                   onClick={() => setWallpaper(wp.url)}
                   className={`
@@ -57,9 +58,53 @@ export const SettingsApp = () => {
         )}
 
         {activeTab === 'profile' && (
-          <div className="text-center mt-10 text-gray-500">
-            <User size={48} className="mx-auto mb-2 opacity-50" />
-            <p>Gestion du profil utilisateur à venir...</p>
+          <div className="flex flex-col items-center gap-4">
+            <img
+              src={portfolio.avatar}
+              alt={portfolio.fullName}
+              className="w-24 h-24 rounded-full object-cover shadow-lg border-4 border-blue-100 mt-2"
+            />
+            <div className="text-center">
+              <h2 className="text-xl font-bold text-gray-800">{portfolio.fullName}</h2>
+              <p className="text-blue-600 text-sm">{portfolio.title}</p>
+              <div className="flex items-center justify-center gap-1 text-gray-500 text-xs mt-1">
+                <MapPin size={12} /> {portfolio.location}
+              </div>
+            </div>
+
+            <div className="w-full max-w-sm bg-white rounded-xl border border-gray-200 shadow-sm p-4 flex flex-col gap-2">
+              <div className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Infos système</div>
+              <div className="text-xs text-gray-600 flex justify-between">
+                <span>Système</span><span className="font-mono">EthanOS v1.1.0</span>
+              </div>
+              <div className="text-xs text-gray-600 flex justify-between">
+                <span>Framework</span><span className="font-mono">Next.js 16</span>
+              </div>
+              <div className="text-xs text-gray-600 flex justify-between">
+                <span>UI</span><span className="font-mono">React 19</span>
+              </div>
+              <div className="text-xs text-gray-600 flex justify-between">
+                <span>Animations</span><span className="font-mono">Framer Motion</span>
+              </div>
+            </div>
+
+            <div className="flex gap-3">
+              <a href={portfolio.github} target="_blank" rel="noopener noreferrer"
+                className="p-2 bg-gray-800 text-white rounded-full hover:scale-110 transition-transform"
+                aria-label="GitHub">
+                <Github size={18} />
+              </a>
+              <a href={portfolio.linkedin} target="_blank" rel="noopener noreferrer"
+                className="p-2 bg-blue-700 text-white rounded-full hover:scale-110 transition-transform"
+                aria-label="LinkedIn">
+                <Linkedin size={18} />
+              </a>
+              <a href={`mailto:${portfolio.email}`}
+                className="p-2 bg-red-500 text-white rounded-full hover:scale-110 transition-transform"
+                aria-label="Email">
+                <Mail size={18} />
+              </a>
+            </div>
           </div>
         )}
       </div>

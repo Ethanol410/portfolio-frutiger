@@ -1,10 +1,12 @@
 import React from 'react';
 
 interface PDFViewerProps {
-  fileUrl: string;
+  file?: string;
+  fileUrl?: string;
 }
 
-export const PDFViewerApp = ({ fileUrl }: PDFViewerProps) => {
+export const PDFViewerApp = ({ file, fileUrl }: PDFViewerProps) => {
+  const src = file || fileUrl || '/cv.pdf';
   return (
     <div className="flex flex-col h-full bg-gray-700">
       {/* Barre d'outils factice pour le look */}
@@ -14,7 +16,7 @@ export const PDFViewerApp = ({ fileUrl }: PDFViewerProps) => {
         <div className="text-xs text-gray-300">1 / 1</div>
         <div className="flex-1"></div>
         <a 
-          href={fileUrl} 
+          href={src}
           download 
           className="text-xs bg-blue-600 hover:bg-blue-500 px-3 py-1 rounded transition-colors"
         >
@@ -24,7 +26,7 @@ export const PDFViewerApp = ({ fileUrl }: PDFViewerProps) => {
 
       {/* Zone d'affichage du PDF */}
       <iframe 
-        src={fileUrl} 
+        src={src}
         className="w-full flex-1 border-none bg-gray-500"
         title="PDF Viewer"
       />
