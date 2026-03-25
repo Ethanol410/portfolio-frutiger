@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useOSStore } from '@/app/store/useOSStore';
-import { User, ArrowRight, Lock } from 'lucide-react';
+import { ArrowRight, Lock } from 'lucide-react';
+import { portfolio } from '@/app/data/portfolio';
 import { motion } from 'framer-motion';
 import { useHaptics } from '@/app/hooks/useHaptics';
 
@@ -55,19 +56,19 @@ export const LockScreen = () => {
         </div>
 
         {/* Avatar */}
-        <div className="w-32 h-32 rounded-full bg-gray-200/20 backdrop-blur-xl border-2 border-white/30 flex items-center justify-center shadow-2xl">
-            <User size={64} className="text-white/80" />
+        <div className="w-32 h-32 rounded-full overflow-hidden border-2 border-white/30 shadow-2xl">
+            <img src={portfolio.avatar} alt={portfolio.name} className="w-full h-full object-cover" />
         </div>
 
         {/* Nom Utilisateur */}
-        <h2 className="text-2xl font-semibold">Ethan</h2>
+        <h2 className="text-2xl font-semibold">{portfolio.name}</h2>
 
         {/* Champ Mot de Passe */}
         <form onSubmit={handleLogin} className="flex flex-col items-center gap-2 w-full max-w-xs">
             <div className={`flex items-center bg-white/20 border border-white/30 rounded px-2 py-1 backdrop-blur-sm transition-transform ${error ? 'animate-shake border-red-400' : ''}`}>
                 <input 
                     type="password" 
-                    placeholder="Mot de passe (Entrée)" 
+                    placeholder="Mot de passe"
                     className="bg-transparent border-none outline-none text-white placeholder-gray-300 px-2 py-1 w-full"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
@@ -78,7 +79,8 @@ export const LockScreen = () => {
                 </button>
             </div>
             {error && <span className="text-xs text-red-300 font-medium">Mot de passe incorrect</span>}
-            <span className="text-xs text-gray-300 mt-2">Appuyez sur Entrée pour vous connecter</span>
+            <span className="text-xs text-gray-300 mt-2 hidden sm:inline">Appuyez sur Entrée pour vous connecter</span>
+            <span className="text-xs text-gray-300 mt-2 sm:hidden">Laissez vide et appuyez sur →</span>
         </form>
       </div>
 

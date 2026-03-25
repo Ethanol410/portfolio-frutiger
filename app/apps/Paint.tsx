@@ -140,7 +140,7 @@ export const PaintApp = () => {
 
         <button
           onClick={() => setTool('eraser')}
-          className={`p-1.5 rounded ${tool === 'eraser' ? 'bg-gray-300 shadow-inner' : 'hover:bg-gray-300'}`}
+          className={`p-3 md:p-1.5 rounded ${tool === 'eraser' ? 'bg-gray-300 shadow-inner' : 'hover:bg-gray-300'}`}
           title="Gomme"
         >
           <Eraser size={18} />
@@ -148,10 +148,10 @@ export const PaintApp = () => {
 
         <div className="flex-1" />
 
-        <button onClick={clearCanvas} className="p-1.5 hover:bg-red-200 hover:text-red-600 rounded" title="Tout effacer">
+        <button onClick={clearCanvas} className="p-3 md:p-1.5 hover:bg-red-200 hover:text-red-600 rounded" title="Tout effacer">
           <Trash2 size={18} />
         </button>
-        <button onClick={saveImage} className="p-1.5 hover:bg-blue-200 hover:text-blue-600 rounded" title="Sauvegarder">
+        <button onClick={saveImage} className="p-3 md:p-1.5 hover:bg-blue-200 hover:text-blue-600 rounded" title="Sauvegarder">
           <Download size={18} />
         </button>
       </div>

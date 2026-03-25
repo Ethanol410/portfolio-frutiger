@@ -310,7 +310,7 @@ function ReadmePanel({ repo, onClose }: { repo: GithubRepo; onClose: () => void 
   }, [repo.name]);
 
   return (
-    <div className="absolute top-0 right-0 bottom-0 w-1/2 flex flex-col bg-white border-l border-gray-200 z-10 shadow-lg">
+    <div className="absolute inset-0 md:left-auto md:w-1/2 flex flex-col bg-white border-l border-gray-200 z-10 shadow-lg">
       <div className="flex items-center gap-2 px-4 py-3 border-b border-gray-200 bg-gray-50 shrink-0">
         <BookOpen size={15} className="text-gray-500" />
         <span className="text-sm font-semibold text-gray-700 flex-1 truncate">{repo.name}</span>
@@ -462,7 +462,7 @@ export const ProjectsApp = () => {
       />
 
       <div className="flex-1 relative overflow-hidden">
-        <div className={`h-full overflow-y-auto p-4 transition-all ${selectedRepo ? 'pr-[52%]' : ''}`}>
+        <div className={`h-full overflow-y-auto p-4 transition-all ${selectedRepo ? 'hidden md:block md:pr-[52%]' : ''}`}>
 
           {showPinned && (
             <section className="mb-5">

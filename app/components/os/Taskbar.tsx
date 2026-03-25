@@ -76,7 +76,7 @@ export const Taskbar = () => {
         {startOpen && <StartMenu onClose={() => setStartOpen(false)} />}
       </div>
 
-      <div className="h-12 md:h-10 bg-slate-900/80 backdrop-blur-xl border-t border-white/20 flex items-center px-2 gap-2 shadow-2xl">
+      <div className="h-12 md:h-10 bg-slate-900/80 backdrop-blur-xl border-t border-white/20 flex items-center px-2 gap-2 shadow-2xl taskbar-safe">
 
         <button
           ref={startButtonRef}
@@ -123,7 +123,7 @@ export const Taskbar = () => {
           </button>
 
           {showCalendar && (
-            <div className="absolute bottom-12 right-0 w-64 bg-white/90 backdrop-blur-xl border border-white/50 rounded-lg shadow-2xl p-4 animate-in slide-in-from-bottom-5">
+            <div className="absolute bottom-12 right-0 w-64 max-w-[calc(100vw-16px)] bg-white/90 backdrop-blur-xl border border-white/50 rounded-lg shadow-2xl p-4 animate-in slide-in-from-bottom-5">
               <div className="font-bold text-lg mb-2 text-gray-800 flex items-center gap-2">
                 <Calendar size={18} className="text-blue-600" />
                 {now.toLocaleDateString('fr-FR', { weekday: 'long', month: 'long', day: 'numeric' })}

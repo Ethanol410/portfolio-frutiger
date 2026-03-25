@@ -31,7 +31,7 @@ export const WindowFrame = ({ window: appWindow }: WindowFrameProps) => {
         x: isActuallyMaximized ? 0 : undefined,
         y: isActuallyMaximized ? 0 : undefined,
         width: isActuallyMaximized ? "100vw" : (appWindow.defaultSize?.width ?? 600),
-        height: isActuallyMaximized ? "calc(100vh - 40px)" : (appWindow.defaultSize?.height ?? "auto"), // -40px barre desktop (ou 48px mobile, à ajuster si besoin)
+        height: isActuallyMaximized ? (isMobile ? "calc(100vh - 48px)" : "calc(100vh - 40px)") : (appWindow.defaultSize?.height ?? "auto"),
         borderRadius: isActuallyMaximized ? 0 : 8
       }}
       onPointerDown={() => { focusApp(appWindow.id); }}
@@ -47,18 +47,18 @@ export const WindowFrame = ({ window: appWindow }: WindowFrameProps) => {
           <appWindow.icon size={16} /> {appWindow.title}
         </div>
         <div className="flex gap-2">
-          <button onClick={(e) => { e.stopPropagation(); soft(); minimizeApp(appWindow.id); }} className="p-1 hover:bg-white/20 rounded">
+          <button onClick={(e) => { e.stopPropagation(); soft(); minimizeApp(appWindow.id); }} className="p-3 md:p-1 hover:bg-white/20 rounded">
             <Minimize2 size={12} color="white" />
           </button>
-          
+
           {/* On cache le bouton Maximiser sur mobile car c'est déjà forcé */}
           {!isMobile && (
-            <button onClick={(e) => { e.stopPropagation(); toggleMaximizeApp(appWindow.id); }} className="p-1 hover:bg-white/20 rounded">
+            <button onClick={(e) => { e.stopPropagation(); toggleMaximizeApp(appWindow.id); }} className="p-3 md:p-1 hover:bg-white/20 rounded">
                {appWindow.isMaximized ? <Minimize2 size={12} color="white" /> : <Maximize2 size={12} color="white" />}
             </button>
           )}
 
-          <button onClick={(e) => { e.stopPropagation(); soft(); closeApp(appWindow.id); }} className="bg-red-500 hover:bg-red-600 p-1 rounded-sm border border-red-700">
+          <button onClick={(e) => { e.stopPropagation(); soft(); closeApp(appWindow.id); }} className="bg-red-500 hover:bg-red-600 p-3 md:p-1 rounded-sm border border-red-700">
             <X size={12} color="white" />
           </button>
         </div>

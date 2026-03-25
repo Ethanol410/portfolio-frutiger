@@ -135,7 +135,7 @@ export const MusicPlayerApp = () => {
           max={duration || 0}
           value={currentTime}
           onChange={handleProgressChange}
-          className="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer accent-green-500"
+          className="w-full h-3 md:h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer accent-green-500"
         />
         <div className="flex justify-between text-xs text-gray-400 mt-1">
           <span>{formatTime(currentTime)}</span>
@@ -145,9 +145,9 @@ export const MusicPlayerApp = () => {
         
       {/* Controls */}
       <div className="flex justify-center items-center gap-4">
-        <button 
+        <button
           onClick={skipToPrev}
-          className="hover:text-green-400 transition-colors"
+          className="p-3 hover:text-green-400 transition-colors"
         >
           <SkipBack size={20} />
         </button>
@@ -157,9 +157,9 @@ export const MusicPlayerApp = () => {
         >
           {isPlaying ? <Pause /> : <Play className="ml-1" />}
         </button>
-        <button 
+        <button
           onClick={skipToNext}
-          className="hover:text-green-400 transition-colors"
+          className="p-3 hover:text-green-400 transition-colors"
         >
           <SkipForward size={20} />
         </button>

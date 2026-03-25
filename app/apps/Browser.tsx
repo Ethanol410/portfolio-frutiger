@@ -18,7 +18,7 @@ export const BrowserApp = () => {
     <div className="flex flex-col h-full bg-gray-100">
       <div className="flex gap-2 p-2 border-b bg-gray-200">
         <input
-          className="flex-1 px-2 py-1 rounded border border-gray-300 text-sm"
+          className="flex-1 px-2 py-2 md:py-1 rounded border border-gray-300 text-sm"
           value={url}
           onChange={(e) => setUrl(e.target.value)}
           onKeyDown={handleKeyDown}
@@ -26,7 +26,7 @@ export const BrowserApp = () => {
         />
         <button
           onClick={navigate}
-          className="bg-blue-500 hover:bg-blue-600 text-white px-3 rounded text-xs transition-colors"
+          className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 md:px-3 md:py-1 rounded text-xs transition-colors"
         >
           Go
         </button>
