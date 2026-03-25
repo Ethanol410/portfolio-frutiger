@@ -30,8 +30,8 @@ export const WindowFrame = ({ window: appWindow }: WindowFrameProps) => {
         opacity: 1,
         x: isActuallyMaximized ? 0 : undefined,
         y: isActuallyMaximized ? 0 : undefined,
-        width: isActuallyMaximized ? "100vw" : 600,
-        height: isActuallyMaximized ? "calc(100vh - 40px)" : "auto", // -40px barre desktop (ou 48px mobile, à ajuster si besoin)
+        width: isActuallyMaximized ? "100vw" : (appWindow.defaultSize?.width ?? 600),
+        height: isActuallyMaximized ? "calc(100vh - 40px)" : (appWindow.defaultSize?.height ?? "auto"), // -40px barre desktop (ou 48px mobile, à ajuster si besoin)
         borderRadius: isActuallyMaximized ? 0 : 8
       }}
       onPointerDown={() => { focusApp(appWindow.id); }}

@@ -11,6 +11,7 @@ export interface AppWindow {
   isMaximized: boolean;
   zIndex: number;
   defaultPosition?: { x: number; y: number };
+  defaultSize?: { width: number; height: number };
 }
 
 export interface Notification {
