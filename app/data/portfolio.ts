@@ -4,7 +4,7 @@ export const portfolio = {
   title: "Développeur Front-End Créatif",
   location: "Paris, France",
   email: "ethan.dupont@gmail.com",
-  github: "https://github.com/your-username",
+  github: "https://github.com/Ethanol410",
   linkedin: "https://linkedin.com/in/your-profile",
   avatar: "/people_31.png",
 
