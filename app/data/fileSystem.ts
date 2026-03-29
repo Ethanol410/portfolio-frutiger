@@ -14,9 +14,6 @@ export const myComputer: FileNode[] = [
     type: 'folder',
     children: [
       { id: '11', name: 'cv.pdf', type: 'file', content: '/cv.pdf' },
-      { id: '12', name: 'Lettre_ENSSAT.pdf', type: 'file', content: '/Lettre_de_motivation_ENSSAT_COLLIN_Ethan.pdf' },
-      { id: '13', name: 'Lettre_MIAGE.pdf', type: 'file', content: '/Lettre_de_motivation_MIAGE.pdf' },
-      { id: '14', name: 'Lettres_de_recommandation.pdf', type: 'file', content: '/lettresRecommandations (1).pdf' },
     ]
   },
   {
