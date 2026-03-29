@@ -4,12 +4,16 @@ import { User, Monitor, Image as ImageIcon, Github, Linkedin, Mail, MapPin } fro
 import { portfolio } from '@/app/data/portfolio';
 
 const wallpapers = [
-  { id: 1, url: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80", name: "Abstrait Bleu" },
-  { id: 2, url: "https://images.unsplash.com/photo-1477346611705-65d1883cee1e?q=80", name: "Montagnes Dark" },
-  { id: 3, url: "https://images.unsplash.com/photo-1493246507139-91e8fad9978e?q=80", name: "Alpin" },
-  { id: 4, url: "https://images.unsplash.com/photo-1519681393784-d120267933ba?q=80", name: "Espace" },
-  { id: 5, url: "https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80", name: "Synthwave" },
-  { id: 6, url: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80", name: "Nature" },
+  // Frutiger Aero
+  { id: 1, url: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?q=80&w=1920", name: "Aero Alpin", tag: "aero" },
+  { id: 2, url: "https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?q=80&w=1920", name: "Aero Prairie", tag: "aero" },
+  { id: 3, url: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?q=80&w=1920", name: "Aero Forêt", tag: "aero" },
+  { id: 4, url: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=1920", name: "Aero Lac", tag: "aero" },
+  // Sombre
+  { id: 5, url: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1920", name: "Abstrait Bleu", tag: "dark" },
+  { id: 6, url: "https://images.unsplash.com/photo-1477346611705-65d1883cee1e?q=80&w=1920", name: "Montagnes Dark", tag: "dark" },
+  { id: 7, url: "https://images.unsplash.com/photo-1519681393784-d120267933ba?q=80&w=1920", name: "Galaxie", tag: "dark" },
+  { id: 8, url: "https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=1920", name: "Synthwave", tag: "dark" },
 ];
 
 export const SettingsApp = () => {
@@ -38,18 +42,28 @@ export const SettingsApp = () => {
       <div className="flex-1 p-6 overflow-auto">
         {activeTab === 'display' && (
           <div>
-            <h2 className="text-xl font-bold mb-4 flex items-center gap-2"><ImageIcon /> Fonds d'écran</h2>
-            <div className="grid grid-cols-3 gap-4">
-              {wallpapers.map((wp) => (
-                <div
-                  key={wp.id}
-                  onClick={() => setWallpaper(wp.url)}
-                  className={`
-                    aspect-video rounded-lg overflow-hidden cursor-pointer border-4 transition-all hover:scale-105
-                    ${wallpaper === wp.url ? 'border-blue-500 shadow-xl scale-105' : 'border-transparent hover:border-gray-300'}
-                  `}
+            <h2 className="text-xl font-bold mb-1 flex items-center gap-2"><ImageIcon /> Fonds d'écran</h2>
+            <p className="text-xs text-gray-400 mb-4">Cliquez pour appliquer · Pour plus de fonds Frutiger Aero : frutigeraeroarchive.org</p>
+
+            <div className="mb-3 text-xs font-bold text-gray-400 uppercase tracking-wider">Frutiger Aero</div>
+            <div className="grid grid-cols-3 gap-3 mb-5">
+              {wallpapers.filter(w => w.tag === 'aero').map((wp) => (
+                <div key={wp.id} onClick={() => setWallpaper(wp.url)}
+                  className={`aspect-video rounded-lg overflow-hidden cursor-pointer border-4 transition-all hover:scale-105 ${wallpaper === wp.url ? 'border-blue-500 shadow-xl scale-105' : 'border-transparent hover:border-gray-300'}`}
                 >
-                  <img src={wp.url} alt={wp.name} className="w-full h-full object-cover" />
+                  <img src={wp.url} alt={wp.name} className="w-full h-full object-cover" loading="lazy" />
+                  <div className="text-xs text-center mt-1 font-medium text-gray-600">{wp.name}</div>
+                </div>
+              ))}
+            </div>
+
+            <div className="mb-3 text-xs font-bold text-gray-400 uppercase tracking-wider">Sombre</div>
+            <div className="grid grid-cols-3 gap-3">
+              {wallpapers.filter(w => w.tag === 'dark').map((wp) => (
+                <div key={wp.id} onClick={() => setWallpaper(wp.url)}
+                  className={`aspect-video rounded-lg overflow-hidden cursor-pointer border-4 transition-all hover:scale-105 ${wallpaper === wp.url ? 'border-blue-500 shadow-xl scale-105' : 'border-transparent hover:border-gray-300'}`}
+                >
+                  <img src={wp.url} alt={wp.name} className="w-full h-full object-cover" loading="lazy" />
                   <div className="text-xs text-center mt-1 font-medium text-gray-600">{wp.name}</div>
                 </div>
               ))}

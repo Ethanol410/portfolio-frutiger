@@ -1,12 +1,13 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useOSStore } from '@/app/store/useOSStore';
-import { Terminal, Globe, Settings, LayoutGrid, Mail, Music, Palette, User } from 'lucide-react';
+import { Terminal, Globe, Settings, LayoutGrid, Mail, Music, Palette, User, Sparkles } from 'lucide-react';
 import { BrowserApp } from './Browser';
 import { SettingsApp } from './Settings';
 import { ProjectsApp } from './Projects';
 import { MusicPlayerApp } from './MusicPlayer';
 import { ContactApp } from './Contact';
 import { AboutApp } from './About';
+import { AIChatApp } from './AIChat';
 import { useSound } from '@/app/hooks/useSound';
 import { useHaptics } from '@/app/hooks/useHaptics';
 
@@ -113,13 +114,20 @@ export const TerminalApp = () => {
           { text: "  clear            — vider le terminal", type: 'output' },
           { text: "  reboot           — redémarrer l'OS", type: 'output' },
           { text: "", type: 'output' },
-          { text: "  Apps: browser, terminal, settings, projects, music, contact, about", type: 'info' },
+          { text: "  Apps: browser, terminal, settings, projects, music, contact, about, ai", type: 'info' },
         ];
         break;
 
       case 'neofetch':
         response = NEOFETCH;
         break;
+
+      case 'matrix':
+        response = [{ text: '[MATRIX MODE — Bienvenue, Neo. Ferme le terminal pour sortir.]', type: 'success' }];
+        pushLines([{ text: `> ${input}`, type: 'input' }, ...response]);
+        setInput('');
+        (window as any).__matrixMode?.();
+        return;
 
       case 'whoami':
         response = [{ text: "ethan@ethanos — Administrateur", type: 'success' }];
@@ -159,6 +167,7 @@ export const TerminalApp = () => {
           music:     { id: 'musicplayer', title: 'Lecteur Musique', icon: Music,      component: <MusicPlayerApp /> },
           contact:   { id: 'contact',     title: 'Me Contacter',    icon: Mail,       component: <ContactApp /> },
           about:     { id: 'about',       title: 'À Propos',        icon: User,       component: <AboutApp /> },
+          ai:        { id: 'aichat',      title: 'Ethan IA',        icon: Sparkles,   component: <AIChatApp /> },
         };
         const app = appMap[args[1].toLowerCase()];
         if (app) {

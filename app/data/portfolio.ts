@@ -1,7 +1,7 @@
 export const portfolio = {
   name: "Ethan",
   fullName: "Ethan Collin",
-  title: "Développeur Web FullStack — Étudiant BUT MMI",
+  title: "Développeur Web FullStack & IA — BUT MMI",
   location: "Lannion, France",
   email: "ethan.collin2304@gmail.com",
   phone: "06 04 46 10 27",
@@ -9,7 +9,12 @@ export const portfolio = {
   linkedin: "https://linkedin.com/in/ethan-collin",
   avatar: "/people_31.png",
 
-  bio: "Étudiant en BUT MMI – Développement Web à l'IUT de Lannion, j'ai forgé mon profil technique à travers 2 ans d'alternance chez Ici Carte Grise, où j'ai géré en autonomie une plateforme B2C à fort trafic (PHP, JS, MySQL) après le départ de mon tuteur. Passionné par l'IA et les interfaces interactives, j'ai contribué à des projets de recherche mêlant LLM et web design (UI Drift, Agentix Canvas). Lauréat du prix campus Pépite pour mon projet Modall, je candidate à l'ENSSAT (IA & Multimédia) et au Master MIAGE pour concevoir des systèmes intelligents, robustes et utiles.",
+  availability: {
+    status: "disponible" as "disponible" | "indisponible" | "bientot",
+    label: "Disponible — Alternance / Stage dès sept. 2026",
+  },
+
+  bio: "À 20 ans, j'ai pris en charge seul une plateforme e-commerce à fort trafic après le départ de mon tuteur — et j'ai livré. C'est cette autonomie et cette capacité à m'adapter sous pression qui définissent mon profil. Développeur FullStack en alternance chez Ici Carte Grise depuis 2 ans, je construis en parallèle des projets de recherche à l'IUT qui croisent IA et interfaces web (UI Drift, Agentix Canvas). Lauréat du prix campus Pépite, je candidate à l'ENSSAT (IA & Multimédia) et au Master MIAGE pour concevoir les systèmes intelligents de demain.",
 
   skills: {
     frontend: ["React", "Next.js", "TypeScript", "JavaScript", "jQuery", "Tailwind CSS", "HTML/CSS", "Framer Motion"],
@@ -23,19 +28,19 @@ export const portfolio = {
       role: "Développeur FullStack (Alternance)",
       company: "Ici Carte Grise",
       period: "2024 — 2026",
-      desc: "Maintenance et évolution d'une plateforme B2C à fort trafic en PHP 7.4/8.2, JavaScript, jQuery et MySQL. Gestion autonome du pôle développement après le départ du tuteur. Formation et encadrement d'une nouvelle alternante.",
+      desc: "Gestion autonome d'une plateforme B2C (plusieurs milliers de transactions/mois) en PHP 7.4/8.2, JS, MySQL — après le départ du tuteur. Responsable du pôle développement web et encadrement d'une nouvelle alternante.",
     },
     {
       role: "Projet de Recherche — UI Drift",
       company: "IUT de Lannion",
       period: "2025 — 2026",
-      desc: "Prototype de recherche sur les instabilités des interfaces générées par IA : détection des dérives qu'un LLM introduit au-delà des demandes utilisateur. Modélisation, métriques quantitatives et outils de contrôle.",
+      desc: "Détection et visualisation des instabilités qu'un LLM introduit dans les interfaces web au-delà des demandes utilisateur. Modélisation quantitative des dérives, prototype fonctionnel avec métriques de contrôle.",
     },
     {
       role: "Projet de Recherche — Agentix Canvas",
       company: "IUT de Lannion",
       period: "2025 — 2026",
-      desc: "Application de brainstorming collaboratif avec assistant IA multi-agents (Isa). Collaboration temps réel, cartes mentales, plans d'action, intégration LLM dans une interface interactive.",
+      desc: "Outil de brainstorming collaboratif temps réel avec orchestration multi-agents IA (assistant Isa). Cartes mentales, plans d'action générés automatiquement, intégration LLM dans une interface réactive.",
     },
   ],
 

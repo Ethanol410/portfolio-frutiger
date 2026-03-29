@@ -1,6 +1,16 @@
 import React from 'react';
-import { Github, Linkedin, Mail, MapPin, Award, Quote, Phone } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { Github, Linkedin, Mail, MapPin, Award, Quote, Phone, Zap } from 'lucide-react';
 import { portfolio } from '@/app/data/portfolio';
+
+const stagger = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.08 } },
+};
+const fadeUp = {
+  hidden: { opacity: 0, y: 16 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.35 } },
+};
 
 const SKILL_LABELS: Record<string, string> = {
   frontend: 'Front-End',
@@ -20,19 +30,23 @@ const SKILL_COLORS: Record<string, string> = {
 
 export const AboutApp = () => {
   return (
-    <div className="h-full bg-gray-50 overflow-y-auto p-6 flex flex-col items-center gap-4">
+    <motion.div variants={stagger} initial="hidden" animate="show" className="h-full aero-app overflow-y-auto p-6 flex flex-col items-center gap-4">
 
       {/* Header Profile */}
-      <div className="w-full bg-white rounded-xl shadow-sm border border-gray-200 p-6 flex flex-col items-center text-center">
+      <motion.div variants={fadeUp} className="w-full aero-card rounded-xl p-6 flex flex-col items-center text-center">
         <img
           src={portfolio.avatar}
           alt={portfolio.fullName}
           className="w-24 h-24 rounded-full object-cover mb-4 shadow-lg border-4 border-blue-100"
         />
         <h2 className="text-2xl font-bold text-gray-800">{portfolio.fullName}</h2>
-        <p className="text-blue-600 font-medium mb-2">{portfolio.title}</p>
-        <div className="flex items-center gap-2 text-gray-500 text-sm mb-4">
+        <p className="text-blue-600 font-medium mb-1">{portfolio.title}</p>
+        <div className="flex items-center gap-2 text-gray-500 text-sm mb-3">
           <MapPin size={14} /> {portfolio.location}
+        </div>
+        <div className="flex items-center gap-1.5 bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs font-semibold px-3 py-1.5 rounded-full mb-4">
+          <Zap size={12} className="text-emerald-500" />
+          {portfolio.availability.label}
         </div>
 
         <div className="flex gap-3">
@@ -69,16 +83,16 @@ export const AboutApp = () => {
             <Phone size={18} />
           </a>
         </div>
-      </div>
+      </motion.div>
 
       {/* Bio */}
-      <div className="w-full bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+      <motion.div variants={fadeUp} className="w-full aero-card rounded-xl p-6">
         <h3 className="font-bold text-gray-800 mb-2 border-b pb-2">Biographie</h3>
         <p className="text-gray-600 text-sm leading-relaxed">{portfolio.bio}</p>
-      </div>
+      </motion.div>
 
       {/* Skills */}
-      <div className="w-full bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+      <motion.div variants={fadeUp} className="w-full aero-card rounded-xl p-6">
         <h3 className="font-bold text-gray-800 mb-3 border-b pb-2">Compétences</h3>
         <div className="flex flex-col gap-3">
           {(Object.entries(portfolio.skills) as [string, string[]][]).map(([category, items]) => (
@@ -99,10 +113,10 @@ export const AboutApp = () => {
             </div>
           ))}
         </div>
-      </div>
+      </motion.div>
 
       {/* Experience */}
-      <div className="w-full bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+      <motion.div variants={fadeUp} className="w-full aero-card rounded-xl p-6">
         <h3 className="font-bold text-gray-800 mb-3 border-b pb-2">Parcours</h3>
         <div className="flex flex-col gap-4">
           {portfolio.experience.map((exp, i) => (
@@ -121,11 +135,11 @@ export const AboutApp = () => {
             </div>
           ))}
         </div>
-      </div>
+      </motion.div>
 
       {/* Awards */}
       {portfolio.awards.length > 0 && (
-        <div className="w-full bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+        <motion.div variants={fadeUp} className="w-full aero-card rounded-xl p-6">
           <h3 className="font-bold text-gray-800 mb-3 border-b pb-2 flex items-center gap-2">
             <Award size={16} className="text-yellow-500" /> Distinctions
           </h3>
@@ -140,12 +154,12 @@ export const AboutApp = () => {
               </div>
             ))}
           </div>
-        </div>
+        </motion.div>
       )}
 
       {/* Recommendations */}
       {portfolio.recommendations.length > 0 && (
-        <div className="w-full bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+        <motion.div variants={fadeUp} className="w-full aero-card rounded-xl p-6">
           <h3 className="font-bold text-gray-800 mb-3 border-b pb-2 flex items-center gap-2">
             <Quote size={16} className="text-blue-400" /> Recommandations
           </h3>
@@ -158,9 +172,9 @@ export const AboutApp = () => {
               </div>
             ))}
           </div>
-        </div>
+        </motion.div>
       )}
 
-    </div>
+    </motion.div>
   );
 };

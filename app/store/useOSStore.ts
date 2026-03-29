@@ -1,10 +1,11 @@
+import React from 'react';
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
 export interface AppWindow {
   id: string;
   title: string;
-  icon: any; // Lucide Icon type
+  icon: React.ElementType;
   component: React.ReactNode;
   isOpen: boolean;
   isMinimized: boolean;
@@ -50,7 +51,7 @@ export const useOSStore = create<OSState>()(
       windows: {},
       activeWindowId: null,
       maxZIndex: 10,
-      wallpaper: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80',
+      wallpaper: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?q=80&w=1920',
       notifications: [],
       isLocked: true,
       isCrashed: false, // <-- Défaut

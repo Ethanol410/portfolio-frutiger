@@ -25,15 +25,18 @@ export const MusicPlayerApp = () => {
   const [barHeights, setBarHeights]   = useState(Array(12).fill(10));
   const audioRef = useRef<HTMLAudioElement>(null);
 
-  // Changer de piste
+  // Changer de piste — isPlaying est lu via ref pour éviter la boucle
+  const isPlayingRef = useRef(isPlaying);
+  isPlayingRef.current = isPlaying;
+
   useEffect(() => {
     if (!audioRef.current) return;
     audioRef.current.src = tracks[currentTrack].url;
     audioRef.current.load();
-    if (isPlaying) {
+    if (isPlayingRef.current) {
       audioRef.current.play().catch(() => setIsPlaying(false));
     }
-  }, [currentTrack]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [currentTrack]);
 
   // Events audio
   useEffect(() => {

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useOSStore } from '@/app/store/useOSStore';
-import { Lock, Terminal, Globe, Folder, Power, Settings, User as UserIcon, LayoutGrid, Music, Palette, Search, FileText, Mail } from 'lucide-react';
+import { Lock, Terminal, Globe, Folder, Power, Settings, User as UserIcon, LayoutGrid, Music, Palette, Search, FileText, Mail, Sparkles } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 import { TerminalApp } from '@/app/apps/Terminal';
@@ -13,6 +13,7 @@ import { MusicPlayerApp } from '@/app/apps/MusicPlayer';
 import { PaintApp } from '@/app/apps/Paint';
 import { ContactApp } from '@/app/apps/Contact';
 import { PDFViewerApp } from '@/app/apps/PDFViewer';
+import { AIChatApp } from '@/app/apps/AIChat';
 import { portfolio } from '@/app/data/portfolio';
 
 interface StartMenuProps {
@@ -30,6 +31,7 @@ const vistaIcons: Record<string, string> = {
   Paint: "/icons/photogallery.ico",
   Contact: "/icons/wlm1.ico",
   CV: "/icons/vista_bench.ico",
+  AIChat: "/icons/vista_info.ico",
 };
 
 export const StartMenu = ({ onClose }: StartMenuProps) => {
@@ -85,6 +87,9 @@ export const StartMenu = ({ onClose }: StartMenuProps) => {
       case 'CV':
         addWindow({ ...baseWindow, id: 'cv', title: 'Mon CV', icon: FileText, component: <PDFViewerApp file="/cv.pdf" />, defaultPosition: { x: 120, y: 60 } });
         break;
+      case 'AIChat':
+        addWindow({ ...baseWindow, id: 'aichat', title: 'Ethan IA', icon: Sparkles, component: <AIChatApp />, defaultSize: { width: 420, height: 560 } });
+        break;
     }
     onClose();
   };
@@ -105,6 +110,7 @@ export const StartMenu = ({ onClose }: StartMenuProps) => {
     { name: 'Documents', icon: Folder, action: 'Explorer', color: 'text-yellow-500', vistaKey: 'Explorer' },
     { name: 'Musique', icon: Music, action: 'MusicPlayer', color: 'text-pink-500', vistaKey: 'MusicPlayer' },
     { name: 'Paint', icon: Palette, action: 'Paint', color: 'text-emerald-600', vistaKey: 'Paint' },
+    { name: 'Ethan IA', icon: Sparkles, action: 'AIChat', color: 'text-violet-500', vistaKey: 'AIChat' },
   ];
 
   const filteredApps = apps.filter(app => app.name.toLowerCase().includes(searchTerm.toLowerCase()));

@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -20,13 +21,19 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  title: "Ethan Collin — Portfolio",
-  description: "Portfolio interactif d'Ethan Collin, développeur web FullStack & étudiant BUT MMI à Lannion. Alternance chez Ici Carte Grise, projets IA/LLM. Découvrez mon parcours dans un OS simulé inspiré de Windows Vista.",
+  metadataBase: new URL("https://portfolio-frutiger.vercel.app"),
+  title: "Ethan Collin — Développeur Web & IA",
+  description: "Portfolio interactif d'Ethan Collin — développeur FullStack en alternance, étudiant BUT MMI à Lannion, spécialisé IA/LLM et interfaces web. Disponible en alternance dès septembre 2026.",
   manifest: "/manifest.json",
+  keywords: ["Ethan Collin", "développeur web", "IA", "LLM", "Next.js", "React", "PHP", "BUT MMI", "Lannion", "portfolio", "alternance"],
+  authors: [{ name: "Ethan Collin", url: "https://github.com/Ethanol410" }],
+  robots: { index: true, follow: true },
   openGraph: {
-    title: "Ethan Collin — Portfolio OS",
-    description: "Portfolio interactif inspiré de Windows Vista / Frutiger Aero. Développeur Web FullStack — PHP, React, Next.js, LLM.",
+    title: "Ethan Collin — Développeur Web & IA | Portfolio OS",
+    description: "Portfolio interactif en OS simulé (Frutiger Aero). Développeur FullStack PHP/React/Next.js, projets de recherche IA (UI Drift, Agentix Canvas). Disponible sept. 2026.",
     siteName: "EthanOS Portfolio",
+    url: "https://portfolio-frutiger.vercel.app",
+    locale: "fr_FR",
     images: [
       {
         url: "/og-image.png",
@@ -36,6 +43,12 @@ export const metadata: Metadata = {
       },
     ],
     type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Ethan Collin — Développeur Web & IA",
+    description: "Portfolio interactif en OS simulé. FullStack PHP/React/Next.js + projets IA/LLM.",
+    images: ["/og-image.png"],
   },
 };
 
@@ -50,6 +63,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         {children}
+        <Analytics />
       </body>
     </html>
   );
