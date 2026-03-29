@@ -182,7 +182,7 @@ export const AIChatApp = () => {
             {loading ? <Loader2 size={13} className="animate-spin" /> : <Send size={13} />}
           </button>
         </div>
-        <p className="text-[10px] text-slate-500 text-center mt-1.5">Propulsé par Claude Haiku · Anthropic</p>
+        <p className="text-[10px] text-slate-500 text-center mt-1.5">Propulsé par Llama 3.3 · Groq</p>
       </div>
     </div>
   );

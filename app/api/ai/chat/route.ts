@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
-import Anthropic from '@anthropic-ai/sdk';
+import Groq from 'groq-sdk';
 
-const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
+const client = new Groq({ apiKey: process.env.GROQ_API_KEY });
 
 const SYSTEM_PROMPT = `Tu es Ethan, un assistant IA intégré dans le portfolio interactif d'Ethan Collin.
 Tu réponds aux questions des recruteurs, visiteurs et développeurs de façon concise, chaleureuse et professionnelle.
@@ -65,14 +65,16 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: 'Messages manquants.' }, { status: 400 });
   }
 
-  const response = await client.messages.create({
-    model: 'claude-haiku-4-5-20251001',
+  const response = await client.chat.completions.create({
+    model: 'llama-3.3-70b-versatile',
     max_tokens: 512,
-    system: SYSTEM_PROMPT,
-    messages,
+    messages: [
+      { role: 'system', content: SYSTEM_PROMPT },
+      ...messages,
+    ],
   });
 
-  const text = response.content[0].type === 'text' ? response.content[0].text : '';
+  const text = response.choices[0]?.message?.content ?? '';
 
   // Extraire l'action si présente
   const actionMatch = text.match(/\[ACTION:open:(\w+)\]/);
