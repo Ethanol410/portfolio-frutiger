@@ -1,85 +1,177 @@
-import { NextResponse } from 'next/server';
 import Groq from 'groq-sdk';
+import { portfolio } from '@/app/data/portfolio';
 
 const client = new Groq({ apiKey: process.env.GROQ_API_KEY });
 
-const SYSTEM_PROMPT = `Tu es Ethan, un assistant IA intégré dans le portfolio interactif d'Ethan Collin.
+const MAX_MESSAGES = 10;
+const MAX_CONTENT_LENGTH = 1000;
+
+function buildSystemPrompt(): string {
+  const { fullName, email, phone, github, linkedin, bio, skills, experience, projects, awards, availability } = portfolio;
+
+  const skillLines = Object.entries(skills)
+    .map(([cat, list]) => `- ${cat} : ${list.join(', ')}`)
+    .join('\n');
+
+  const experienceLines = experience
+    .map(e => `- ${e.role} — ${e.company} (${e.period})\n  → ${e.desc}`)
+    .join('\n');
+
+  const projectLines = projects
+    .map(p => `- ${p.title} [${p.tech.join(', ')}]\n  → ${p.desc}`)
+    .join('\n');
+
+  const awardLines = awards
+    .map(a => `- ${a.title} (${a.year}) : ${a.desc}`)
+    .join('\n');
+
+  return `Tu es Ethan, un assistant IA intégré dans le portfolio interactif d'${fullName}.
 Tu réponds aux questions des recruteurs, visiteurs et développeurs de façon concise, chaleureuse et professionnelle.
 Tu parles à la première personne (comme si tu étais Ethan) et tu connais parfaitement son profil.
 
-## Profil d'Ethan Collin
-- Étudiant en BUT MMI – Développement Web et dispositifs interactifs, IUT de Lannion (BUT3, 2026)
-- Parmi les premiers de sa promotion
-- Candidature : ENSSAT (Ingénieur IA & Multimédia) et Master MIAGE (Université de Rennes)
-- Email : ethan.collin2304@gmail.com | Tél : 06 04 46 10 27
-- GitHub : github.com/Ethanol410
+## Profil
+${bio}
 
-## Expérience
-- Développeur FullStack en alternance — Ici Carte Grise (2024-2026, 2 ans)
-  → Stack : PHP 7.4/8.2, JavaScript, jQuery, MySQL
-  → A géré seul la plateforme B2C (plusieurs milliers de transactions/mois) après départ du tuteur
-  → Responsable du pôle dev web + forme une nouvelle alternante
-- Projet de recherche UI Drift — IUT de Lannion (2025-2026)
-  → Prototype de recherche sur les instabilités des interfaces générées par IA
-  → Détection des dérives qu'un LLM introduit au-delà des demandes utilisateur
-- Projet Agentix Canvas — IUT de Lannion (2025-2026)
-  → Brainstorming collaboratif multi-agents avec assistant IA "Isa"
-
-## Projets notables
-- Portfolio Frutiger (ce portfolio OS) — Next.js, TypeScript, Zustand, Tailwind, Framer Motion
-- UI Drift — Recherche sur les dérives LLM dans les interfaces web
-- Agentix Canvas — Brainstorming collaboratif multi-agents IA
-- Weight Tracker MVP — Next.js, TypeScript, PostgreSQL, 97% couverture tests
-- POC Interface Audio — TypeScript, Web Audio API
-
-## Compétences
-- Frontend : React, Next.js, TypeScript, JavaScript, jQuery, Tailwind CSS, Framer Motion
-- Backend : PHP 7.4/8.2, MySQL, Node.js, Express, REST API
-- IA : Intégration LLM, IA générative, Agents IA, Interfaces Humain-IA, Claude API
-- Outils : Git, GitHub, Figma, VS Code, Unity, C#
-
-## Distinctions
-- Prix du campus Pépite — Projet Modall (enceintes modulaires, 2025)
+## Contact
+- Email : ${email}
+- Téléphone : ${phone}
+- GitHub : ${github}
+- LinkedIn : ${linkedin}
 
 ## Disponibilité
-- Disponible en alternance ou stage à partir de septembre 2026
-- Ouvert aux opportunités en IA, développement web full-stack, interfaces interactives
+${availability.label}
+
+## Compétences
+${skillLines}
+
+## Expérience
+${experienceLines}
+
+## Projets
+${projectLines}
+
+## Distinctions
+${awardLines}
 
 ## Instructions
 - Réponds toujours en français sauf si on te parle en anglais
 - Sois concis (max 3-4 phrases sauf si on demande des détails)
-- Si on demande à voir les projets, le CV, ou à contacter Ethan, indique que tu peux ouvrir l'application correspondante en répondant avec le préfixe [ACTION:open:app_name] où app_name est : projects, about, contact, cv
-- Exemple : "[ACTION:open:projects] Bien sûr, voici mes projets !"
+- Si l'utilisateur veut voir les projets, le CV, la page à propos ou me contacter, place exactement ce tag en début de réponse : [ACTION:open:projects], [ACTION:open:cv], [ACTION:open:about] ou [ACTION:open:contact]. Exemple : "[ACTION:open:projects] Voici mes projets !"
+- N'utilise ce tag qu'une seule fois par réponse, uniquement si nécessaire
 - Ne réponds pas à des questions hors-sujet (politique, etc.), recentre sur le portfolio
 `;
+}
 
 interface Message {
   role: 'user' | 'assistant';
   content: string;
 }
 
-export async function POST(req: Request) {
-  const { messages }: { messages: Message[] } = await req.json();
+function validateMessages(messages: unknown): messages is Message[] {
+  if (!Array.isArray(messages) || messages.length === 0) return false;
+  if (messages.length > MAX_MESSAGES * 2) return false;
+  return messages.every(
+    (m) =>
+      m &&
+      typeof m === 'object' &&
+      (m.role === 'user' || m.role === 'assistant') &&
+      typeof m.content === 'string' &&
+      m.content.length > 0 &&
+      m.content.length <= MAX_CONTENT_LENGTH
+  );
+}
 
-  if (!messages?.length) {
-    return NextResponse.json({ error: 'Messages manquants.' }, { status: 400 });
+const ACTION_RE = /\[ACTION:open:(\w+)\]/;
+
+export async function POST(req: Request) {
+  let body: unknown;
+  try {
+    body = await req.json();
+  } catch {
+    return new Response(JSON.stringify({ error: 'Corps de requête invalide.' }), { status: 400 });
   }
 
-  const response = await client.chat.completions.create({
-    model: 'llama-3.3-70b-versatile',
-    max_tokens: 512,
-    messages: [
-      { role: 'system', content: SYSTEM_PROMPT },
-      ...messages,
-    ],
-  });
+  const { messages } = body as { messages: unknown };
 
-  const text = response.choices[0]?.message?.content ?? '';
+  if (!validateMessages(messages)) {
+    return new Response(JSON.stringify({ error: 'Messages invalides ou trop longs.' }), { status: 400 });
+  }
 
-  // Extraire l'action si présente
-  const actionMatch = text.match(/\[ACTION:open:(\w+)\]/);
-  const action = actionMatch ? { type: 'open', app: actionMatch[1] } : null;
-  const cleanText = text.replace(/\[ACTION:open:\w+\]\s*/g, '');
+  const trimmedMessages = messages.slice(-MAX_MESSAGES);
 
-  return NextResponse.json({ text: cleanText, action });
+  try {
+    const groqStream = await client.chat.completions.create({
+      model: 'llama-3.3-70b-versatile',
+      max_tokens: 1024,
+      stream: true,
+      messages: [
+        { role: 'system', content: buildSystemPrompt() },
+        ...trimmedMessages,
+      ],
+    });
+
+    const encoder = new TextEncoder();
+
+    const readable = new ReadableStream({
+      async start(controller) {
+        let pendingBuffer = '';
+        let actionSent = false;
+
+        const sendToken = (text: string) => {
+          if (text) {
+            controller.enqueue(encoder.encode(`data:${JSON.stringify({ token: text })}\n\n`));
+          }
+        };
+
+        for await (const chunk of groqStream) {
+          const token = chunk.choices[0]?.delta?.content ?? '';
+          if (!token) continue;
+
+          pendingBuffer += token;
+
+          if (!actionSent && pendingBuffer.includes('[')) {
+            const match = ACTION_RE.exec(pendingBuffer);
+            if (match) {
+              // Envoyer l'action
+              controller.enqueue(
+                encoder.encode(`data:${JSON.stringify({ action: { type: 'open', app: match[1] } })}\n\n`)
+              );
+              actionSent = true;
+              // Streamer le texte sans le tag
+              sendToken(pendingBuffer.replace(ACTION_RE, '').replace(/^\s+/, ''));
+              pendingBuffer = '';
+              continue;
+            }
+
+            // Tag potentiellement en cours de construction — envoyer ce qui précède le '['
+            const bracketIdx = pendingBuffer.lastIndexOf('[');
+            sendToken(pendingBuffer.slice(0, bracketIdx));
+            pendingBuffer = pendingBuffer.slice(bracketIdx);
+          } else {
+            sendToken(pendingBuffer);
+            pendingBuffer = '';
+          }
+        }
+
+        // Vider le tampon résiduel
+        if (pendingBuffer) {
+          sendToken(pendingBuffer.replace(ACTION_RE, '').replace(/^\s+/, ''));
+        }
+
+        controller.enqueue(encoder.encode('data:[DONE]\n\n'));
+        controller.close();
+      },
+    });
+
+    return new Response(readable, {
+      headers: {
+        'Content-Type': 'text/event-stream',
+        'Cache-Control': 'no-cache',
+        Connection: 'keep-alive',
+      },
+    });
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : 'Erreur inconnue';
+    return new Response(JSON.stringify({ error: `Erreur API : ${message}` }), { status: 502 });
+  }
 }

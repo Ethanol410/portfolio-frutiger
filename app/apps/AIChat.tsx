@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
-import { Send, Bot, User, Loader2, Sparkles } from 'lucide-react';
+import { Send, Bot, User, Loader2, Sparkles, Trash2 } from 'lucide-react';
 import { useOSStore } from '@/app/store/useOSStore';
 import { AboutApp } from './About';
 import { ProjectsApp } from './Projects';
@@ -9,26 +9,82 @@ import { ContactApp } from './Contact';
 import { PDFViewerApp } from './PDFViewer';
 import { LayoutGrid, Mail, FileText } from 'lucide-react';
 import { User as UserIconLucide } from 'lucide-react';
+import { portfolio } from '@/app/data/portfolio';
+import ReactMarkdown from 'react-markdown';
 
 interface Message {
   role: 'user' | 'assistant';
   content: string;
 }
 
-const SUGGESTIONS = [
-  "Quelles sont tes compétences en IA ?",
-  "Parle-moi de tes projets",
-  "Tu es disponible quand ?",
-  "Montre-moi ton CV",
+const STORAGE_KEY = 'ethanos-aichat-messages';
+
+const INITIAL_SUGGESTIONS = [
+  `Parle-moi de ${portfolio.projects[0].title}`,
+  `Quelles sont tes compétences en IA ?`,
+  `Parle-moi de ${portfolio.projects[1].title}`,
+  `Tu es disponible quand ?`,
+  `Montre-moi ton CV`,
 ];
+
+// Pool de suggestions contextuelles avec mots-clés de déclenchement
+const SUGGESTION_POOL: { text: string; keywords: string[] }[] = [
+  { text: `Parle-moi de ${portfolio.projects[0].title}`, keywords: ['portfolio', 'frutiger', 'os', 'zustand', 'framer'] },
+  { text: `Parle-moi de ${portfolio.projects[1].title}`, keywords: ['ui drift', 'drift', 'llm', 'instabilité', 'interface'] },
+  { text: `Parle-moi de ${portfolio.projects[2].title}`, keywords: ['agentix', 'canvas', 'brainstorming', 'multi-agent', 'isa'] },
+  { text: `Parle-moi de ${portfolio.projects[3].title}`, keywords: ['weight tracker', 'postgresql', 'test', 'couverture'] },
+  { text: 'Quelles sont tes compétences en IA ?', keywords: ['ia', 'intelligence artificielle', 'llm', 'agent', 'groq', 'claude'] },
+  { text: 'Quelles sont tes compétences frontend ?', keywords: ['react', 'next', 'tailwind', 'frontend', 'interface', 'css'] },
+  { text: 'Parle-moi de ton alternance', keywords: ['alternance', 'ici carte grise', 'php', 'mysql', 'entreprise', 'expérience'] },
+  { text: 'Tu as des distinctions ou prix ?', keywords: ['prix', 'pépite', 'distinction', 'modall', 'award'] },
+  { text: 'Qui te recommande ?', keywords: ['recommandation', 'recommend', 'avis', 'professeur', 'chef'] },
+  { text: 'Tu candidates où pour la suite ?', keywords: ['enssat', 'miage', 'master', 'ingénieur', 'candidature', 'poursuite'] },
+  { text: 'Tu es disponible quand ?', keywords: ['disponible', 'disponibilité', 'stage', 'septembre', 'quand'] },
+  { text: 'Montre-moi ton CV', keywords: ['cv', 'curriculum', 'résumé'] },
+  { text: 'Comment te contacter ?', keywords: ['contact', 'email', 'téléphone', 'mail', 'linkedin'] },
+  { text: 'Montre-moi tes projets', keywords: ['projet', 'réalisation', 'portfolio', 'travaux'] },
+];
+
+function getFollowUpSuggestions(messages: Message[]): string[] {
+  const history = messages.map(m => m.content.toLowerCase()).join(' ');
+
+  // Filtrer les suggestions dont les mots-clés n'ont pas encore été couverts
+  const unused = SUGGESTION_POOL.filter(
+    s => !s.keywords.some(kw => history.includes(kw))
+  );
+
+  // Prendre 3 suggestions au hasard parmi les non-couvertes
+  const shuffled = [...unused].sort(() => Math.random() - 0.5);
+  return shuffled.slice(0, 3).map(s => s.text);
+}
 
 export const AIChatApp = () => {
   const { addWindow } = useOSStore();
-  const [messages, setMessages] = useState<Message[]>([]);
+
+  const [messages, setMessages] = useState<Message[]>(() => {
+    if (typeof window === 'undefined') return [];
+    try {
+      const stored = localStorage.getItem(STORAGE_KEY);
+      return stored ? (JSON.parse(stored) as Message[]) : [];
+    } catch {
+      return [];
+    }
+  });
+
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
+  const [followUps, setFollowUps] = useState<string[]>([]);
   const endRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+
+  // Persister les messages dans localStorage
+  useEffect(() => {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(messages));
+    } catch {
+      // localStorage plein ou indisponible
+    }
+  }, [messages]);
 
   useEffect(() => {
     endRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -56,6 +112,11 @@ export const AIChatApp = () => {
     }
   };
 
+  const clearMessages = () => {
+    setMessages([]);
+    try { localStorage.removeItem(STORAGE_KEY); } catch { /* ignore */ }
+  };
+
   const sendMessage = async (text?: string) => {
     const content = (text ?? input).trim();
     if (!content || loading) return;
@@ -64,7 +125,12 @@ export const AIChatApp = () => {
     const newMessages = [...messages, userMsg];
     setMessages(newMessages);
     setInput('');
+    setFollowUps([]);
     setLoading(true);
+
+    // Placeholder pour la réponse streamée
+    const assistantPlaceholder: Message = { role: 'assistant', content: '' };
+    setMessages(prev => [...prev, assistantPlaceholder]);
 
     try {
       const res = await fetch('/api/ai/chat', {
@@ -72,14 +138,67 @@ export const AIChatApp = () => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ messages: newMessages }),
       });
-      const data = await res.json();
-      setMessages(prev => [...prev, { role: 'assistant', content: data.text }]);
-      if (data.action) handleAction(data.action);
+
+      if (!res.ok || !res.body) {
+        throw new Error('Réponse invalide');
+      }
+
+      const reader = res.body.getReader();
+      const decoder = new TextDecoder();
+      let buffer = '';
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+
+        buffer += decoder.decode(value, { stream: true });
+        const lines = buffer.split('\n\n');
+        buffer = lines.pop() ?? '';
+
+        for (const line of lines) {
+          if (!line.startsWith('data:')) continue;
+          const raw = line.slice(5).trim();
+          if (raw === '[DONE]') break;
+
+          try {
+            const parsed = JSON.parse(raw);
+
+            if (parsed.token) {
+              setMessages(prev => {
+                const updated = [...prev];
+                updated[updated.length - 1] = {
+                  ...updated[updated.length - 1],
+                  content: updated[updated.length - 1].content + parsed.token,
+                };
+                return updated;
+              });
+            }
+
+            if (parsed.action) {
+              handleAction(parsed.action);
+            }
+          } catch {
+            // Chunk malformé, on ignore
+          }
+        }
+      }
     } catch {
-      setMessages(prev => [...prev, { role: 'assistant', content: "Désolé, une erreur s'est produite." }]);
+      setMessages(prev => {
+        const updated = [...prev];
+        updated[updated.length - 1] = {
+          ...updated[updated.length - 1],
+          content: "Désolé, une erreur s'est produite.",
+        };
+        return updated;
+      });
     } finally {
       setLoading(false);
       inputRef.current?.focus();
+      // Générer les suggestions après la réponse complète
+      setMessages(prev => {
+        setFollowUps(getFollowUpSuggestions(prev));
+        return prev;
+      });
     }
   };
 
@@ -95,7 +214,6 @@ export const AIChatApp = () => {
           boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.9), 0 1px 4px rgba(80,160,220,0.2)',
         }}
       >
-        {/* Icône avec reflet aqua */}
         <div
           className="w-9 h-9 rounded-full flex items-center justify-center shrink-0 relative overflow-hidden"
           style={{
@@ -103,7 +221,6 @@ export const AIChatApp = () => {
             boxShadow: '0 2px 8px rgba(30,100,200,0.35), inset 0 1px 0 rgba(255,255,255,0.5)',
           }}
         >
-          {/* Reflet brillant */}
           <div className="absolute top-0 left-0 right-0 h-1/2 rounded-full"
             style={{ background: 'linear-gradient(180deg, rgba(255,255,255,0.55) 0%, transparent 100%)' }} />
           <Sparkles size={16} className="text-white relative z-10" />
@@ -114,9 +231,20 @@ export const AIChatApp = () => {
           <div className="text-[10px] text-blue-700/70">Assistant portfolio · Llama 3.3</div>
         </div>
 
-        <div className="ml-auto flex items-center gap-1.5 text-[10px] text-emerald-700 font-medium">
-          <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-          En ligne
+        <div className="ml-auto flex items-center gap-3">
+          {messages.length > 0 && (
+            <button
+              onClick={clearMessages}
+              title="Effacer la conversation"
+              className="p-1.5 rounded-lg transition-all hover:bg-red-100/60 text-blue-400 hover:text-red-400"
+            >
+              <Trash2 size={14} />
+            </button>
+          )}
+          <div className="flex items-center gap-1.5 text-[10px] text-emerald-700 font-medium">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+            En ligne
+          </div>
         </div>
       </div>
 
@@ -125,7 +253,6 @@ export const AIChatApp = () => {
 
         {messages.length === 0 && (
           <div className="flex flex-col items-center justify-center h-full gap-5 text-center">
-            {/* Avatar central avec reflet */}
             <div className="relative">
               <div
                 className="w-16 h-16 rounded-2xl flex items-center justify-center shadow-lg relative overflow-hidden"
@@ -147,9 +274,8 @@ export const AIChatApp = () => {
               </p>
             </div>
 
-            {/* Suggestions — aero-card */}
             <div className="flex flex-col gap-2 w-full max-w-xs">
-              {SUGGESTIONS.map(s => (
+              {INITIAL_SUGGESTIONS.map(s => (
                 <button
                   key={s}
                   onClick={() => sendMessage(s)}
@@ -207,18 +333,31 @@ export const AIChatApp = () => {
                 backdropFilter: 'blur(8px)',
               }}
             >
-              {/* Reflet bulle user */}
               {msg.role === 'user' && (
                 <div className="absolute top-0 left-0 right-0 h-1/2 rounded-t-2xl pointer-events-none"
                   style={{ background: 'linear-gradient(180deg, rgba(255,255,255,0.2) 0%, transparent 100%)' }} />
               )}
-              <span className="relative z-10">{msg.content}</span>
+              {msg.role === 'assistant' ? (
+                <div className="prose prose-sm prose-blue max-w-none relative z-10 [&_p]:my-0.5 [&_ul]:my-1 [&_li]:my-0 [&_strong]:font-semibold [&_code]:bg-blue-50 [&_code]:px-1 [&_code]:rounded [&_code]:text-blue-700">
+                  {msg.content === '' && loading && i === messages.length - 1 ? (
+                    <span className="flex gap-1 items-center h-4">
+                      <span className="w-1.5 h-1.5 rounded-full bg-blue-400 animate-bounce" style={{ animationDelay: '0ms' }} />
+                      <span className="w-1.5 h-1.5 rounded-full bg-blue-400 animate-bounce" style={{ animationDelay: '150ms' }} />
+                      <span className="w-1.5 h-1.5 rounded-full bg-blue-400 animate-bounce" style={{ animationDelay: '300ms' }} />
+                    </span>
+                  ) : (
+                    <ReactMarkdown>{msg.content}</ReactMarkdown>
+                  )}
+                </div>
+              ) : (
+                <span className="relative z-10">{msg.content}</span>
+              )}
             </div>
           </div>
         ))}
 
-        {/* Indicateur de frappe */}
-        {loading && (
+        {/* Indicateur de frappe global (avant que le placeholder n'apparaisse) */}
+        {loading && messages[messages.length - 1]?.role !== 'assistant' && (
           <div className="flex gap-2.5">
             <div
               className="w-7 h-7 rounded-full flex items-center justify-center shrink-0 relative overflow-hidden"
@@ -246,6 +385,27 @@ export const AIChatApp = () => {
           </div>
         )}
 
+        {/* Suggestions contextuelles après la dernière réponse */}
+        {!loading && followUps.length > 0 && (
+          <div className="flex flex-wrap gap-2 pl-9 pt-1">
+            {followUps.map(s => (
+              <button
+                key={s}
+                onClick={() => sendMessage(s)}
+                className="text-xs px-3 py-1.5 rounded-full text-blue-700 transition-all hover:scale-[1.03] active:scale-[0.97]"
+                style={{
+                  background: 'rgba(255,255,255,0.72)',
+                  border: '1px solid rgba(150,205,255,0.65)',
+                  boxShadow: '0 1px 4px rgba(100,170,230,0.1), inset 0 1px 0 rgba(255,255,255,0.9)',
+                  backdropFilter: 'blur(8px)',
+                }}
+              >
+                {s}
+              </button>
+            ))}
+          </div>
+        )}
+
         <div ref={endRef} />
       </div>
 
@@ -270,7 +430,7 @@ export const AIChatApp = () => {
           <input
             ref={inputRef}
             value={input}
-            onChange={e => setInput(e.target.value)}
+            onChange={e => { setInput(e.target.value); if (e.target.value) setFollowUps([]); }}
             onKeyDown={e => e.key === 'Enter' && !e.shiftKey && sendMessage()}
             placeholder="Posez une question..."
             className="flex-1 bg-transparent outline-none text-sm placeholder:text-blue-300 text-blue-900"
