@@ -37,11 +37,11 @@ const NEOFETCH = [
 ];
 
 const LINE_COLORS: Record<LineType, string> = {
-  output: 'text-green-400',
-  input:  'text-white',
-  error:  'text-red-400',
-  success:'text-emerald-400',
-  info:   'text-cyan-400',
+  output:  'text-sky-200/90',
+  input:   'text-white',
+  error:   'text-red-400',
+  success: 'text-cyan-400',
+  info:    'text-sky-400',
 };
 
 export const TerminalApp = () => {
@@ -240,28 +240,54 @@ export const TerminalApp = () => {
   useEffect(() => endRef.current?.scrollIntoView({ behavior: 'smooth' }), [lines]);
 
   return (
-    <div
-      className="bg-black font-mono text-sm h-full p-2 overflow-y-auto"
-      onClick={() => document.getElementById('term-input')?.focus()}
-    >
-      {lines.map((line, i) => (
-        <div key={i} className={LINE_COLORS[line.type]}>
-          {line.text || '\u00A0'}
+    <div className="h-full flex flex-col overflow-hidden">
+      {/* Header — glass aqua Frutiger Aero */}
+      <div
+        className="px-4 py-2 shrink-0 flex items-center gap-2"
+        style={{
+          background: 'linear-gradient(180deg,rgba(255,255,255,0.75) 0%,rgba(224,242,255,0.85) 100%)',
+          backdropFilter: 'blur(10px)',
+          borderBottom: '1px solid rgba(186,230,253,0.6)',
+          boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.9)',
+        }}
+      >
+        <div
+          className="w-6 h-6 rounded flex items-center justify-center"
+          style={{ background: 'linear-gradient(135deg,#0ea5e9,#0284c7)', boxShadow: '0 1px 4px rgba(14,165,233,0.4)' }}
+        >
+          <Terminal size={12} className="text-white" />
         </div>
-      ))}
-      <div className="flex text-green-400">
-        <span>{'>'}</span>
-        <input
-          id="term-input"
-          className="bg-transparent border-none outline-none flex-1 ml-2 text-white caret-green-400"
-          value={input}
-          onChange={e => setInput(e.target.value)}
-          onKeyDown={handleKeyDown}
-          autoFocus
-          spellCheck={false}
-        />
+        <span className="text-xs font-bold text-sky-900 font-mono">ethan@ethanos</span>
+        <span className="text-xs text-sky-400/60 font-mono ml-auto">EthanOS v1.1.0</span>
       </div>
-      <div ref={endRef} />
+
+      {/* Zone terminal */}
+      <div
+        className="flex-1 font-mono text-sm p-3 overflow-y-auto"
+        style={{
+          background: 'linear-gradient(160deg,#0a1628 0%,#0d1f3c 60%,#071122 100%)',
+        }}
+        onClick={() => document.getElementById('term-input')?.focus()}
+      >
+        {lines.map((line, i) => (
+          <div key={i} className={LINE_COLORS[line.type]}>
+            {line.text || '\u00A0'}
+          </div>
+        ))}
+        <div className="flex text-cyan-400">
+          <span>{'>'}</span>
+          <input
+            id="term-input"
+            className="bg-transparent border-none outline-none flex-1 ml-2 text-white caret-cyan-400"
+            value={input}
+            onChange={e => setInput(e.target.value)}
+            onKeyDown={handleKeyDown}
+            autoFocus
+            spellCheck={false}
+          />
+        </div>
+        <div ref={endRef} />
+      </div>
     </div>
   );
 };

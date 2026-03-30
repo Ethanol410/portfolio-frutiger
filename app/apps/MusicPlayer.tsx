@@ -16,16 +16,14 @@ const formatTime = (seconds: number) => {
 };
 
 export const MusicPlayerApp = () => {
-  const [isPlaying, setIsPlaying]     = useState(false);
+  const [isPlaying, setIsPlaying]       = useState(false);
   const [currentTrack, setCurrentTrack] = useState(0);
-  const [currentTime, setCurrentTime] = useState(0);
-  const [duration, setDuration]       = useState(0);
-  const [volume, setVolume]           = useState(0.8);
-  const [muted, setMuted]             = useState(false);
-  const [barHeights, setBarHeights]   = useState(Array(12).fill(10));
+  const [currentTime, setCurrentTime]   = useState(0);
+  const [duration, setDuration]         = useState(0);
+  const [volume, setVolume]             = useState(0.8);
+  const [muted, setMuted]               = useState(false);
+  const [barHeights, setBarHeights]     = useState(Array(14).fill(10));
   const audioRef = useRef<HTMLAudioElement>(null);
-
-  // Changer de piste — isPlaying est lu via ref pour éviter la boucle
   const isPlayingRef = useRef(isPlaying);
   isPlayingRef.current = isPlaying;
 
@@ -38,13 +36,12 @@ export const MusicPlayerApp = () => {
     }
   }, [currentTrack]);
 
-  // Events audio
   useEffect(() => {
     const audio = audioRef.current;
     if (!audio) return;
-    const onTime    = () => setCurrentTime(audio.currentTime);
-    const onMeta    = () => setDuration(audio.duration);
-    const onEnded   = () => setCurrentTrack(p => (p + 1) % tracks.length);
+    const onTime  = () => setCurrentTime(audio.currentTime);
+    const onMeta  = () => setDuration(audio.duration);
+    const onEnded = () => setCurrentTrack(p => (p + 1) % tracks.length);
     audio.addEventListener('timeupdate', onTime);
     audio.addEventListener('loadedmetadata', onMeta);
     audio.addEventListener('ended', onEnded);
@@ -55,39 +52,28 @@ export const MusicPlayerApp = () => {
     };
   }, []);
 
-  // Volume
   useEffect(() => {
-    if (audioRef.current) {
-      audioRef.current.volume = muted ? 0 : volume;
-    }
+    if (audioRef.current) audioRef.current.volume = muted ? 0 : volume;
   }, [volume, muted]);
 
-  // Visualizer
   useEffect(() => {
     if (!isPlaying) return;
     const id = setInterval(() => {
-      setBarHeights(Array(12).fill(0).map(() => 10 + Math.random() * 90));
+      setBarHeights(Array(14).fill(0).map(() => 15 + Math.random() * 85));
     }, 120);
     return () => clearInterval(id);
   }, [isPlaying]);
 
   const togglePlay = () => {
     if (!audioRef.current) return;
-    if (isPlaying) {
-      audioRef.current.pause();
-    } else {
-      audioRef.current.play().catch(() => setIsPlaying(false));
-    }
+    if (isPlaying) { audioRef.current.pause(); }
+    else { audioRef.current.play().catch(() => setIsPlaying(false)); }
     setIsPlaying(p => !p);
   };
 
   const playTrack = (index: number) => {
-    if (index === currentTrack) {
-      togglePlay();
-    } else {
-      setIsPlaying(true);
-      setCurrentTrack(index);
-    }
+    if (index === currentTrack) { togglePlay(); }
+    else { setIsPlaying(true); setCurrentTrack(index); }
   };
 
   const handleProgress = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -101,96 +87,186 @@ export const MusicPlayerApp = () => {
     setMuted(false);
   };
 
+  const progress = duration > 0 ? (currentTime / duration) * 100 : 0;
+
   return (
-    <div className="h-full bg-gray-900 text-white flex flex-col overflow-hidden">
+    <div className="h-full flex flex-col overflow-hidden aero-app">
+
+      {/* Header aqua glossy */}
+      <div
+        className="px-4 py-3 shrink-0 flex items-center gap-3"
+        style={{
+          background: 'linear-gradient(180deg, #cce9ff 0%, #a8d8f8 50%, #7fc4f0 100%)',
+          borderBottom: '1px solid rgba(255,255,255,0.7)',
+          boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.9), 0 1px 4px rgba(80,160,220,0.2)',
+        }}
+      >
+        <div
+          className="w-8 h-8 rounded-full flex items-center justify-center shrink-0 relative overflow-hidden"
+          style={{
+            background: 'linear-gradient(160deg,#5bbef5 0%,#2196f3 55%,#0d6fba 100%)',
+            boxShadow: '0 2px 8px rgba(30,100,200,0.35), inset 0 1px 0 rgba(255,255,255,0.5)',
+          }}
+        >
+          <div className="absolute top-0 left-0 right-0 h-1/2 rounded-full"
+            style={{ background: 'linear-gradient(180deg,rgba(255,255,255,0.55) 0%,transparent 100%)' }} />
+          <Music size={14} className="text-white relative z-10" />
+        </div>
+        <div>
+          <div className="font-bold text-[13px] text-blue-950">Lecteur Musique</div>
+          <div className="text-[10px] text-blue-700/70">{tracks[currentTrack].artist} — {tracks[currentTrack].title}</div>
+        </div>
+        {isPlaying && (
+          <div className="ml-auto flex items-center gap-1 text-[10px] text-emerald-700 font-medium">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" /> En lecture
+          </div>
+        )}
+      </div>
+
       {/* Visualizer */}
-      <div className="flex-none bg-black mx-4 mt-4 rounded-lg flex items-end justify-center gap-1 p-2 overflow-hidden border border-gray-700" style={{ height: 80 }}>
+      <div
+        className="mx-4 mt-4 rounded-2xl flex items-end justify-center gap-1 px-4 py-3 overflow-hidden shrink-0"
+        style={{
+          background: 'linear-gradient(180deg,rgba(14,165,233,0.12) 0%,rgba(6,182,212,0.06) 100%)',
+          border: '1px solid rgba(125,211,252,0.35)',
+          height: 80,
+          boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.6)',
+        }}
+      >
         {barHeights.map((h, i) => (
           <div
             key={i}
-            className="w-2.5 bg-green-500 rounded-t transition-all duration-100"
-            style={{ height: isPlaying ? `${h}%` : '10%' }}
+            className="rounded-t transition-all duration-100"
+            style={{
+              width: 10,
+              height: isPlaying ? `${h}%` : '10%',
+              background: `linear-gradient(180deg, #38bdf8 0%, #0ea5e9 50%, #0284c7 100%)`,
+              boxShadow: isPlaying ? '0 0 4px rgba(14,165,233,0.5)' : 'none',
+              opacity: 0.8 + (i % 3) * 0.07,
+            }}
           />
         ))}
       </div>
 
-      {/* Info piste courante */}
+      {/* Info piste */}
       <div className="text-center mt-3 px-4">
-        <h3 className="font-bold text-green-400 truncate">{tracks[currentTrack].title}</h3>
-        <p className="text-xs text-gray-400">{tracks[currentTrack].artist}</p>
+        <h3 className="font-bold text-sky-900 truncate text-sm">{tracks[currentTrack].title}</h3>
+        <p className="text-xs text-sky-600/70 mt-0.5">{tracks[currentTrack].artist}</p>
       </div>
 
-      {/* Barre de progression */}
-      <div className="px-4 mt-3">
-        <input
-          type="range"
-          min="0"
-          max={duration || 0}
-          value={currentTime}
-          onChange={handleProgress}
-          className="w-full h-2 bg-gray-700 rounded-full appearance-none cursor-pointer accent-green-500"
-        />
-        <div className="flex justify-between text-xs text-gray-500 mt-1">
+      {/* Barre de progression custom */}
+      <div className="px-5 mt-3">
+        <div
+          className="relative h-2 rounded-full overflow-hidden cursor-pointer"
+          style={{ background: 'rgba(14,165,233,0.15)', border: '1px solid rgba(125,211,252,0.3)' }}
+        >
+          <div
+            className="absolute inset-y-0 left-0 rounded-full transition-all"
+            style={{
+              width: `${progress}%`,
+              background: 'linear-gradient(90deg, #0ea5e9, #38bdf8)',
+              boxShadow: '0 0 6px rgba(14,165,233,0.5)',
+            }}
+          />
+          <input
+            type="range" min="0" max={duration || 0} value={currentTime}
+            onChange={handleProgress}
+            className="absolute inset-0 w-full opacity-0 cursor-pointer"
+          />
+        </div>
+        <div className="flex justify-between text-[10px] text-sky-500/80 mt-1">
           <span>{formatTime(currentTime)}</span>
           <span>{formatTime(duration)}</span>
         </div>
       </div>
 
       {/* Contrôles */}
-      <div className="flex justify-center items-center gap-4 mt-2 px-4">
-        <button onClick={() => setCurrentTrack(p => (p - 1 + tracks.length) % tracks.length)} className="p-2 hover:text-green-400 transition-colors">
+      <div className="flex justify-center items-center gap-5 mt-2 px-4">
+        <button
+          onClick={() => setCurrentTrack(p => (p - 1 + tracks.length) % tracks.length)}
+          className="p-2 text-sky-500 hover:text-sky-700 transition-colors"
+        >
           <SkipBack size={20} />
         </button>
-        <button onClick={togglePlay} className="w-11 h-11 bg-green-500 rounded-full flex items-center justify-center text-black hover:scale-105 transition-transform">
-          {isPlaying ? <Pause size={20} /> : <Play size={20} className="ml-0.5" />}
+        <button
+          onClick={togglePlay}
+          className="w-12 h-12 rounded-full flex items-center justify-center transition-all hover:scale-105 active:scale-95 relative overflow-hidden"
+          style={{
+            background: 'linear-gradient(145deg,#5bbef5 0%,#2196f3 55%,#0d6fba 100%)',
+            boxShadow: '0 4px 16px rgba(14,165,233,0.45), inset 0 1px 0 rgba(255,255,255,0.4)',
+          }}
+        >
+          <div className="absolute top-0 left-0 right-0 h-1/2 rounded-t-full"
+            style={{ background: 'linear-gradient(180deg,rgba(255,255,255,0.35) 0%,transparent 100%)' }} />
+          {isPlaying
+            ? <Pause size={20} className="text-white relative z-10" />
+            : <Play size={20} className="text-white relative z-10 ml-0.5" />
+          }
         </button>
-        <button onClick={() => setCurrentTrack(p => (p + 1) % tracks.length)} className="p-2 hover:text-green-400 transition-colors">
+        <button
+          onClick={() => setCurrentTrack(p => (p + 1) % tracks.length)}
+          className="p-2 text-sky-500 hover:text-sky-700 transition-colors"
+        >
           <SkipForward size={20} />
         </button>
       </div>
 
       {/* Volume */}
-      <div className="flex items-center gap-2 px-4 mt-2">
-        <button onClick={() => setMuted(m => !m)} className="text-gray-400 hover:text-white transition-colors shrink-0">
-          {muted || volume === 0 ? <VolumeX size={16} /> : <Volume2 size={16} />}
+      <div className="flex items-center gap-2 px-5 mt-2">
+        <button onClick={() => setMuted(m => !m)} className="text-sky-400 hover:text-sky-600 transition-colors shrink-0">
+          {muted || volume === 0 ? <VolumeX size={15} /> : <Volume2 size={15} />}
         </button>
-        <input
-          type="range"
-          min="0"
-          max="1"
-          step="0.01"
-          value={muted ? 0 : volume}
-          onChange={handleVolume}
-          className="flex-1 h-1.5 bg-gray-700 rounded-full appearance-none cursor-pointer accent-green-500"
-        />
-        <span className="text-xs text-gray-500 w-7 text-right">{Math.round((muted ? 0 : volume) * 100)}%</span>
+        <div
+          className="relative flex-1 h-1.5 rounded-full overflow-hidden cursor-pointer"
+          style={{ background: 'rgba(14,165,233,0.15)', border: '1px solid rgba(125,211,252,0.3)' }}
+        >
+          <div
+            className="absolute inset-y-0 left-0 rounded-full"
+            style={{ width: `${(muted ? 0 : volume) * 100}%`, background: 'linear-gradient(90deg,#0ea5e9,#38bdf8)' }}
+          />
+          <input
+            type="range" min="0" max="1" step="0.01" value={muted ? 0 : volume}
+            onChange={handleVolume}
+            className="absolute inset-0 w-full opacity-0 cursor-pointer"
+          />
+        </div>
+        <span className="text-[10px] text-sky-500/80 w-7 text-right">{Math.round((muted ? 0 : volume) * 100)}%</span>
       </div>
 
       {/* Playlist */}
-      <div className="flex-1 overflow-y-auto mt-3 border-t border-gray-800">
-        <div className="px-2 py-1 text-[10px] text-gray-500 uppercase tracking-widest font-bold flex items-center gap-1.5">
+      <div
+        className="flex-1 overflow-y-auto mt-3 mx-3 mb-3 rounded-xl"
+        style={{
+          background: 'rgba(255,255,255,0.55)',
+          border: '1px solid rgba(186,230,253,0.5)',
+          boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.8)',
+        }}
+      >
+        <div className="px-3 py-1.5 text-[10px] text-sky-500 uppercase tracking-widest font-bold flex items-center gap-1.5 border-b border-sky-100/60">
           <Music size={10} /> Playlist
         </div>
         {tracks.map((track, i) => (
           <button
             key={i}
             onClick={() => playTrack(i)}
-            className={`w-full flex items-center gap-3 px-4 py-2.5 text-left transition-colors ${
+            className="w-full flex items-center gap-3 px-4 py-2.5 text-left transition-all"
+            style={
               i === currentTrack
-                ? 'bg-green-500/10 text-green-400'
-                : 'hover:bg-gray-800 text-gray-300'
-            }`}
+                ? { background: 'rgba(14,165,233,0.1)', borderLeft: '3px solid #0ea5e9' }
+                : { borderLeft: '3px solid transparent' }
+            }
           >
             <div className="w-5 flex items-center justify-center shrink-0">
-              {i === currentTrack && isPlaying ? (
-                <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
-              ) : (
-                <span className="text-xs text-gray-600">{i + 1}</span>
-              )}
+              {i === currentTrack && isPlaying
+                ? <span className="w-2 h-2 rounded-full bg-sky-400 animate-pulse" />
+                : <span className="text-xs text-sky-400/60">{i + 1}</span>
+              }
             </div>
             <div className="flex-1 min-w-0">
-              <div className="text-sm font-medium truncate">{track.title}</div>
-              <div className="text-xs text-gray-500 truncate">{track.artist}</div>
+              <div className={`text-sm font-medium truncate ${i === currentTrack ? 'text-sky-700' : 'text-sky-900/80'}`}>
+                {track.title}
+              </div>
+              <div className="text-xs text-sky-500/70 truncate">{track.artist}</div>
             </div>
           </button>
         ))}

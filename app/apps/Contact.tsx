@@ -43,10 +43,22 @@ export const ContactApp = () => {
   return (
     <div className="h-full flex flex-col aero-app">
       {/* Header */}
-      <div className="aero-card border-b p-4 flex items-center justify-between z-10">
-        <div className="flex items-center gap-2 text-gray-700 font-bold text-lg">
-          <Mail className="text-blue-600" /> Nouveau Message
+      <div
+        className="px-4 py-3 flex items-center gap-3 shrink-0"
+        style={{
+          background: 'linear-gradient(180deg,rgba(255,255,255,0.75) 0%,rgba(224,242,255,0.85) 100%)',
+          backdropFilter: 'blur(10px)',
+          borderBottom: '1px solid rgba(186,230,253,0.6)',
+          boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.9)',
+        }}
+      >
+        <div
+          className="w-7 h-7 rounded-lg flex items-center justify-center"
+          style={{ background: 'linear-gradient(135deg,#0ea5e9,#0284c7)', boxShadow: '0 2px 6px rgba(14,165,233,0.35)' }}
+        >
+          <Mail size={14} className="text-white" />
         </div>
+        <span className="font-bold text-sky-900 text-sm">Nouveau Message</span>
       </div>
 
       {status === 'success' ? (
@@ -58,7 +70,8 @@ export const ContactApp = () => {
           </div>
           <button
             onClick={() => setStatus('idle')}
-            className="px-5 py-2 bg-blue-600 text-white rounded-full text-sm font-medium hover:bg-blue-700 transition-colors"
+            className="px-5 py-2 text-white rounded-full text-sm font-medium transition-all hover:opacity-90"
+            style={{ background: 'linear-gradient(135deg,#0284c7,#38bdf8)', boxShadow: '0 2px 8px rgba(14,165,233,0.35)' }}
           >
             Nouveau message
           </button>
@@ -66,17 +79,21 @@ export const ContactApp = () => {
       ) : (
         <form onSubmit={handleSubmit} className="flex-1 p-6 overflow-auto flex flex-col gap-4">
           <div className="flex flex-col gap-1">
-            <label className="text-xs font-bold text-gray-500 uppercase">À :</label>
-            <div className="bg-gray-200 text-gray-600 px-3 py-2 rounded text-sm border border-transparent">
+            <label className="text-[11px] font-bold text-sky-500 uppercase tracking-wider">À :</label>
+            <div
+              className="text-sky-700 px-3 py-2 rounded-xl text-sm font-medium"
+              style={{ background: 'rgba(14,165,233,0.07)', border: '1px solid rgba(125,211,252,0.35)' }}
+            >
               {portfolio.email}
             </div>
           </div>
 
           <div className="flex flex-col gap-1">
-            <label className="text-xs font-bold text-gray-500 uppercase">Votre Nom :</label>
+            <label className="text-[11px] font-bold text-sky-500 uppercase tracking-wider">Votre Nom :</label>
             <input
               required
-              className="bg-white border border-gray-300 px-3 py-2 rounded text-sm focus:outline-none focus:border-blue-500 transition-colors"
+              className="px-3 py-2 rounded-xl text-sm text-sky-900 outline-none transition-all placeholder:text-sky-300"
+              style={{ background: 'rgba(255,255,255,0.8)', border: '1px solid rgba(125,211,252,0.4)' }}
               placeholder="Jean Dupont"
               value={formData.name}
               onChange={e => setFormData({ ...formData, name: e.target.value })}
@@ -84,11 +101,12 @@ export const ContactApp = () => {
           </div>
 
           <div className="flex flex-col gap-1">
-            <label className="text-xs font-bold text-gray-500 uppercase">Votre Email :</label>
+            <label className="text-[11px] font-bold text-sky-500 uppercase tracking-wider">Votre Email :</label>
             <input
               required
               type="email"
-              className="bg-white border border-gray-300 px-3 py-2 rounded text-sm focus:outline-none focus:border-blue-500 transition-colors"
+              className="px-3 py-2 rounded-xl text-sm text-sky-900 outline-none transition-all placeholder:text-sky-300"
+              style={{ background: 'rgba(255,255,255,0.8)', border: '1px solid rgba(125,211,252,0.4)' }}
               placeholder="jean@exemple.com"
               value={formData.email}
               onChange={e => setFormData({ ...formData, email: e.target.value })}
@@ -96,10 +114,11 @@ export const ContactApp = () => {
           </div>
 
           <div className="flex flex-col gap-1">
-            <label className="text-xs font-bold text-gray-500 uppercase">Sujet :</label>
+            <label className="text-[11px] font-bold text-sky-500 uppercase tracking-wider">Sujet :</label>
             <input
               required
-              className="bg-white border border-gray-300 px-3 py-2 rounded text-sm focus:outline-none focus:border-blue-500 transition-colors"
+              className="px-3 py-2 rounded-xl text-sm text-sky-900 outline-none transition-all placeholder:text-sky-300"
+              style={{ background: 'rgba(255,255,255,0.8)', border: '1px solid rgba(125,211,252,0.4)' }}
               placeholder="Offre de stage / Freelance..."
               value={formData.subject}
               onChange={e => setFormData({ ...formData, subject: e.target.value })}
@@ -107,10 +126,11 @@ export const ContactApp = () => {
           </div>
 
           <div className="flex-1 flex flex-col gap-1 min-h-[150px]">
-            <label className="text-xs font-bold text-gray-500 uppercase">Message :</label>
+            <label className="text-[11px] font-bold text-sky-500 uppercase tracking-wider">Message :</label>
             <textarea
               required
-              className="flex-1 bg-white border border-gray-300 px-3 py-2 rounded text-sm focus:outline-none focus:border-blue-500 transition-colors resize-none"
+              className="flex-1 px-3 py-2 rounded-xl text-sm text-sky-900 outline-none transition-all resize-none placeholder:text-sky-300"
+              style={{ background: 'rgba(255,255,255,0.8)', border: '1px solid rgba(125,211,252,0.4)' }}
               placeholder={`Bonjour ${portfolio.name}, j'ai adoré votre portfolio...`}
               value={formData.message}
               onChange={e => setFormData({ ...formData, message: e.target.value })}
@@ -118,7 +138,10 @@ export const ContactApp = () => {
           </div>
 
           {status === 'error' && (
-            <div className="flex items-center gap-2 text-red-600 text-sm bg-red-50 border border-red-200 rounded px-3 py-2">
+            <div
+              className="flex items-center gap-2 text-red-600 text-sm px-3 py-2 rounded-xl"
+              style={{ background: 'rgba(254,226,226,0.7)', border: '1px solid rgba(252,165,165,0.5)' }}
+            >
               <AlertCircle size={14} />
               Erreur lors de l'envoi. Veuillez réessayer.
             </div>
@@ -128,7 +151,8 @@ export const ContactApp = () => {
             <button
               type="submit"
               disabled={status === 'sending'}
-              className="bg-blue-600 hover:bg-blue-700 disabled:opacity-60 text-white px-6 py-2 rounded-full font-medium text-sm flex items-center gap-2 shadow-md transition-all"
+              className="disabled:opacity-60 text-white px-6 py-2 rounded-full font-medium text-sm flex items-center gap-2 transition-all hover:opacity-90"
+              style={{ background: 'linear-gradient(135deg,#0284c7,#38bdf8)', boxShadow: '0 2px 10px rgba(14,165,233,0.4)' }}
             >
               {status === 'sending' ? (
                 <><Loader2 size={16} className="animate-spin" /> Envoi...</>

@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
-import { useOSStore } from '@/app/store/useOSStore'; // <-- 1. Import du store
+import { useOSStore } from '@/app/store/useOSStore';
 import { FileNode, myComputer } from '@/app/data/fileSystem';
-import { Folder, FileText, ArrowLeft, FileCode, Music } from 'lucide-react'; // Ajout d'icônes
-import { PDFViewerApp } from './PDFViewer'; // <-- 2. Import du lecteur
+import { Folder, FileText, ArrowLeft, FileCode } from 'lucide-react';
+import { PDFViewerApp } from './PDFViewer';
 
 interface ExplorerProps {
   initialPath?: string;
 }
 
 export const ExplorerApp = ({ initialPath = 'root' }: ExplorerProps) => {
-  const { addWindow } = useOSStore(); // <-- 3. Récupération de la fonction
+  const { addWindow } = useOSStore();
   const [history, setHistory] = useState<string[]>([]);
   const [currentFolderId, setCurrentFolderId] = useState<string>(initialPath === 'root' ? 'root' : initialPath);
 
@@ -24,17 +24,15 @@ export const ExplorerApp = ({ initialPath = 'root' }: ExplorerProps) => {
     return null;
   };
 
-  const currentFolder = currentFolderId === 'root' 
+  const currentFolder = currentFolderId === 'root'
     ? { id: 'root', name: 'Mon PC', type: 'folder', children: myComputer } as FileNode
     : findNode(myComputer, currentFolderId);
 
-  // --- Gestion du clic sur un fichier ---
   const handleNavigate = (node: FileNode) => {
     if (node.type === 'folder') {
       setHistory([...history, currentFolderId]);
       setCurrentFolderId(node.id);
     } else {
-      // Si c'est un fichier, on regarde son extension ou son nom
       if (node.name.endsWith('.pdf')) {
         addWindow({
           id: `pdf-${node.id}`,
@@ -45,11 +43,8 @@ export const ExplorerApp = ({ initialPath = 'root' }: ExplorerProps) => {
           isMinimized: false,
           isMaximized: false,
           zIndex: 10,
-          defaultPosition: { x: 100, y: 50 }
+          defaultPosition: { x: 100, y: 50 },
         });
-      } else {
-        // Fallback pour les autres fichiers (txt, etc.)
-        alert(`Fichier : ${node.name}\n(Pas d'application par défaut pour ce type)`);
       }
     }
   };
@@ -61,47 +56,82 @@ export const ExplorerApp = ({ initialPath = 'root' }: ExplorerProps) => {
     setCurrentFolderId(previousId);
   };
 
-  // Petite fonction utilitaire pour l'icône
   const getIcon = (node: FileNode) => {
-    if (node.type === 'folder') return <Folder size={48} className="fill-blue-400 text-blue-600" />;
-    if (node.name.endsWith('.pdf')) return <FileText size={48} className="text-red-500" />;
-    if (node.name.endsWith('.txt')) return <FileCode size={48} className="text-gray-500" />;
-    return <FileText size={48} className="text-gray-400" />;
+    if (node.type === 'folder') return <Folder size={40} className="fill-sky-300 text-sky-500" />;
+    if (node.name.endsWith('.pdf')) return <FileText size={40} className="text-red-400" />;
+    if (node.name.endsWith('.txt')) return <FileCode size={40} className="text-sky-400" />;
+    return <FileText size={40} className="text-sky-300" />;
   };
 
   return (
-    <div className="flex flex-col h-full bg-slate-50">
-      <div className="flex items-center gap-2 p-2 border-b bg-white">
-        <button 
-          onClick={handleBack} 
+    <div className="flex flex-col h-full aero-app">
+      {/* Barre de navigation */}
+      <div
+        className="flex items-center gap-2 p-2 shrink-0"
+        style={{
+          background: 'linear-gradient(180deg,rgba(255,255,255,0.75) 0%,rgba(224,242,255,0.85) 100%)',
+          backdropFilter: 'blur(10px)',
+          borderBottom: '1px solid rgba(186,230,253,0.6)',
+          boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.9), 0 1px 4px rgba(14,165,233,0.08)',
+        }}
+      >
+        <button
+          onClick={handleBack}
           disabled={history.length === 0}
-          className="p-1 rounded hover:bg-gray-200 disabled:opacity-30 transition-colors"
+          className="p-1.5 rounded-lg transition-colors disabled:opacity-30 text-sky-500 hover:bg-white/60 hover:text-sky-700"
         >
-          <ArrowLeft size={18} />
+          <ArrowLeft size={16} />
         </button>
-        <div className="text-sm font-medium text-gray-600 px-2 py-1 bg-gray-100 rounded flex-1 border">
+        <div
+          className="flex-1 text-sm font-medium text-sky-800 px-3 py-1.5 rounded-xl"
+          style={{
+            background: 'rgba(255,255,255,0.75)',
+            border: '1px solid rgba(125,211,252,0.4)',
+          }}
+        >
           {currentFolder?.name || 'Inconnu'}
         </div>
       </div>
 
+      {/* Grille de fichiers */}
       <div className="flex-1 p-4 grid grid-cols-4 gap-4 content-start overflow-auto">
         {currentFolder?.children?.map((item) => (
-          <div 
+          <div
             key={item.id}
             onDoubleClick={() => handleNavigate(item)}
-            className="flex flex-col items-center gap-1 p-2 hover:bg-blue-100/50 hover:border-blue-200 border border-transparent rounded cursor-pointer group"
+            className="flex flex-col items-center gap-1.5 p-2 rounded-xl border border-transparent cursor-pointer group transition-all hover:scale-105"
+            style={{
+              background: 'transparent',
+            }}
+            onMouseEnter={e => {
+              (e.currentTarget as HTMLDivElement).style.background = 'rgba(14,165,233,0.1)';
+              (e.currentTarget as HTMLDivElement).style.borderColor = 'rgba(125,211,252,0.4)';
+            }}
+            onMouseLeave={e => {
+              (e.currentTarget as HTMLDivElement).style.background = 'transparent';
+              (e.currentTarget as HTMLDivElement).style.borderColor = 'transparent';
+            }}
           >
             <div className="drop-shadow-sm transition-transform group-hover:scale-105">
               {getIcon(item)}
             </div>
-            <span className="text-xs text-center text-gray-700 font-medium group-hover:text-blue-700 line-clamp-2 w-full break-words">
+            <span className="text-xs text-center text-sky-800 font-medium group-hover:text-sky-600 line-clamp-2 w-full break-words">
               {item.name}
             </span>
           </div>
-        )) || <div className="col-span-4 text-center text-gray-400 mt-10">Dossier vide</div>}
+        )) || (
+          <div className="col-span-4 text-center text-sky-400 mt-10 text-sm">Dossier vide</div>
+        )}
       </div>
-      
-      <div className="h-6 bg-gray-100 border-t flex items-center px-2 text-xs text-gray-500">
+
+      {/* Status bar */}
+      <div
+        className="shrink-0 flex items-center px-3 py-1 text-[11px] text-sky-500/80"
+        style={{
+          background: 'rgba(255,255,255,0.55)',
+          borderTop: '1px solid rgba(186,230,253,0.4)',
+        }}
+      >
         {currentFolder?.children?.length || 0} élément(s)
       </div>
     </div>

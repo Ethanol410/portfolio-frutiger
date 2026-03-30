@@ -10,7 +10,6 @@ const BOOKMARKS = [
   { label: 'Can I Use',     url: 'https://caniuse.com' },
 ];
 
-// Sites connus pour bloquer les iframes
 const IFRAME_BLOCKLIST = ['linkedin.com', 'twitter.com', 'x.com', 'facebook.com', 'instagram.com', 'google.com', 'youtube.com', 'github.com'];
 
 function isLikelyBlocked(url: string): boolean {
@@ -41,40 +40,61 @@ export const BrowserApp = () => {
   };
 
   return (
-    <div className="flex flex-col h-full bg-gray-100">
-      {/* Barre de navigation */}
-      <div className="flex flex-col gap-1 p-2 border-b bg-gray-200 shrink-0">
+    <div className="flex flex-col h-full aero-app">
+      {/* Barre de navigation — glass aqua */}
+      <div
+        className="flex flex-col gap-1.5 p-2 shrink-0"
+        style={{
+          background: 'linear-gradient(180deg,rgba(255,255,255,0.75) 0%,rgba(224,242,255,0.85) 100%)',
+          backdropFilter: 'blur(10px)',
+          borderBottom: '1px solid rgba(186,230,253,0.6)',
+          boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.9), 0 1px 4px rgba(14,165,233,0.08)',
+        }}
+      >
         <div className="flex gap-2 items-center">
           <button
             onClick={() => navigate()}
-            className="text-gray-500 hover:text-gray-700 p-1 transition-colors"
+            className="text-sky-400 hover:text-sky-600 p-1.5 rounded-lg hover:bg-white/60 transition-colors"
             title="Rafraîchir"
           >
             <RefreshCw size={14} className={loading ? 'animate-spin' : ''} />
           </button>
-          <input
-            className="flex-1 px-3 py-1.5 rounded border border-gray-300 text-sm bg-white"
-            value={inputUrl}
-            onChange={e => setInputUrl(e.target.value)}
-            onKeyDown={handleKeyDown}
-            placeholder="https://..."
-          />
+          <div
+            className="flex-1 flex items-center rounded-xl px-3 py-1.5"
+            style={{
+              background: 'rgba(255,255,255,0.8)',
+              border: '1px solid rgba(125,211,252,0.45)',
+              boxShadow: '0 1px 4px rgba(14,165,233,0.08)',
+            }}
+          >
+            <input
+              className="flex-1 bg-transparent text-sm outline-none text-sky-900 placeholder:text-sky-300"
+              value={inputUrl}
+              onChange={e => setInputUrl(e.target.value)}
+              onKeyDown={handleKeyDown}
+              placeholder="https://..."
+            />
+          </div>
           <button
             onClick={() => navigate()}
-            className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-1.5 rounded text-xs transition-colors"
+            className="text-white text-xs px-4 py-1.5 rounded-lg transition-all hover:opacity-90"
+            style={{
+              background: 'linear-gradient(135deg,#0284c7,#38bdf8)',
+              boxShadow: '0 2px 8px rgba(14,165,233,0.35)',
+            }}
           >
             Go
           </button>
         </div>
 
         {/* Bookmarks */}
-        <div className="flex gap-1 flex-wrap">
-          <Bookmark size={12} className="text-gray-400 mt-0.5 shrink-0" />
+        <div className="flex gap-1 flex-wrap items-center">
+          <Bookmark size={11} className="text-sky-400 shrink-0" />
           {BOOKMARKS.map(b => (
             <button
               key={b.url}
               onClick={() => navigate(b.url)}
-              className="text-xs text-blue-600 hover:underline px-1.5 py-0.5 rounded hover:bg-blue-50 transition-colors truncate max-w-[120px]"
+              className="text-xs text-sky-600 hover:text-sky-800 px-2 py-0.5 rounded-lg hover:bg-white/60 transition-colors truncate max-w-[120px]"
               title={b.url}
             >
               {b.label}
@@ -85,19 +105,27 @@ export const BrowserApp = () => {
 
       {/* Contenu */}
       {blocked ? (
-        <div className="flex-1 flex flex-col items-center justify-center gap-3 bg-gray-50 text-center p-6">
-          <AlertTriangle size={36} className="text-amber-400" />
+        <div
+          className="flex-1 flex flex-col items-center justify-center gap-4 text-center p-6"
+          style={{ background: 'linear-gradient(160deg,#f0f7ff,#e8f4fd)' }}
+        >
+          <div
+            className="w-14 h-14 rounded-2xl flex items-center justify-center"
+            style={{ background: 'rgba(251,191,36,0.15)', border: '1px solid rgba(251,191,36,0.3)' }}
+          >
+            <AlertTriangle size={28} className="text-amber-400" />
+          </div>
           <div>
-            <h3 className="font-semibold text-gray-700 mb-1">Ce site bloque l'affichage intégré</h3>
-            <p className="text-xs text-gray-500 mb-4">
-              {iframeUrl}
-              <br />refuse d'être affiché dans une fenêtre (X-Frame-Options).
+            <h3 className="font-semibold text-sky-800 mb-1">Ce site bloque l'affichage intégré</h3>
+            <p className="text-xs text-sky-600/70 mb-4">
+              {iframeUrl}<br />refuse d'être affiché dans une fenêtre (X-Frame-Options).
             </p>
             <a
               href={iframeUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 px-4 py-2 bg-blue-500 text-white rounded text-xs hover:bg-blue-600 transition-colors"
+              className="inline-flex items-center gap-1.5 px-4 py-2 text-white text-xs rounded-lg transition-all hover:opacity-90"
+              style={{ background: 'linear-gradient(135deg,#0284c7,#38bdf8)', boxShadow: '0 2px 8px rgba(14,165,233,0.35)' }}
             >
               Ouvrir dans un vrai onglet →
             </a>
