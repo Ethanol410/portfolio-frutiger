@@ -7,7 +7,7 @@ import { AboutApp } from './About';
 import { ProjectsApp } from './Projects';
 import { ContactApp } from './Contact';
 import { PDFViewerApp } from './PDFViewer';
-import { LayoutGrid, UserIcon, Mail, FileText } from 'lucide-react';
+import { LayoutGrid, Mail, FileText } from 'lucide-react';
 import { User as UserIconLucide } from 'lucide-react';
 
 interface Message {
@@ -84,41 +84,82 @@ export const AIChatApp = () => {
   };
 
   return (
-    <div className="h-full flex flex-col bg-gradient-to-b from-slate-900 to-slate-800 text-white">
-      {/* Header */}
-      <div className="px-4 py-3 border-b border-white/10 flex items-center gap-3 bg-white/5 shrink-0">
-        <div className="w-8 h-8 rounded-full bg-gradient-to-br from-violet-500 to-blue-500 flex items-center justify-center shrink-0">
-          <Sparkles size={16} />
+    <div className="h-full flex flex-col aero-app overflow-hidden">
+
+      {/* Header — bande aqua glossy */}
+      <div
+        className="px-4 py-3 shrink-0 flex items-center gap-3"
+        style={{
+          background: 'linear-gradient(180deg, #cce9ff 0%, #a8d8f8 50%, #7fc4f0 100%)',
+          borderBottom: '1px solid rgba(255,255,255,0.7)',
+          boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.9), 0 1px 4px rgba(80,160,220,0.2)',
+        }}
+      >
+        {/* Icône avec reflet aqua */}
+        <div
+          className="w-9 h-9 rounded-full flex items-center justify-center shrink-0 relative overflow-hidden"
+          style={{
+            background: 'linear-gradient(160deg, #5bbef5 0%, #2196f3 55%, #0d6fba 100%)',
+            boxShadow: '0 2px 8px rgba(30,100,200,0.35), inset 0 1px 0 rgba(255,255,255,0.5)',
+          }}
+        >
+          {/* Reflet brillant */}
+          <div className="absolute top-0 left-0 right-0 h-1/2 rounded-full"
+            style={{ background: 'linear-gradient(180deg, rgba(255,255,255,0.55) 0%, transparent 100%)' }} />
+          <Sparkles size={16} className="text-white relative z-10" />
         </div>
+
         <div>
-          <div className="font-semibold text-sm">Ethan IA</div>
-          <div className="text-[10px] text-slate-400">Assistant portfolio — Propulsé par Claude</div>
+          <div className="font-bold text-[13px] text-blue-950">Ethan IA</div>
+          <div className="text-[10px] text-blue-700/70">Assistant portfolio · Llama 3.3</div>
         </div>
-        <div className="ml-auto flex items-center gap-1.5 text-[10px] text-emerald-400">
-          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+
+        <div className="ml-auto flex items-center gap-1.5 text-[10px] text-emerald-700 font-medium">
+          <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
           En ligne
         </div>
       </div>
 
-      {/* Messages */}
+      {/* Zone messages */}
       <div className="flex-1 overflow-y-auto px-4 py-4 flex flex-col gap-3">
+
         {messages.length === 0 && (
           <div className="flex flex-col items-center justify-center h-full gap-5 text-center">
-            <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-violet-500 to-blue-500 flex items-center justify-center shadow-lg shadow-violet-500/30">
-              <Bot size={30} />
+            {/* Avatar central avec reflet */}
+            <div className="relative">
+              <div
+                className="w-16 h-16 rounded-2xl flex items-center justify-center shadow-lg relative overflow-hidden"
+                style={{
+                  background: 'linear-gradient(145deg, #63c4f7 0%, #1976d2 60%, #0a4fa0 100%)',
+                  boxShadow: '0 8px 24px rgba(25,118,210,0.35), inset 0 1px 0 rgba(255,255,255,0.6)',
+                }}
+              >
+                <div className="absolute top-0 left-0 right-0 h-1/2 rounded-t-2xl"
+                  style={{ background: 'linear-gradient(180deg, rgba(255,255,255,0.4) 0%, transparent 100%)' }} />
+                <Bot size={28} className="text-white relative z-10" />
+              </div>
             </div>
+
             <div>
-              <h3 className="font-bold text-lg mb-1">Bonjour, je suis Ethan IA</h3>
-              <p className="text-slate-400 text-sm max-w-xs">
+              <h3 className="font-bold text-base text-blue-900 mb-1">Bonjour, je suis Ethan IA</h3>
+              <p className="text-blue-700/70 text-sm max-w-xs leading-relaxed">
                 Posez-moi des questions sur mon profil, mes projets ou mes compétences.
               </p>
             </div>
+
+            {/* Suggestions — aero-card */}
             <div className="flex flex-col gap-2 w-full max-w-xs">
               {SUGGESTIONS.map(s => (
                 <button
                   key={s}
                   onClick={() => sendMessage(s)}
-                  className="text-left text-sm px-4 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 transition-colors text-slate-300"
+                  className="text-left text-sm px-4 py-2.5 rounded-xl text-blue-900 transition-all hover:scale-[1.02] active:scale-[0.98]"
+                  style={{
+                    background: 'rgba(255,255,255,0.7)',
+                    border: '1px solid rgba(160,210,255,0.6)',
+                    boxShadow: '0 2px 6px rgba(100,170,230,0.12), inset 0 1px 0 rgba(255,255,255,0.9)',
+                    backdropFilter: 'blur(8px)',
+                  }}
                 >
                   {s}
                 </button>
@@ -129,32 +170,78 @@ export const AIChatApp = () => {
 
         {messages.map((msg, i) => (
           <div key={i} className={`flex gap-2.5 ${msg.role === 'user' ? 'flex-row-reverse' : 'flex-row'}`}>
-            <div className={`w-7 h-7 rounded-full flex items-center justify-center shrink-0 mt-0.5 ${
-              msg.role === 'user'
-                ? 'bg-blue-500'
-                : 'bg-gradient-to-br from-violet-500 to-blue-500'
-            }`}>
-              {msg.role === 'user' ? <User size={14} /> : <Bot size={14} />}
+
+            {/* Avatar */}
+            <div
+              className="w-7 h-7 rounded-full flex items-center justify-center shrink-0 mt-0.5 relative overflow-hidden"
+              style={msg.role === 'user' ? {
+                background: 'linear-gradient(145deg, #63c4f7 0%, #1565c0 100%)',
+                boxShadow: '0 2px 6px rgba(21,101,192,0.3), inset 0 1px 0 rgba(255,255,255,0.5)',
+              } : {
+                background: 'linear-gradient(145deg, #90caf9 0%, #1976d2 100%)',
+                boxShadow: '0 2px 6px rgba(25,118,210,0.25), inset 0 1px 0 rgba(255,255,255,0.5)',
+              }}
+            >
+              <div className="absolute top-0 left-0 right-0 h-1/2 rounded-t-full"
+                style={{ background: 'rgba(255,255,255,0.35)' }} />
+              {msg.role === 'user'
+                ? <User size={13} className="text-white relative z-10" />
+                : <Bot size={13} className="text-white relative z-10" />
+              }
             </div>
-            <div className={`max-w-[78%] px-3.5 py-2.5 rounded-2xl text-sm leading-relaxed ${
-              msg.role === 'user'
-                ? 'bg-blue-600 text-white rounded-tr-sm'
-                : 'bg-white/10 text-slate-100 rounded-tl-sm'
-            }`}>
-              {msg.content}
+
+            {/* Bulle */}
+            <div
+              className={`max-w-[78%] px-3.5 py-2.5 text-sm leading-relaxed relative overflow-hidden ${
+                msg.role === 'user' ? 'rounded-2xl rounded-tr-sm' : 'rounded-2xl rounded-tl-sm'
+              }`}
+              style={msg.role === 'user' ? {
+                background: 'linear-gradient(160deg, #5bbdf5 0%, #1976d2 100%)',
+                color: '#fff',
+                boxShadow: '0 3px 10px rgba(25,118,210,0.3), inset 0 1px 0 rgba(255,255,255,0.4)',
+              } : {
+                background: 'rgba(255,255,255,0.82)',
+                color: '#1a3550',
+                border: '1px solid rgba(160,210,255,0.55)',
+                boxShadow: '0 2px 8px rgba(100,170,230,0.1), inset 0 1px 0 rgba(255,255,255,0.95)',
+                backdropFilter: 'blur(8px)',
+              }}
+            >
+              {/* Reflet bulle user */}
+              {msg.role === 'user' && (
+                <div className="absolute top-0 left-0 right-0 h-1/2 rounded-t-2xl pointer-events-none"
+                  style={{ background: 'linear-gradient(180deg, rgba(255,255,255,0.2) 0%, transparent 100%)' }} />
+              )}
+              <span className="relative z-10">{msg.content}</span>
             </div>
           </div>
         ))}
 
+        {/* Indicateur de frappe */}
         {loading && (
           <div className="flex gap-2.5">
-            <div className="w-7 h-7 rounded-full bg-gradient-to-br from-violet-500 to-blue-500 flex items-center justify-center shrink-0">
-              <Bot size={14} />
+            <div
+              className="w-7 h-7 rounded-full flex items-center justify-center shrink-0 relative overflow-hidden"
+              style={{
+                background: 'linear-gradient(145deg, #90caf9 0%, #1976d2 100%)',
+                boxShadow: '0 2px 6px rgba(25,118,210,0.25), inset 0 1px 0 rgba(255,255,255,0.5)',
+              }}
+            >
+              <div className="absolute top-0 left-0 right-0 h-1/2 rounded-t-full" style={{ background: 'rgba(255,255,255,0.35)' }} />
+              <Bot size={13} className="text-white relative z-10" />
             </div>
-            <div className="px-3.5 py-3 rounded-2xl rounded-tl-sm bg-white/10 flex items-center gap-1.5">
-              <span className="w-1.5 h-1.5 rounded-full bg-slate-400 animate-bounce" style={{ animationDelay: '0ms' }} />
-              <span className="w-1.5 h-1.5 rounded-full bg-slate-400 animate-bounce" style={{ animationDelay: '150ms' }} />
-              <span className="w-1.5 h-1.5 rounded-full bg-slate-400 animate-bounce" style={{ animationDelay: '300ms' }} />
+            <div
+              className="px-4 py-3 rounded-2xl rounded-tl-sm flex items-center gap-1.5"
+              style={{
+                background: 'rgba(255,255,255,0.82)',
+                border: '1px solid rgba(160,210,255,0.55)',
+                boxShadow: '0 2px 8px rgba(100,170,230,0.1)',
+                backdropFilter: 'blur(8px)',
+              }}
+            >
+              <span className="w-1.5 h-1.5 rounded-full bg-blue-400 animate-bounce" style={{ animationDelay: '0ms' }} />
+              <span className="w-1.5 h-1.5 rounded-full bg-blue-400 animate-bounce" style={{ animationDelay: '150ms' }} />
+              <span className="w-1.5 h-1.5 rounded-full bg-blue-400 animate-bounce" style={{ animationDelay: '300ms' }} />
             </div>
           </div>
         )}
@@ -162,27 +249,51 @@ export const AIChatApp = () => {
         <div ref={endRef} />
       </div>
 
-      {/* Input */}
-      <div className="px-4 py-3 border-t border-white/10 bg-white/5 shrink-0">
-        <div className="flex gap-2 items-center bg-white/10 rounded-xl px-3 py-2 focus-within:ring-1 ring-violet-500 transition-all">
+      {/* Zone de saisie */}
+      <div
+        className="px-4 py-3 shrink-0"
+        style={{
+          background: 'linear-gradient(180deg, rgba(220,240,255,0.6) 0%, rgba(200,230,255,0.8) 100%)',
+          borderTop: '1px solid rgba(255,255,255,0.8)',
+          boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.9)',
+        }}
+      >
+        <div
+          className="flex gap-2 items-center px-3 py-2 rounded-xl transition-all"
+          style={{
+            background: 'rgba(255,255,255,0.75)',
+            border: '1px solid rgba(150,205,255,0.6)',
+            boxShadow: '0 2px 6px rgba(100,170,230,0.1), inset 0 1px 0 rgba(255,255,255,0.95)',
+            backdropFilter: 'blur(12px)',
+          }}
+        >
           <input
             ref={inputRef}
             value={input}
             onChange={e => setInput(e.target.value)}
             onKeyDown={e => e.key === 'Enter' && !e.shiftKey && sendMessage()}
             placeholder="Posez une question..."
-            className="flex-1 bg-transparent outline-none text-sm placeholder:text-slate-500 text-white"
+            className="flex-1 bg-transparent outline-none text-sm placeholder:text-blue-300 text-blue-900"
             disabled={loading}
           />
           <button
             onClick={() => sendMessage()}
             disabled={!input.trim() || loading}
-            className="w-7 h-7 rounded-lg bg-violet-600 hover:bg-violet-500 disabled:opacity-30 flex items-center justify-center transition-all shrink-0"
+            className="w-7 h-7 rounded-lg flex items-center justify-center transition-all shrink-0 disabled:opacity-40 relative overflow-hidden"
+            style={{
+              background: 'linear-gradient(160deg, #5bbdf5 0%, #1565c0 100%)',
+              boxShadow: '0 2px 6px rgba(21,101,192,0.35), inset 0 1px 0 rgba(255,255,255,0.4)',
+            }}
           >
-            {loading ? <Loader2 size={13} className="animate-spin" /> : <Send size={13} />}
+            <div className="absolute top-0 left-0 right-0 h-1/2 rounded-t-lg pointer-events-none"
+              style={{ background: 'rgba(255,255,255,0.25)' }} />
+            {loading
+              ? <Loader2 size={13} className="animate-spin text-white relative z-10" />
+              : <Send size={13} className="text-white relative z-10" />
+            }
           </button>
         </div>
-        <p className="text-[10px] text-slate-500 text-center mt-1.5">Propulsé par Llama 3.3 · Groq</p>
+        <p className="text-[10px] text-blue-500/70 text-center mt-1.5">Propulsé par Llama 3.3 · Groq</p>
       </div>
     </div>
   );

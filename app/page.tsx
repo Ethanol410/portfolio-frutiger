@@ -33,16 +33,17 @@ import {
 
 // Vista icon mapping
 const vistaIcons: Record<string, string> = {
-  Terminal: "/icons/vista_console.ico",
+  Terminal: "/icons/window-vista/vista_console.ico",
   Internet: "/icons/chrome1.ico",
-  "Mes Projets": "/icons/vista_book_1.ico",
+  "Mes Projets": "/icons/window-vista/vista_book_1.ico",
   Musique: "/icons/wmp1.ico",
-  Paramètres: "/icons/vista_personalization.ico",
+  Paramètres: "/icons/window-vista/vista_personalization.ico",
   Contact: "/icons/wlm1.ico",
-  "À Propos": "/icons/vista_info.ico",
+  "À Propos": "/icons/window-vista/vista_info.ico",
   Paint: "/icons/photogallery.ico",
-  "Mon CV": "/icons/vista_bench.ico",
-  "Ethan IA": "/icons/vista_info.ico",
+  "Mon CV": "/icons/window-vista/vista_bench.ico",
+  "Ethan IA": "/icons/window-vista/vista_collab.ico",
+  Recherche: "/icons/window-vista/vista_search_globe.ico",
 };
 
 export default function Desktop() {
@@ -152,64 +153,120 @@ export default function Desktop() {
       title: `Bienvenue — ${portfolio.fullName}`,
       icon: Monitor,
       component: (
-        <div className="h-full flex flex-col items-center justify-center text-center bg-gradient-to-br from-slate-900 via-blue-950 to-indigo-900 text-white px-6 py-8 gap-5 relative overflow-hidden">
-          {/* Cercles décoratifs Frutiger Aero */}
-          <div className="absolute w-64 h-64 rounded-full bg-blue-500/10 blur-3xl top-0 right-0 pointer-events-none" />
-          <div className="absolute w-48 h-48 rounded-full bg-cyan-400/10 blur-2xl bottom-0 left-0 pointer-events-none" />
+        <div className="h-full flex flex-col items-center justify-center text-center px-6 py-6 gap-4 relative overflow-hidden" style={{
+          background: 'linear-gradient(160deg, #e4f3fd 0%, #d6ebfa 45%, #eef7ff 100%)',
+        }}>
+          {/* Orbes lumineux Frutiger Aero */}
+          <div className="absolute rounded-full pointer-events-none" style={{
+            width: 280, height: 280,
+            background: 'radial-gradient(circle, rgba(100,195,255,0.28) 0%, transparent 70%)',
+            top: -80, right: -80,
+          }} />
+          <div className="absolute rounded-full pointer-events-none" style={{
+            width: 220, height: 220,
+            background: 'radial-gradient(circle, rgba(150,220,255,0.22) 0%, transparent 70%)',
+            bottom: -50, left: -50,
+          }} />
 
-          {/* Avatar */}
+          {/* Avatar — anneau glass aqua */}
           <div className="relative">
-            <img
-              src={portfolio.avatar}
-              alt={portfolio.fullName}
-              className="w-28 h-28 rounded-full object-cover border-4 border-white/20 shadow-2xl shadow-blue-900/50"
-            />
-            <div className="absolute -bottom-1 -right-1 bg-emerald-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow-lg border-2 border-slate-900">
+            <div style={{
+              background: 'rgba(255,255,255,0.65)',
+              border: '3px solid rgba(150,210,255,0.65)',
+              boxShadow: '0 6px 20px rgba(80,150,220,0.2), inset 0 1px 0 rgba(255,255,255,0.95)',
+              borderRadius: '50%',
+              padding: 3,
+            }}>
+              <img
+                src={portfolio.avatar}
+                alt={portfolio.fullName}
+                className="w-24 h-24 rounded-full object-cover"
+              />
+            </div>
+            <div
+              className="absolute -bottom-1 -right-1 text-white text-[10px] font-bold px-2 py-0.5 rounded-full"
+              style={{
+                background: 'linear-gradient(145deg, #4ade80 0%, #16a34a 100%)',
+                boxShadow: '0 2px 6px rgba(22,163,74,0.35), inset 0 1px 0 rgba(255,255,255,0.4)',
+                border: '2px solid rgba(255,255,255,0.85)',
+              }}
+            >
               DISPO
             </div>
           </div>
 
           {/* Identité */}
           <div>
-            <h1 className="text-2xl font-black tracking-tight">{portfolio.fullName}</h1>
-            <p className="text-blue-300 font-medium text-sm mt-1">{portfolio.title}</p>
-            <p className="text-slate-400 text-xs mt-2">{portfolio.location}</p>
+            <h1 className="text-2xl font-black text-blue-950 tracking-tight">{portfolio.fullName}</h1>
+            <p className="text-blue-600 font-semibold text-sm mt-1">{portfolio.title}</p>
+            <p className="text-blue-400/80 text-xs mt-1">{portfolio.location}</p>
           </div>
 
-          {/* Tagline */}
-          <p className="text-slate-300 text-sm max-w-xs leading-relaxed">
-            Je construis des interfaces intelligentes qui croisent <span className="text-cyan-300 font-semibold">IA</span> et <span className="text-blue-300 font-semibold">développement web</span>.
-          </p>
+          {/* Tagline — carte glass */}
+          <div className="rounded-2xl px-5 py-3 max-w-xs" style={{
+            background: 'rgba(255,255,255,0.62)',
+            border: '1px solid rgba(150,210,255,0.5)',
+            boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.95), 0 2px 8px rgba(80,150,220,0.07)',
+            backdropFilter: 'blur(8px)',
+          }}>
+            <p className="text-blue-800/75 text-sm leading-relaxed">
+              Je construis des interfaces intelligentes qui croisent{' '}
+              <span className="text-cyan-600 font-semibold">IA</span>{' '}
+              et{' '}
+              <span className="text-blue-700 font-semibold">développement web</span>.
+            </p>
+          </div>
 
           {/* Disponibilité */}
-          <div className="flex items-center gap-2 bg-emerald-500/10 border border-emerald-500/30 rounded-full px-4 py-1.5">
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-            <span className="text-emerald-300 text-xs font-medium">{portfolio.availability.label}</span>
+          <div className="flex items-center gap-2 rounded-full px-4 py-1.5" style={{
+            background: 'rgba(235,255,245,0.85)',
+            border: '1px solid rgba(100,220,140,0.4)',
+            boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.9)',
+          }}>
+            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+            <span className="text-emerald-700 text-xs font-medium">{portfolio.availability.label}</span>
           </div>
 
-          {/* Actions */}
+          {/* Actions — boutons Aero glossy */}
           <div className="flex gap-2 flex-wrap justify-center">
             <button
               onClick={() => handleLaunch('Projects')}
-              className="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white text-sm rounded-full transition-colors shadow-md shadow-blue-900/50 font-medium"
+              className="px-4 py-2 text-white text-sm rounded-full font-medium transition-all hover:brightness-110 active:scale-95"
+              style={{
+                background: 'linear-gradient(180deg, #63b8f6 0%, #1976d2 55%, #1254a0 100%)',
+                boxShadow: '0 3px 8px rgba(25,118,210,0.3), inset 0 1px 0 rgba(255,255,255,0.4)',
+              }}
             >
               Mes projets
             </button>
             <button
               onClick={() => handleLaunch('AIChat')}
-              className="px-4 py-2 bg-violet-600 hover:bg-violet-500 text-white text-sm rounded-full transition-colors shadow-md font-medium flex items-center gap-1.5"
+              className="px-4 py-2 text-white text-sm rounded-full font-medium transition-all hover:brightness-110 active:scale-95 flex items-center gap-1.5"
+              style={{
+                background: 'linear-gradient(180deg, #a78bfa 0%, #7c3aed 55%, #5b21b6 100%)',
+                boxShadow: '0 3px 8px rgba(109,40,217,0.28), inset 0 1px 0 rgba(255,255,255,0.35)',
+              }}
             >
               <Sparkles size={13} /> Ethan IA
             </button>
             <button
               onClick={() => handleLaunch('CV')}
-              className="px-4 py-2 bg-white/10 hover:bg-white/20 text-white text-sm rounded-full transition-colors border border-white/20 font-medium"
+              className="px-4 py-2 text-blue-700 text-sm rounded-full font-medium transition-all hover:brightness-95 active:scale-95"
+              style={{
+                background: 'rgba(255,255,255,0.82)',
+                border: '1px solid rgba(150,200,255,0.6)',
+                boxShadow: '0 2px 6px rgba(80,150,220,0.1), inset 0 1px 0 rgba(255,255,255,0.95)',
+              }}
             >
               Mon CV
             </button>
             <button
               onClick={() => handleLaunch('Contact')}
-              className="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white text-sm rounded-full transition-colors shadow-md font-medium"
+              className="px-4 py-2 text-white text-sm rounded-full font-medium transition-all hover:brightness-110 active:scale-95"
+              style={{
+                background: 'linear-gradient(180deg, #6ee7a0 0%, #16a34a 55%, #15803d 100%)',
+                boxShadow: '0 3px 8px rgba(22,163,74,0.28), inset 0 1px 0 rgba(255,255,255,0.4)',
+              }}
             >
               Me contacter
             </button>

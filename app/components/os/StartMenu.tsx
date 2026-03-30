@@ -23,15 +23,15 @@ interface StartMenuProps {
 // Vista icon mapping
 const vistaIcons: Record<string, string> = {
   Browser: "/icons/chrome1.ico",
-  Terminal: "/icons/vista_console.ico",
+  Terminal: "/icons/window-vista/vista_console.ico",
   Explorer: "/icons/explorer.ico",
-  About: "/icons/vista_info.ico",
-  Projects: "/icons/vista_book_1.ico",
+  About: "/icons/window-vista/vista_info.ico",
+  Projects: "/icons/window-vista/vista_book_1.ico",
   MusicPlayer: "/icons/wmp1.ico",
   Paint: "/icons/photogallery.ico",
   Contact: "/icons/wlm1.ico",
-  CV: "/icons/vista_bench.ico",
-  AIChat: "/icons/vista_info.ico",
+  CV: "/icons/window-vista/vista_bench.ico",
+  AIChat: "/icons/window-vista/vista_collab.ico",
 };
 
 export const StartMenu = ({ onClose }: StartMenuProps) => {

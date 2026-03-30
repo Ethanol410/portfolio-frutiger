@@ -51,7 +51,7 @@ export const useOSStore = create<OSState>()(
       windows: {},
       activeWindowId: null,
       maxZIndex: 10,
-      wallpaper: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?q=80&w=1920',
+      wallpaper: 'https://frutigeraeroarchive.org/images/wallpapers/asadal_stock/asadal_stock_1.jpg',
       notifications: [],
       isLocked: true,
       isCrashed: false, // <-- Défaut
