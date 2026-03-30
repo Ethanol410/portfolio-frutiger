@@ -28,16 +28,17 @@ type SortKey = 'updated' | 'stars' | 'name';
 
 const PINNED = ['portfolio-frutiger', 'weight-tracker-mvp', 'poc-interface-audio'];
 
+// Frutiger Aero palette — vibrant aqua/sky/teal/emerald gradients
 const GRADIENT_PAIRS: [string, string][] = [
-  ['#0f172a', '#3b82f6'],
-  ['#052e16', '#16a34a'],
-  ['#2e1065', '#7c3aed'],
-  ['#431407', '#ea580c'],
-  ['#4a044e', '#db2777'],
-  ['#083344', '#06b6d4'],
-  ['#1c1917', '#d97706'],
-  ['#1e1b4b', '#6366f1'],
-  ['#0c0a09', '#ef4444'],
+  ['#0284c7', '#38bdf8'],
+  ['#0891b2', '#22d3ee'],
+  ['#059669', '#34d399'],
+  ['#7c3aed', '#a78bfa'],
+  ['#0ea5e9', '#67e8f9'],
+  ['#0d9488', '#2dd4bf'],
+  ['#2563eb', '#7dd3fc'],
+  ['#6d28d9', '#818cf8'],
+  ['#0369a1', '#38bdf8'],
 ];
 
 const LANG_COLORS: Record<string, string> = {
@@ -79,27 +80,38 @@ function StatsBar({ repos, onRefresh }: { repos: GithubRepo[]; onRefresh: () => 
   const total = langs.reduce((s, [, n]) => s + n, 0);
 
   return (
-    <div className="bg-slate-800 text-slate-100 px-5 py-3 flex items-center gap-6 flex-wrap shrink-0">
+    <div
+      className="px-5 py-3 flex items-center gap-6 flex-wrap shrink-0 border-b"
+      style={{
+        background: 'linear-gradient(90deg, rgba(14,165,233,0.18) 0%, rgba(6,182,212,0.12) 100%)',
+        backdropFilter: 'blur(8px)',
+        borderColor: 'rgba(125,211,252,0.35)',
+      }}
+    >
       <div className="flex items-center gap-2.5">
-        <Folder size={18} className="text-slate-400" />
+        <div className="w-8 h-8 rounded-lg flex items-center justify-center shadow-sm" style={{ background: 'linear-gradient(135deg,#0ea5e9,#38bdf8)' }}>
+          <Folder size={15} className="text-white" />
+        </div>
         <div>
-          <div className="text-[10px] text-slate-400 uppercase tracking-wider">Repos</div>
-          <div className="font-bold text-lg leading-none mt-0.5">{repos.length}</div>
+          <div className="text-[10px] text-sky-600 uppercase tracking-wider font-semibold">Repos</div>
+          <div className="font-bold text-lg leading-none mt-0.5 text-sky-900">{repos.length}</div>
         </div>
       </div>
 
       <div className="flex items-center gap-2.5">
-        <Star size={18} className="text-yellow-400" />
+        <div className="w-8 h-8 rounded-lg flex items-center justify-center shadow-sm" style={{ background: 'linear-gradient(135deg,#f59e0b,#fbbf24)' }}>
+          <Star size={15} className="text-white" />
+        </div>
         <div>
-          <div className="text-[10px] text-slate-400 uppercase tracking-wider">Stars</div>
-          <div className="font-bold text-lg leading-none mt-0.5">{totalStars}</div>
+          <div className="text-[10px] text-sky-600 uppercase tracking-wider font-semibold">Stars</div>
+          <div className="font-bold text-lg leading-none mt-0.5 text-sky-900">{totalStars}</div>
         </div>
       </div>
 
       {langs.length > 0 && (
         <div className="flex-1 min-w-[160px]">
-          <div className="text-[10px] text-slate-400 uppercase tracking-wider mb-1.5">Langages</div>
-          <div className="flex rounded overflow-hidden h-2 gap-px">
+          <div className="text-[10px] text-sky-600 uppercase tracking-wider font-semibold mb-1.5">Langages</div>
+          <div className="flex rounded-full overflow-hidden h-2 gap-px">
             {langs.map(([lang, count]) => (
               <div
                 key={lang}
@@ -110,7 +122,7 @@ function StatsBar({ repos, onRefresh }: { repos: GithubRepo[]; onRefresh: () => 
           </div>
           <div className="flex gap-3 mt-1.5 flex-wrap">
             {langs.map(([lang]) => (
-              <span key={lang} className="text-[10px] text-slate-400 flex items-center gap-1.5">
+              <span key={lang} className="text-[10px] text-sky-700 flex items-center gap-1.5">
                 <span className="w-2 h-2 rounded-full inline-block" style={{ background: LANG_COLORS[lang] ?? '#64748b' }} />
                 {lang}
               </span>
@@ -121,7 +133,7 @@ function StatsBar({ repos, onRefresh }: { repos: GithubRepo[]; onRefresh: () => 
 
       <button
         onClick={onRefresh}
-        className="ml-auto text-slate-400 hover:text-slate-200 transition-colors p-1.5 rounded"
+        className="ml-auto text-sky-400 hover:text-sky-600 transition-colors p-1.5 rounded-lg hover:bg-white/40"
         title="Rafraîchir"
       >
         <RefreshCw size={15} />
@@ -146,23 +158,36 @@ function FiltersBar({ search, onSearch, sort, onSort, langs, activeLang, onLang 
   const sortLabels: Record<SortKey, string> = { updated: 'Date ↓', stars: 'Stars ↓', name: 'A → Z' };
 
   return (
-    <div className="bg-white border-b border-gray-200 px-4 py-3 flex flex-col gap-2.5 shrink-0">
+    <div
+      className="px-4 py-3 flex flex-col gap-2.5 shrink-0 border-b"
+      style={{
+        background: 'rgba(255,255,255,0.55)',
+        backdropFilter: 'blur(12px)',
+        borderColor: 'rgba(186,230,253,0.5)',
+      }}
+    >
       <div className="flex gap-2.5 items-center">
-        <div className="flex-1 flex items-center gap-2.5 border border-gray-200 rounded-lg px-3 py-2 bg-gray-50">
-          <Search size={14} className="text-gray-400 shrink-0" />
+        <div
+          className="flex-1 flex items-center gap-2.5 px-3 py-2 rounded-xl"
+          style={{ background: 'rgba(255,255,255,0.7)', border: '1px solid rgba(125,211,252,0.4)', boxShadow: '0 1px 4px rgba(14,165,233,0.08)' }}
+        >
+          <Search size={14} className="text-sky-400 shrink-0" />
           <input
             value={search}
             onChange={e => onSearch(e.target.value)}
             placeholder="Rechercher un repo..."
-            className="flex-1 bg-transparent text-sm outline-none text-gray-700 placeholder:text-gray-400"
+            className="flex-1 bg-transparent text-sm outline-none text-sky-900 placeholder:text-sky-300"
           />
         </div>
-        <div className="flex items-center gap-2 border border-gray-200 rounded-lg px-3 py-2 bg-gray-50">
-          <ArrowUpDown size={13} className="text-gray-400 shrink-0" />
+        <div
+          className="flex items-center gap-2 px-3 py-2 rounded-xl"
+          style={{ background: 'rgba(255,255,255,0.7)', border: '1px solid rgba(125,211,252,0.4)', boxShadow: '0 1px 4px rgba(14,165,233,0.08)' }}
+        >
+          <ArrowUpDown size={13} className="text-sky-400 shrink-0" />
           <select
             value={sort}
             onChange={e => onSort(e.target.value as SortKey)}
-            className="bg-transparent outline-none text-sm text-gray-600 cursor-pointer"
+            className="bg-transparent outline-none text-sm text-sky-700 cursor-pointer"
           >
             {(['updated', 'stars', 'name'] as SortKey[]).map(k => (
               <option key={k} value={k}>{sortLabels[k]}</option>
@@ -174,11 +199,12 @@ function FiltersBar({ search, onSearch, sort, onSort, langs, activeLang, onLang 
       <div className="flex gap-2 flex-wrap">
         <button
           onClick={() => onLang(null)}
-          className={`px-3 py-1 rounded-full text-xs font-medium transition-colors ${
+          className="px-3 py-1 rounded-full text-xs font-semibold transition-all"
+          style={
             activeLang === null
-              ? 'bg-slate-800 text-white'
-              : 'border border-gray-200 text-gray-500 hover:border-gray-400'
-          }`}
+              ? { background: 'linear-gradient(135deg,#0ea5e9,#38bdf8)', color: '#fff', boxShadow: '0 2px 8px rgba(14,165,233,0.35)' }
+              : { background: 'rgba(255,255,255,0.6)', border: '1px solid rgba(125,211,252,0.4)', color: '#0284c7' }
+          }
         >
           Tous
         </button>
@@ -186,10 +212,12 @@ function FiltersBar({ search, onSearch, sort, onSort, langs, activeLang, onLang 
           <button
             key={l}
             onClick={() => onLang(l === activeLang ? null : l)}
-            className={`px-3 py-1 rounded-full text-xs font-medium transition-colors ${
-              activeLang === l ? 'text-white' : 'border border-gray-200 text-gray-500 hover:border-gray-400'
-            }`}
-            style={activeLang === l ? { background: LANG_COLORS[l] ?? '#64748b' } : {}}
+            className="px-3 py-1 rounded-full text-xs font-semibold transition-all"
+            style={
+              activeLang === l
+                ? { background: LANG_COLORS[l] ?? '#38bdf8', color: '#fff', boxShadow: `0 2px 8px ${LANG_COLORS[l] ?? '#38bdf8'}55` }
+                : { background: 'rgba(255,255,255,0.6)', border: '1px solid rgba(125,211,252,0.4)', color: '#0284c7' }
+            }
           >
             {l}
           </button>
@@ -208,39 +236,57 @@ function RepoCard({ repo, pinned, onClick }: { repo: GithubRepo; pinned?: boolea
   return (
     <div
       onClick={onClick}
-      className="bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-md transition-all cursor-pointer flex flex-col"
+      className="rounded-xl overflow-hidden cursor-pointer flex flex-col transition-all hover:scale-[1.02] hover:-translate-y-0.5"
+      style={{
+        background: 'rgba(255,255,255,0.72)',
+        border: '1px solid rgba(186,230,253,0.55)',
+        boxShadow: '0 2px 10px rgba(14,165,233,0.09), inset 0 1px 0 rgba(255,255,255,0.9)',
+      }}
     >
+      {/* Banner */}
       <div
         className="relative flex items-center justify-center overflow-hidden shrink-0"
         style={{ height: pinned ? 110 : 80, background: gradient }}
       >
+        {/* Shine overlay */}
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{ background: 'linear-gradient(180deg, rgba(255,255,255,0.22) 0%, transparent 60%)' }}
+        />
         <span
-          className="absolute text-white/10 font-black font-mono select-none"
+          className="absolute text-white/15 font-black font-mono select-none"
           style={{ fontSize: pinned ? 96 : 68 }}
         >
           {initial}
         </span>
-        <span className="relative z-10 text-white text-xs font-bold px-4 text-center drop-shadow">
+        <span
+          className="relative z-10 text-white text-xs font-bold px-4 text-center"
+          style={{ textShadow: '0 1px 4px rgba(0,0,0,0.3)' }}
+        >
           {repo.name}
         </span>
       </div>
 
       <div className="p-4 flex-1 flex flex-col gap-2">
-        <p className="text-xs text-gray-500 line-clamp-2 leading-relaxed">
-          {repo.description ?? <span className="italic text-gray-300">Pas de description</span>}
+        <p className="text-xs text-sky-800/70 line-clamp-2 leading-relaxed">
+          {repo.description ?? <span className="italic text-sky-300">Pas de description</span>}
         </p>
 
         {repo.topics.length > 0 && (
           <div className="flex gap-1.5 flex-wrap">
             {repo.topics.slice(0, 3).map(t => (
-              <span key={t} className="px-2 py-0.5 bg-blue-50 text-blue-600 text-[10px] rounded border border-blue-100">
+              <span
+                key={t}
+                className="px-2 py-0.5 text-[10px] rounded-full font-medium"
+                style={{ background: 'rgba(14,165,233,0.1)', color: '#0284c7', border: '1px solid rgba(14,165,233,0.2)' }}
+              >
                 {t}
               </span>
             ))}
           </div>
         )}
 
-        <div className="flex items-center gap-3 text-[11px] text-gray-400 mt-auto">
+        <div className="flex items-center gap-3 text-[11px] text-sky-600/70 mt-auto">
           {repo.language && (
             <span className="flex items-center gap-1.5">
               <span className="w-2 h-2 rounded-full" style={{ background: LANG_COLORS[repo.language] ?? '#94a3b8' }} />
@@ -266,7 +312,8 @@ function RepoCard({ repo, pinned, onClick }: { repo: GithubRepo; pinned?: boolea
             target="_blank"
             rel="noopener noreferrer"
             onClick={e => e.stopPropagation()}
-            className="flex-1 flex items-center justify-center gap-1.5 bg-gray-900 text-white text-xs py-2 rounded hover:bg-gray-700 transition-colors"
+            className="flex-1 flex items-center justify-center gap-1.5 text-white text-xs py-2 rounded-lg transition-all hover:opacity-90"
+            style={{ background: 'linear-gradient(135deg,#0284c7,#38bdf8)', boxShadow: '0 2px 8px rgba(14,165,233,0.35)' }}
           >
             <Github size={12} /> Code
           </a>
@@ -276,14 +323,16 @@ function RepoCard({ repo, pinned, onClick }: { repo: GithubRepo; pinned?: boolea
               target="_blank"
               rel="noopener noreferrer"
               onClick={e => e.stopPropagation()}
-              className="flex-1 flex items-center justify-center gap-1.5 border border-gray-200 text-gray-600 text-xs py-2 rounded hover:bg-gray-50 transition-colors"
+              className="flex-1 flex items-center justify-center gap-1.5 text-sky-600 text-xs py-2 rounded-lg transition-all hover:bg-white/80"
+              style={{ background: 'rgba(255,255,255,0.6)', border: '1px solid rgba(125,211,252,0.5)' }}
             >
               <ExternalLink size={12} /> Demo
             </a>
           )}
           <button
             onClick={e => { e.stopPropagation(); onClick(); }}
-            className="flex items-center justify-center px-3 border border-gray-200 text-gray-500 rounded hover:bg-gray-50 transition-colors"
+            className="flex items-center justify-center px-3 rounded-lg transition-all hover:bg-white/80"
+            style={{ background: 'rgba(255,255,255,0.6)', border: '1px solid rgba(125,211,252,0.5)', color: '#0284c7' }}
             title="Voir le README"
           >
             <BookOpen size={12} />
@@ -310,55 +359,65 @@ function ReadmePanel({ repo, onClose }: { repo: GithubRepo; onClose: () => void 
   }, [repo.name]);
 
   return (
-    <div className="absolute inset-0 md:left-auto md:w-1/2 flex flex-col bg-white border-l border-gray-200 z-10 shadow-lg">
-      <div className="flex items-center gap-2 px-4 py-3 border-b border-gray-200 bg-gray-50 shrink-0">
-        <BookOpen size={15} className="text-gray-500" />
-        <span className="text-sm font-semibold text-gray-700 flex-1 truncate">{repo.name}</span>
+    <div
+      className="absolute inset-0 md:left-auto md:w-1/2 flex flex-col z-10 shadow-2xl"
+      style={{ background: 'linear-gradient(160deg,#f0f7ff,#e8f4fd)', borderLeft: '1px solid rgba(125,211,252,0.4)' }}
+    >
+      <div
+        className="flex items-center gap-2 px-4 py-3 shrink-0"
+        style={{
+          background: 'rgba(255,255,255,0.7)',
+          backdropFilter: 'blur(10px)',
+          borderBottom: '1px solid rgba(186,230,253,0.5)',
+        }}
+      >
+        <BookOpen size={15} className="text-sky-500" />
+        <span className="text-sm font-semibold text-sky-800 flex-1 truncate">{repo.name}</span>
         <a
           href={repo.url}
           target="_blank"
           rel="noopener noreferrer"
-          className="text-gray-400 hover:text-gray-600 transition-colors p-1.5"
+          className="text-sky-400 hover:text-sky-600 transition-colors p-1.5 rounded-lg hover:bg-white/50"
           title="Ouvrir sur GitHub"
         >
           <Github size={15} />
         </a>
         <button
           onClick={onClose}
-          className="text-gray-400 hover:text-gray-600 transition-colors p-1.5 rounded"
+          className="text-sky-400 hover:text-sky-600 transition-colors p-1.5 rounded-lg hover:bg-white/50"
         >
           <X size={15} />
         </button>
       </div>
 
-      <div className="flex-1 overflow-y-auto p-5 text-sm text-gray-700 leading-relaxed prose prose-sm max-w-none">
+      <div className="flex-1 overflow-y-auto p-5 text-sm text-sky-900 leading-relaxed prose prose-sm max-w-none">
         {loading && (
-          <div className="flex items-center gap-2 text-gray-400 mt-4">
+          <div className="flex items-center gap-2 text-sky-400 mt-4">
             <RefreshCw size={14} className="animate-spin" />
             <span>Chargement du README...</span>
           </div>
         )}
         {!loading && content === null && (
-          <p className="text-gray-400 italic mt-4">Pas de README pour ce repo.</p>
+          <p className="text-sky-400 italic mt-4">Pas de README pour ce repo.</p>
         )}
         {!loading && content && (
           <ReactMarkdown
             components={{
-              h1: ({ children }) => <h1 className="text-lg font-bold mb-3 mt-4">{children}</h1>,
-              h2: ({ children }) => <h2 className="text-base font-bold mb-2 mt-4">{children}</h2>,
-              h3: ({ children }) => <h3 className="text-sm font-bold mb-1.5 mt-3">{children}</h3>,
-              p: ({ children }) => <p className="mb-3 leading-relaxed">{children}</p>,
+              h1: ({ children }) => <h1 className="text-lg font-bold mb-3 mt-4 text-sky-900">{children}</h1>,
+              h2: ({ children }) => <h2 className="text-base font-bold mb-2 mt-4 text-sky-800">{children}</h2>,
+              h3: ({ children }) => <h3 className="text-sm font-bold mb-1.5 mt-3 text-sky-700">{children}</h3>,
+              p: ({ children }) => <p className="mb-3 leading-relaxed text-sky-900/80">{children}</p>,
               code: ({ children }) => (
-                <code className="bg-gray-100 px-1.5 py-0.5 rounded font-mono text-xs">{children}</code>
+                <code className="bg-sky-50 border border-sky-100 px-1.5 py-0.5 rounded font-mono text-xs text-sky-700">{children}</code>
               ),
               pre: ({ children }) => (
-                <pre className="bg-gray-100 p-3 rounded text-xs overflow-x-auto mb-3">{children}</pre>
+                <pre className="bg-sky-50 border border-sky-100 p-3 rounded-lg text-xs overflow-x-auto mb-3">{children}</pre>
               ),
               ul: ({ children }) => <ul className="list-disc ml-5 mb-3 space-y-1">{children}</ul>,
               ol: ({ children }) => <ol className="list-decimal ml-5 mb-3 space-y-1">{children}</ol>,
-              li: ({ children }) => <li className="text-sm">{children}</li>,
+              li: ({ children }) => <li className="text-sm text-sky-900/80">{children}</li>,
               a: ({ href, children }) => (
-                <a href={href} target="_blank" rel="noopener noreferrer" className="text-blue-500 underline">
+                <a href={href} target="_blank" rel="noopener noreferrer" className="text-sky-500 underline hover:text-sky-700">
                   {children}
                 </a>
               ),
@@ -421,8 +480,8 @@ export const ProjectsApp = () => {
 
   if (loading) {
     return (
-      <div className="h-full bg-gray-100 flex items-center justify-center">
-        <div className="text-center text-gray-400">
+      <div className="h-full aero-app flex items-center justify-center">
+        <div className="text-center text-sky-400">
           <Github size={32} className="mx-auto mb-2 animate-pulse" />
           <p className="text-sm">Chargement des projets GitHub...</p>
         </div>
@@ -432,12 +491,13 @@ export const ProjectsApp = () => {
 
   if (error) {
     return (
-      <div className="h-full bg-gray-100 flex items-center justify-center">
-        <div className="text-center text-gray-500">
+      <div className="h-full aero-app flex items-center justify-center">
+        <div className="text-center text-sky-600">
           <p className="text-sm mb-3">{error}</p>
           <button
             onClick={fetchRepos}
-            className="flex items-center gap-2 mx-auto px-4 py-2 bg-gray-800 text-white text-xs rounded hover:bg-gray-700 transition-colors"
+            className="flex items-center gap-2 mx-auto px-4 py-2 text-white text-xs rounded-lg transition-all hover:opacity-90"
+            style={{ background: 'linear-gradient(135deg,#0284c7,#38bdf8)', boxShadow: '0 2px 8px rgba(14,165,233,0.35)' }}
           >
             <RefreshCw size={12} /> Réessayer
           </button>
@@ -449,7 +509,7 @@ export const ProjectsApp = () => {
   const showPinned = pinned.length > 0 && !search && !activeLang;
 
   return (
-    <div className="h-full flex flex-col bg-gray-100 overflow-hidden">
+    <div className="h-full flex flex-col aero-app overflow-hidden">
       <StatsBar repos={repos} onRefresh={fetchRepos} />
       <FiltersBar
         search={search}
@@ -466,7 +526,7 @@ export const ProjectsApp = () => {
 
           {showPinned && (
             <section className="mb-5">
-              <div className="flex items-center gap-1.5 text-xs font-bold text-gray-400 uppercase tracking-widest mb-3">
+              <div className="flex items-center gap-1.5 text-xs font-bold text-sky-500 uppercase tracking-widest mb-3">
                 <Pin size={12} /> Projets mis en avant
               </div>
               <div className="grid grid-cols-2 gap-3">
@@ -480,7 +540,7 @@ export const ProjectsApp = () => {
           {filtered.length > 0 ? (
             <section>
               {showPinned && (
-                <div className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3">
+                <div className="text-xs font-bold text-sky-500 uppercase tracking-widest mb-3">
                   Tous les repos · {filtered.length}
                 </div>
               )}
@@ -491,7 +551,7 @@ export const ProjectsApp = () => {
               </div>
             </section>
           ) : (
-            <div className="text-center text-gray-400 py-10">
+            <div className="text-center text-sky-400 py-10">
               <Search size={22} className="mx-auto mb-2 opacity-40" />
               <p className="text-xs">Aucun repo trouvé</p>
             </div>
