@@ -154,27 +154,15 @@ export const MusicPlayerApp = () => {
         <p className="text-xs text-sky-600/70 mt-0.5">{tracks[currentTrack].artist}</p>
       </div>
 
-      {/* Barre de progression custom */}
+      {/* Barre de progression */}
       <div className="px-5 mt-3">
-        <div
-          className="relative h-2 rounded-full overflow-hidden cursor-pointer"
-          style={{ background: 'rgba(14,165,233,0.15)', border: '1px solid rgba(125,211,252,0.3)' }}
-        >
-          <div
-            className="absolute inset-y-0 left-0 rounded-full transition-all"
-            style={{
-              width: `${progress}%`,
-              background: 'linear-gradient(90deg, #0ea5e9, #38bdf8)',
-              boxShadow: '0 0 6px rgba(14,165,233,0.5)',
-            }}
-          />
-          <input
-            type="range" min="0" max={duration || 0} value={currentTime}
-            onChange={handleProgress}
-            className="absolute inset-0 w-full opacity-0 cursor-pointer"
-          />
-        </div>
-        <div className="flex justify-between text-[10px] text-sky-500/80 mt-1">
+        <input
+          type="range" min="0" max={duration || 0} value={currentTime}
+          onChange={handleProgress}
+          className="w-full accent-sky-500 cursor-pointer"
+          style={{ height: 20 }}
+        />
+        <div className="flex justify-between text-[10px] text-sky-500/80 mt-0.5">
           <span>{formatTime(currentTime)}</span>
           <span>{formatTime(duration)}</span>
         </div>
@@ -216,20 +204,12 @@ export const MusicPlayerApp = () => {
         <button onClick={() => setMuted(m => !m)} className="text-sky-400 hover:text-sky-600 transition-colors shrink-0">
           {muted || volume === 0 ? <VolumeX size={15} /> : <Volume2 size={15} />}
         </button>
-        <div
-          className="relative flex-1 h-1.5 rounded-full overflow-hidden cursor-pointer"
-          style={{ background: 'rgba(14,165,233,0.15)', border: '1px solid rgba(125,211,252,0.3)' }}
-        >
-          <div
-            className="absolute inset-y-0 left-0 rounded-full"
-            style={{ width: `${(muted ? 0 : volume) * 100}%`, background: 'linear-gradient(90deg,#0ea5e9,#38bdf8)' }}
-          />
-          <input
-            type="range" min="0" max="1" step="0.01" value={muted ? 0 : volume}
-            onChange={handleVolume}
-            className="absolute inset-0 w-full opacity-0 cursor-pointer"
-          />
-        </div>
+        <input
+          type="range" min="0" max="1" step="0.01" value={muted ? 0 : volume}
+          onChange={handleVolume}
+          className="flex-1 accent-sky-500 cursor-pointer"
+          style={{ height: 20 }}
+        />
         <span className="text-[10px] text-sky-500/80 w-7 text-right">{Math.round((muted ? 0 : volume) * 100)}%</span>
       </div>
 
