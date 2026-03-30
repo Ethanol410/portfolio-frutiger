@@ -102,11 +102,12 @@ export const useOSStore = create<OSState>()(
                 maxZIndex: state.maxZIndex + 1,
                 windows: {
                     ...state.windows,
-                    [window.id]: { 
-                        ...state.windows[window.id], 
-                        isOpen: true, 
-                        isMinimized: false, 
-                        zIndex: state.maxZIndex + 1 
+                    [window.id]: {
+                        ...state.windows[window.id],
+                        component: window.component,
+                        isOpen: true,
+                        isMinimized: false,
+                        zIndex: state.maxZIndex + 1
                     }
                 }
             };

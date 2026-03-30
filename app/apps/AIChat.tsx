@@ -45,13 +45,13 @@ export const AIChatApp = () => {
         addWindow({ ...base, id: 'projects', title: 'Mes Projets', icon: LayoutGrid, component: <ProjectsApp />, defaultSize: { width: 820, height: 580 } });
         break;
       case 'about':
-        addWindow({ ...base, id: 'about', title: 'À Propos', icon: UserIconLucide, component: <AboutApp /> });
+        addWindow({ ...base, id: 'about', title: 'À Propos', icon: UserIconLucide, component: <AboutApp />, defaultSize: { width: 620, height: 520 } });
         break;
       case 'contact':
-        addWindow({ ...base, id: 'contact', title: 'Me Contacter', icon: Mail, component: <ContactApp /> });
+        addWindow({ ...base, id: 'contact', title: 'Me Contacter', icon: Mail, component: <ContactApp />, defaultSize: { width: 520, height: 480 } });
         break;
       case 'cv':
-        addWindow({ ...base, id: 'cv', title: 'Mon CV', icon: FileText, component: <PDFViewerApp file="/cv.pdf" /> });
+        addWindow({ ...base, id: 'cv', title: 'Mon CV', icon: FileText, component: <PDFViewerApp file="/cv.pdf" />, defaultSize: { width: 700, height: 540 } });
         break;
     }
   };
