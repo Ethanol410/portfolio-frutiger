@@ -306,7 +306,7 @@ export default function Desktop() {
 
   return (
     <div
-      className="h-screen w-screen overflow-hidden relative bg-cover transition-all duration-500 font-sans select-none"
+      className="h-[100dvh] w-[100dvw] overflow-hidden relative bg-cover transition-all duration-500 font-sans select-none"
       style={{ backgroundImage: `url('${wallpaper}')` }}
     >
       <AnimatePresence>

@@ -60,7 +60,7 @@ export const ContextMenu = () => {
 
   return (
     <div
-      className="fixed bg-white/90 backdrop-blur border border-gray-400 shadow-xl rounded py-1 w-48 z-[9999]"
+      className="fixed bg-white/90 backdrop-blur border border-gray-400 shadow-xl rounded py-1 w-48 z-[9999] text-gray-800"
       style={{ top: position.y, left: position.x }}
     >
       <div onClick={handleRefresh} className="px-4 py-1 hover:bg-blue-500 hover:text-white cursor-pointer text-sm">Actualiser</div>
