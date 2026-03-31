@@ -13,6 +13,11 @@ export const Taskbar = () => {
   const calendarRef = useRef<HTMLDivElement>(null);
   const startButtonRef = useRef<HTMLButtonElement>(null);
   const isMobile = useIsMobile();
+  const { spotifyNowPlaying, spotifyIsListening } = useOSStore();
+
+  const openMusicPlayer = () => {
+    (window as any).__launchApp?.('MusicPlayer');
+  };
 
   // Update clock every second
   useEffect(() => {
@@ -111,6 +116,25 @@ export const Taskbar = () => {
               </button>
             ))}
           </div>
+        )}
+
+        {spotifyIsListening && spotifyNowPlaying && (
+          <button
+            onClick={openMusicPlayer}
+            title={`${spotifyNowPlaying.title} — ${spotifyNowPlaying.artist}`}
+            className="flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs transition-all hover:brightness-110 active:scale-95 shrink-0"
+            style={{
+              background: 'rgba(29,185,84,0.15)',
+              border: '1px solid rgba(29,185,84,0.35)',
+              color: '#4ade80',
+            }}
+          >
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse shrink-0" />
+            <span className="max-w-[140px] truncate hidden sm:inline">
+              {spotifyNowPlaying.title} · {spotifyNowPlaying.artist}
+            </span>
+            <span className="sm:hidden">♫</span>
+          </button>
         )}
 
         <div className="ml-auto relative" ref={calendarRef}>
