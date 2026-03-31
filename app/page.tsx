@@ -47,16 +47,24 @@ const vistaIcons: Record<string, string> = {
 };
 
 export default function Desktop() {
-  const { windows, addWindow, closeApp, activeWindowId, wallpaper, isLocked, isCrashed } = useOSStore();
+  const { windows, addWindow, closeApp, activeWindowId, wallpaper, isLocked, isCrashed, fetchNowPlaying, fetchTopTracks } = useOSStore();
   const [isBooting, setIsBooting] = useState(true);
   const [showMatrix, setShowMatrix] = useState(false);
   const { playStartup } = useSound();
 
-  // Expose matrix mode pour le Terminal
+  // Spotify polling
   useEffect(() => {
-    (window as any).__matrixMode = () => setShowMatrix(true);
-    return () => { delete (window as any).__matrixMode; };
-  }, []);
+    fetchNowPlaying();
+    fetchTopTracks();
+
+    const nowPlayingInterval = setInterval(fetchNowPlaying, 30_000);
+    const topTracksInterval = setInterval(fetchTopTracks, 10 * 60_000);
+
+    return () => {
+      clearInterval(nowPlayingInterval);
+      clearInterval(topTracksInterval);
+    };
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Konami code
   useEffect(() => {
@@ -133,6 +141,16 @@ export default function Desktop() {
         break;
     }
   }, [addWindow]);
+
+  // Expose matrix mode et launchApp pour le Terminal / Taskbar
+  useEffect(() => {
+    (window as any).__matrixMode = () => setShowMatrix(true);
+    (window as any).__launchApp = handleLaunch;
+    return () => {
+      delete (window as any).__matrixMode;
+      delete (window as any).__launchApp;
+    };
+  }, [handleLaunch]);
 
   // Global keyboard shortcuts
   useEffect(() => {
