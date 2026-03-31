@@ -2,6 +2,22 @@ import React from 'react';
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
+export interface SpotifyNowPlaying {
+  isPlaying: boolean;
+  title: string;
+  artist: string;
+  albumArt: string | null;
+  progressMs: number;
+  durationMs: number;
+}
+
+export interface SpotifyTopTrack {
+  id: string;
+  title: string;
+  artist: string;
+  albumArt: string | null;
+}
+
 export interface AppWindow {
   id: string;
   title: string;
@@ -43,6 +59,13 @@ interface OSState {
   removeNotification: (id: string) => void; 
   setLocked: (locked: boolean) => void;
   setCrashed: (crashed: boolean) => void; // <-- Nouveau
+
+  // Spotify
+  spotifyNowPlaying: SpotifyNowPlaying | null;
+  spotifyTopTracks: SpotifyTopTrack[];
+  spotifyIsListening: boolean;
+  fetchNowPlaying: () => Promise<void>;
+  fetchTopTracks: () => Promise<void>;
 }
 
 export const useOSStore = create<OSState>()(
@@ -139,6 +162,34 @@ export const useOSStore = create<OSState>()(
       
       setLocked: (locked) => set({ isLocked: locked }),
       setCrashed: (crashed) => set({ isCrashed: crashed }), // <-- Action
+
+      // Spotify
+      spotifyNowPlaying: null,
+      spotifyTopTracks: [],
+      spotifyIsListening: false,
+
+      fetchNowPlaying: async () => {
+        try {
+          const res = await fetch('/api/spotify/now-playing');
+          const data = await res.json();
+          set({
+            spotifyNowPlaying: data,
+            spotifyIsListening: data?.isPlaying ?? false,
+          });
+        } catch {
+          set({ spotifyNowPlaying: null, spotifyIsListening: false });
+        }
+      },
+
+      fetchTopTracks: async () => {
+        try {
+          const res = await fetch('/api/spotify/top-tracks');
+          const data = await res.json();
+          set({ spotifyTopTracks: data ?? [] });
+        } catch {
+          set({ spotifyTopTracks: [] });
+        }
+      },
     }),
 
     {
