@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Play, Pause, SkipForward, SkipBack, Volume2, VolumeX, Music } from 'lucide-react';
+import { useOSStore } from '@/app/store/useOSStore';
 
 const tracks = [
   { title: "Lady Hear Me Tonight", artist: "Modjo",       url: "/music/modjo-lady.mp3" },
@@ -16,6 +17,9 @@ const formatTime = (seconds: number) => {
 };
 
 export const MusicPlayerApp = () => {
+  const [activeTab, setActiveTab] = useState<'local' | 'spotify'>('local');
+  const { spotifyNowPlaying, spotifyTopTracks, spotifyIsListening } = useOSStore();
+
   const [isPlaying, setIsPlaying]       = useState(false);
   const [currentTrack, setCurrentTrack] = useState(0);
   const [currentTime, setCurrentTime]   = useState(0);
@@ -114,14 +118,44 @@ export const MusicPlayerApp = () => {
         </div>
         <div>
           <div className="font-bold text-[13px] text-blue-950">Lecteur Musique</div>
-          <div className="text-[10px] text-blue-700/70">{tracks[currentTrack].artist} — {tracks[currentTrack].title}</div>
+          <div className="text-[10px] text-blue-700/70">
+            {activeTab === 'local'
+              ? `${tracks[currentTrack].artist} — ${tracks[currentTrack].title}`
+              : spotifyNowPlaying
+                ? `${spotifyNowPlaying.artist} — ${spotifyNowPlaying.title}`
+                : 'Spotify'}
+          </div>
         </div>
-        {isPlaying && (
+        {(activeTab === 'local' ? isPlaying : spotifyIsListening) && (
           <div className="ml-auto flex items-center gap-1 text-[10px] text-emerald-700 font-medium">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" /> En lecture
           </div>
         )}
       </div>
+
+      {/* Onglets */}
+      <div className="flex gap-1 px-3 pt-2 shrink-0">
+        <button
+          onClick={() => setActiveTab('local')}
+          className="flex-1 py-1.5 rounded-t-lg text-[11px] font-semibold transition-all"
+          style={activeTab === 'local'
+            ? { background: 'rgba(14,165,233,0.15)', borderBottom: '2px solid #0ea5e9', color: '#0369a1' }
+            : { background: 'rgba(255,255,255,0.3)', borderBottom: '2px solid transparent', color: '#94a3b8' }}
+        >
+          🎵 Local
+        </button>
+        <button
+          onClick={() => setActiveTab('spotify')}
+          className="flex-1 py-1.5 rounded-t-lg text-[11px] font-semibold transition-all"
+          style={activeTab === 'spotify'
+            ? { background: 'rgba(29,185,84,0.12)', borderBottom: '2px solid #1db954', color: '#15803d' }
+            : { background: 'rgba(255,255,255,0.3)', borderBottom: '2px solid transparent', color: '#94a3b8' }}
+        >
+          🎧 Spotify
+        </button>
+      </div>
+
+      {activeTab === 'local' && (<>
 
       {/* Visualizer */}
       <div
@@ -253,6 +287,97 @@ export const MusicPlayerApp = () => {
       </div>
 
       <audio ref={audioRef} />
+
+      </>)}
+
+      {activeTab === 'spotify' && (
+        <div className="flex-1 overflow-y-auto flex flex-col gap-3 px-3 py-3">
+          {/* Now Playing */}
+          {spotifyNowPlaying ? (
+            <div
+              className="rounded-2xl p-3 flex items-center gap-3 shrink-0"
+              style={{
+                background: 'linear-gradient(135deg,rgba(29,185,84,0.1) 0%,rgba(29,185,84,0.05) 100%)',
+                border: '1px solid rgba(29,185,84,0.3)',
+                boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.7)',
+              }}
+            >
+              {spotifyNowPlaying.albumArt && (
+                <img
+                  src={spotifyNowPlaying.albumArt}
+                  alt="album"
+                  className="w-14 h-14 rounded-lg shrink-0 shadow-md"
+                />
+              )}
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-1.5 mb-0.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse shrink-0" />
+                  <span className="text-[9px] font-bold text-emerald-700 uppercase tracking-widest">En cours</span>
+                </div>
+                <div className="font-bold text-sky-900 text-sm truncate">{spotifyNowPlaying.title}</div>
+                <div className="text-xs text-sky-600/70 truncate">{spotifyNowPlaying.artist}</div>
+                {/* Barre de progression read-only */}
+                <div className="mt-2 w-full h-1 rounded-full bg-emerald-100 overflow-hidden">
+                  <div
+                    className="h-full rounded-full bg-emerald-500"
+                    style={{
+                      width: `${spotifyNowPlaying.durationMs > 0
+                        ? (spotifyNowPlaying.progressMs / spotifyNowPlaying.durationMs) * 100
+                        : 0}%`,
+                    }}
+                  />
+                </div>
+              </div>
+            </div>
+          ) : (
+            <div
+              className="rounded-2xl p-4 text-center shrink-0"
+              style={{
+                background: 'rgba(255,255,255,0.5)',
+                border: '1px solid rgba(186,230,253,0.5)',
+              }}
+            >
+              <div className="text-2xl mb-1">🎧</div>
+              <div className="text-xs text-sky-600/70">Aucune lecture en cours sur Spotify</div>
+            </div>
+          )}
+
+          {/* Top Tracks */}
+          {spotifyTopTracks.length > 0 && (
+            <div
+              className="rounded-xl overflow-hidden"
+              style={{
+                background: 'rgba(255,255,255,0.55)',
+                border: '1px solid rgba(186,230,253,0.5)',
+                boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.8)',
+              }}
+            >
+              <div className="px-3 py-1.5 text-[10px] text-sky-500 uppercase tracking-widest font-bold flex items-center gap-1.5 border-b border-sky-100/60">
+                <Music size={10} /> Top tracks du mois
+              </div>
+              {spotifyTopTracks.map((track, i) => (
+                <div
+                  key={track.id}
+                  className="flex items-center gap-3 px-3 py-2 border-b border-sky-50/50 last:border-0"
+                >
+                  {track.albumArt ? (
+                    <img src={track.albumArt} alt="album" className="w-8 h-8 rounded shrink-0" />
+                  ) : (
+                    <div className="w-8 h-8 rounded bg-sky-100 shrink-0 flex items-center justify-center">
+                      <Music size={12} className="text-sky-400" />
+                    </div>
+                  )}
+                  <span className="text-[10px] text-sky-400/60 w-4 shrink-0">{i + 1}</span>
+                  <div className="flex-1 min-w-0">
+                    <div className="text-xs font-medium text-sky-900/80 truncate">{track.title}</div>
+                    <div className="text-[10px] text-sky-500/70 truncate">{track.artist}</div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 };
