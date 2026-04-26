@@ -1,7 +1,7 @@
 'use client';
 import React, { useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { X, Minimize2, Maximize2 } from 'lucide-react';
+import { X, Minimize2, Maximize2, Copy } from 'lucide-react';
 import { useOSStore, AppWindow } from '@/app/store/useOSStore';
 import { useIsMobile } from '@/app/hooks/useIsMobile';
 import { useHaptics } from '@/app/hooks/useHaptics';
@@ -96,7 +96,7 @@ export const WindowFrame = ({ window: appWindow }: WindowFrameProps) => {
               onClick={(e) => { e.stopPropagation(); toggleMaximizeApp(appWindow.id); }}
               className="p-3 md:p-1 hover:bg-white/20 rounded"
             >
-              {appWindow.isMaximized ? <Minimize2 size={12} color="white" /> : <Maximize2 size={12} color="white" />}
+              {appWindow.isMaximized ? <Copy size={12} color="white" /> : <Maximize2 size={12} color="white" />}
             </button>
           )}
 
