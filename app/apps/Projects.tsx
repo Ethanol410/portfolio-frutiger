@@ -506,7 +506,7 @@ export const ProjectsApp = () => {
     );
   }
 
-  const showPinned = pinned.length > 0 && !search && !activeLang;
+  const showPinned = pinned.length > 0;
 
   return (
     <div className="h-full flex flex-col aero-app overflow-hidden">
