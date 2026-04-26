@@ -135,7 +135,10 @@ export const AIChatApp = () => {
     try {
       const res = await fetch('/api/ai/chat', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'X-App-Token': process.env.NEXT_PUBLIC_APP_TOKEN ?? '',
+        },
         body: JSON.stringify({ messages: newMessages }),
       });
 
