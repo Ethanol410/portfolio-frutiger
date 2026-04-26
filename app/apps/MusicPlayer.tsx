@@ -305,7 +305,7 @@ export const MusicPlayerApp = () => {
               {spotifyNowPlaying.albumArt && (
                 <img
                   src={spotifyNowPlaying.albumArt}
-                  alt="album"
+                  alt={`${spotifyNowPlaying.title} — pochette d'album`}
                   className="w-14 h-14 rounded-lg shrink-0 shadow-md"
                 />
               )}
@@ -361,7 +361,7 @@ export const MusicPlayerApp = () => {
                   className="flex items-center gap-3 px-3 py-2 border-b border-sky-50/50 last:border-0"
                 >
                   {track.albumArt ? (
-                    <img src={track.albumArt} alt="album" className="w-8 h-8 rounded shrink-0" />
+                    <img src={track.albumArt} alt={`${track.title} — pochette d'album`} className="w-8 h-8 rounded shrink-0" />
                   ) : (
                     <div className="w-8 h-8 rounded bg-sky-100 shrink-0 flex items-center justify-center">
                       <Music size={12} className="text-sky-400" />
