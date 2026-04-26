@@ -36,8 +36,22 @@ export const MatrixRain = ({ onExit }: MatrixRainProps) => {
       }
     };
 
-    const id = setInterval(draw, 33);
-    return () => clearInterval(id);
+    let id = setInterval(draw, 33);
+
+    const onVisibilityChange = () => {
+      if (document.hidden) {
+        clearInterval(id);
+      } else {
+        id = setInterval(draw, 33);
+      }
+    };
+
+    document.addEventListener('visibilitychange', onVisibilityChange);
+
+    return () => {
+      clearInterval(id);
+      document.removeEventListener('visibilitychange', onVisibilityChange);
+    };
   }, []);
 
   return (
