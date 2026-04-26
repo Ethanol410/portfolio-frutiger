@@ -84,6 +84,7 @@ export const PaintApp = () => {
   const stopDrawing = () => setIsDrawing(false);
 
   const clearCanvas = () => {
+    if (!confirm('Effacer le dessin ? Cette action est irréversible.')) return;
     const canvas = canvasRef.current;
     if (canvas) {
       const ctx = canvas.getContext('2d');
