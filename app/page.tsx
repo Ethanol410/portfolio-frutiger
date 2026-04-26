@@ -1,5 +1,6 @@
 "use client";
 import React, { useEffect, useState, useCallback } from "react";
+import Image from "next/image";
 import { useOSStore } from "./store/useOSStore";
 import { WindowFrame } from "./components/os/WindowFrame";
 import { ContextMenu } from "./components/ui/ContextMenu";
@@ -195,11 +196,7 @@ export default function Desktop() {
               borderRadius: '50%',
               padding: 3,
             }}>
-              <img
-                src={portfolio.avatar}
-                alt={portfolio.fullName}
-                className="w-24 h-24 rounded-full object-cover"
-              />
+              <Image src={portfolio.avatar} alt={portfolio.fullName} width={96} height={96} className="rounded-full object-cover" />
             </div>
             <div
               className="absolute -bottom-1 -right-1 text-white text-[10px] font-bold px-2 py-0.5 rounded-full"

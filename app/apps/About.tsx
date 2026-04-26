@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { Github, Linkedin, Mail, MapPin, Award, Quote, Phone, Zap } from 'lucide-react';
 import { portfolio } from '@/app/data/portfolio';
@@ -34,11 +35,7 @@ export const AboutApp = () => {
 
       {/* Header Profile */}
       <motion.div variants={fadeUp} className="w-full aero-card rounded-xl p-6 flex flex-col items-center text-center">
-        <img
-          src={portfolio.avatar}
-          alt={portfolio.fullName}
-          className="w-24 h-24 rounded-full object-cover mb-4 shadow-lg border-4 border-blue-100"
-        />
+        <Image src={portfolio.avatar} alt={portfolio.fullName} width={96} height={96} className="rounded-full object-cover mb-4 shadow-lg border-4 border-blue-100" />
         <h2 className="text-2xl font-bold text-gray-800">{portfolio.fullName}</h2>
         <p className="text-blue-600 font-medium mb-1">{portfolio.title}</p>
         <div className="flex items-center gap-2 text-gray-500 text-sm mb-3">

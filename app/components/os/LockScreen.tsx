@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import Image from 'next/image';
 import { useOSStore } from '@/app/store/useOSStore';
 import { portfolio } from '@/app/data/portfolio';
 import { motion } from 'framer-motion';
@@ -42,8 +43,8 @@ export const LockScreen = () => {
         </div>
 
         {/* Avatar */}
-        <div className="w-32 h-32 rounded-full overflow-hidden border-2 border-white/30 shadow-2xl">
-            <img src={portfolio.avatar} alt={portfolio.name} className="w-full h-full object-cover" />
+        <div className="relative w-32 h-32 rounded-full overflow-hidden border-2 border-white/30 shadow-2xl">
+            <Image src={portfolio.avatar} alt={portfolio.name} fill className="object-cover" sizes="128px" />
         </div>
 
         {/* Nom Utilisateur */}
