@@ -1,13 +1,14 @@
 import { NextResponse } from 'next/server';
 
 const GITHUB_USERNAME = 'Ethanol410';
+const REPO_PATTERN = /^[a-zA-Z0-9_.-]{1,100}$/;
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const repo = searchParams.get('repo');
 
-  if (!repo) {
-    return NextResponse.json({ error: 'Missing repo parameter' }, { status: 400 });
+  if (!repo || !REPO_PATTERN.test(repo)) {
+    return NextResponse.json({ error: 'Paramètre invalide.' }, { status: 400 });
   }
 
   const res = await fetch(
@@ -23,7 +24,7 @@ export async function GET(request: Request) {
   );
 
   if (!res.ok) {
-    return NextResponse.json({ error: 'README not found' }, { status: 404 });
+    return NextResponse.json({ error: 'README introuvable.' }, { status: 404 });
   }
 
   const data = await res.json();
