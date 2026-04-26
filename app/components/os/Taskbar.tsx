@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useOSStore, AppWindow } from '@/app/store/useOSStore';
-import { Monitor, Calendar } from 'lucide-react';
+import { Monitor, Calendar, Music } from 'lucide-react';
+import { MusicPlayerApp } from '@/app/apps/MusicPlayer';
 import { StartMenu } from './StartMenu';
 import { useIsMobile } from '@/app/hooks/useIsMobile';
 
 export const Taskbar = () => {
-  const { windows, activeWindowId, focusApp, minimizeApp } = useOSStore();
+  const { windows, activeWindowId, focusApp, minimizeApp, addWindow } = useOSStore();
   const [startOpen, setStartOpen] = useState(false);
   const [showCalendar, setShowCalendar] = useState(false);
   const [now, setNow] = useState(() => new Date());
@@ -16,7 +17,18 @@ export const Taskbar = () => {
   const { spotifyNowPlaying, spotifyIsListening } = useOSStore();
 
   const openMusicPlayer = () => {
-    (window as any).__launchApp?.('MusicPlayer');
+    addWindow({
+      id: 'musicplayer',
+      title: 'Lecteur Musique',
+      icon: Music,
+      component: <MusicPlayerApp />,
+      isOpen: true,
+      isMinimized: false,
+      isMaximized: false,
+      zIndex: 10,
+      defaultPosition: { x: 50, y: 40 },
+      defaultSize: { width: 500, height: 600 },
+    });
   };
 
   // Update clock every second
