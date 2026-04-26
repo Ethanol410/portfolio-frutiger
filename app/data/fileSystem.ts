@@ -4,7 +4,6 @@ export type FileNode = {
   type: 'folder' | 'file' | 'app';
   content?: string; // URL ou texte
   children?: FileNode[];
-  icon?: any;
 };
 
 export const myComputer: FileNode[] = [
