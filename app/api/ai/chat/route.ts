@@ -1,10 +1,10 @@
 import Groq from 'groq-sdk';
+import { z } from 'zod';
 import { portfolio } from '@/app/data/portfolio';
 
 const client = new Groq({ apiKey: process.env.GROQ_API_KEY });
 
 const MAX_MESSAGES = 10;
-const MAX_CONTENT_LENGTH = 1000;
 
 function buildSystemPrompt(): string {
   const { fullName, email, phone, github, linkedin, bio, skills, experience, projects, awards, availability } = portfolio;
@@ -62,25 +62,16 @@ ${awardLines}
 `;
 }
 
-interface Message {
-  role: 'user' | 'assistant';
-  content: string;
-}
+const messageSchema = z.object({
+  role:    z.enum(['user', 'assistant']),
+  content: z.string().min(1).max(1000),
+});
 
-function validateMessages(messages: unknown): messages is Message[] {
-  if (!Array.isArray(messages) || messages.length === 0) return false;
-  if (messages.length > MAX_MESSAGES * 2) return false;
-  return messages.every(
-    (m) =>
-      m &&
-      typeof m === 'object' &&
-      (m.role === 'user' || m.role === 'assistant') &&
-      typeof m.content === 'string' &&
-      m.content.length > 0 &&
-      m.content.length <= MAX_CONTENT_LENGTH
-  );
-}
+const bodySchema = z.object({
+  messages: z.array(messageSchema).min(1).max(MAX_MESSAGES * 2),
+});
 
+const ACTION_INJECT_RE = /\[ACTION:[^\]]*\]/g;
 const ACTION_RE = /\[ACTION:open:(\w+)\]/;
 
 export async function POST(req: Request) {
@@ -91,13 +82,18 @@ export async function POST(req: Request) {
     return new Response(JSON.stringify({ error: 'Corps de requête invalide.' }), { status: 400 });
   }
 
-  const { messages } = body as { messages: unknown };
-
-  if (!validateMessages(messages)) {
+  const parsed = bodySchema.safeParse(body);
+  if (!parsed.success) {
     return new Response(JSON.stringify({ error: 'Messages invalides ou trop longs.' }), { status: 400 });
   }
 
-  const trimmedMessages = messages.slice(-MAX_MESSAGES);
+  const sanitized = parsed.data.messages.map(m =>
+    m.role === 'user'
+      ? { ...m, content: m.content.replace(ACTION_INJECT_RE, '') }
+      : m
+  );
+
+  const trimmedMessages = sanitized.slice(-MAX_MESSAGES);
 
   try {
     const groqStream = await client.chat.completions.create({
@@ -170,8 +166,7 @@ export async function POST(req: Request) {
         Connection: 'keep-alive',
       },
     });
-  } catch (err: unknown) {
-    const message = err instanceof Error ? err.message : 'Erreur inconnue';
-    return new Response(JSON.stringify({ error: `Erreur API : ${message}` }), { status: 502 });
+  } catch {
+    return new Response(JSON.stringify({ error: 'Une erreur est survenue.' }), { status: 502 });
   }
 }
