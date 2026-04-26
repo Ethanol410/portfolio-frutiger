@@ -36,7 +36,7 @@ export const metadata: Metadata = {
     locale: "fr_FR",
     images: [
       {
-        url: "/og-image.png",
+        url: "/api/og",
         width: 1200,
         height: 630,
         alt: "EthanOS — Portfolio interactif d'Ethan Collin",
@@ -48,7 +48,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Ethan Collin — Développeur Web & IA",
     description: "Portfolio interactif en OS simulé. FullStack PHP/React/Next.js + projets IA/LLM.",
-    images: ["/og-image.png"],
+    images: ["/api/og"],
   },
 };
 
