@@ -1,4 +1,57 @@
-export const portfolio = {
+interface Availability {
+  status: 'disponible' | 'indisponible' | 'bientot';
+  label: string;
+}
+
+interface Experience {
+  role: string;
+  company: string;
+  period: string;
+  desc: string;
+}
+
+interface Project {
+  id: number;
+  title: string;
+  desc: string;
+  tech: string[];
+  color: string;
+  githubUrl: string;
+  demoUrl: string;
+}
+
+interface Award {
+  title: string;
+  desc: string;
+  year: string;
+}
+
+interface Recommendation {
+  name: string;
+  role: string;
+  quote: string;
+}
+
+export interface Portfolio {
+  name: string;
+  fullName: string;
+  title: string;
+  location: string;
+  email: string;
+  phone: string;
+  github: string;
+  linkedin: string;
+  avatar: string;
+  availability: Availability;
+  bio: string;
+  skills: Record<string, string[]>;
+  experience: Experience[];
+  projects: Project[];
+  awards: Award[];
+  recommendations: Recommendation[];
+}
+
+export const portfolio: Portfolio = {
   name: "Ethan",
   fullName: "Ethan Collin",
   title: "Développeur Web FullStack & IA — BUT MMI",
@@ -10,7 +63,7 @@ export const portfolio = {
   avatar: "/people_31.png",
 
   availability: {
-    status: "disponible" as "disponible" | "indisponible" | "bientot",
+    status: "disponible",
     label: "Disponible — Alternance / Stage dès sept. 2026",
   },
 
