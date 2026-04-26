@@ -27,6 +27,7 @@ export const MusicPlayerApp = () => {
   const [volume, setVolume]             = useState(0.8);
   const [muted, setMuted]               = useState(false);
   const [barHeights, setBarHeights]     = useState(Array(14).fill(10));
+  const [isEnded, setIsEnded]           = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
   const isPlayingRef = useRef(isPlaying);
   isPlayingRef.current = isPlaying;
@@ -45,7 +46,11 @@ export const MusicPlayerApp = () => {
     if (!audio) return;
     const onTime  = () => setCurrentTime(audio.currentTime);
     const onMeta  = () => setDuration(audio.duration);
-    const onEnded = () => setCurrentTrack(p => (p + 1) % tracks.length);
+    const onEnded = () => {
+      setIsEnded(true);
+      setTimeout(() => setIsEnded(false), 1500);
+      setCurrentTrack(p => (p + 1) % tracks.length);
+    };
     audio.addEventListener('timeupdate', onTime);
     audio.addEventListener('loadedmetadata', onMeta);
     audio.addEventListener('ended', onEnded);
@@ -186,6 +191,9 @@ export const MusicPlayerApp = () => {
       <div className="text-center mt-3 px-4">
         <h3 className="font-bold text-sky-900 truncate text-sm">{tracks[currentTrack].title}</h3>
         <p className="text-xs text-sky-600/70 mt-0.5">{tracks[currentTrack].artist}</p>
+        {isEnded && (
+          <p className="text-xs text-sky-400 animate-pulse mt-1">Piste suivante…</p>
+        )}
       </div>
 
       {/* Barre de progression */}
