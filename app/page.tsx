@@ -96,31 +96,31 @@ export default function Desktop() {
 
     switch (appName) {
       case 'Terminal':
-        addWindow({ ...baseWindow, id: 'terminal', title: 'Terminal', icon: Terminal, component: <TerminalApp /> });
+        addWindow({ ...baseWindow, id: 'terminal', title: 'Terminal', icon: Terminal, component: <TerminalApp />, defaultSize: { width: 600, height: 400 } });
         break;
       case 'Browser':
-        addWindow({ ...baseWindow, id: 'browser', title: 'Internet', icon: Globe, component: <BrowserApp />, defaultPosition: { x: 50, y: 50 } });
+        addWindow({ ...baseWindow, id: 'browser', title: 'Internet', icon: Globe, component: <BrowserApp />, defaultPosition: { x: 50, y: 50 }, defaultSize: { width: 900, height: 550 } });
         break;
       case 'Settings':
-        addWindow({ ...baseWindow, id: 'settings', title: 'Paramètres', icon: Settings, component: <SettingsApp />, defaultPosition: { x: 100, y: 100 } });
+        addWindow({ ...baseWindow, id: 'settings', title: 'Paramètres', icon: Settings, component: <SettingsApp />, defaultPosition: { x: 100, y: 60 }, defaultSize: { width: 700, height: 500 } });
         break;
       case 'Projects':
         addWindow({ ...baseWindow, id: 'projects', title: 'Mes Projets', icon: LayoutGrid, component: <ProjectsApp />, defaultSize: { width: 820, height: 580 } });
         break;
       case 'MusicPlayer':
-        addWindow({ ...baseWindow, id: 'musicplayer', title: 'Lecteur Musique', icon: Music, component: <MusicPlayerApp />, defaultPosition: { x: 50, y: 200 } });
+        addWindow({ ...baseWindow, id: 'musicplayer', title: 'Lecteur Musique', icon: Music, component: <MusicPlayerApp />, defaultPosition: { x: 50, y: 40 }, defaultSize: { width: 500, height: 600 } });
         break;
       case 'About':
-        addWindow({ ...baseWindow, id: 'about', title: 'À Propos', icon: User, component: <AboutApp />, defaultPosition: { x: 200, y: 80 } });
+        addWindow({ ...baseWindow, id: 'about', title: 'À Propos', icon: User, component: <AboutApp />, defaultPosition: { x: 200, y: 40 }, defaultSize: { width: 420, height: 580 } });
         break;
       case 'Contact':
-        addWindow({ ...baseWindow, id: 'contact', title: 'Me Contacter', icon: Mail, component: <ContactApp />, defaultPosition: { x: 300, y: 100 } });
+        addWindow({ ...baseWindow, id: 'contact', title: 'Me Contacter', icon: Mail, component: <ContactApp />, defaultPosition: { x: 300, y: 60 }, defaultSize: { width: 550, height: 580 } });
         break;
       case 'Paint':
-        addWindow({ ...baseWindow, id: 'paint', title: 'Paint', icon: Palette, component: <PaintApp />, defaultPosition: { x: 200, y: 150 } });
+        addWindow({ ...baseWindow, id: 'paint', title: 'Paint', icon: Palette, component: <PaintApp />, defaultPosition: { x: 80, y: 40 }, defaultSize: { width: 900, height: 660 } });
         break;
       case 'CV':
-        addWindow({ ...baseWindow, id: 'cv', title: 'Mon CV', icon: FileText, component: <PDFViewerApp file="/cv.pdf" />, defaultPosition: { x: 120, y: 60 } });
+        addWindow({ ...baseWindow, id: 'cv', title: 'Mon CV', icon: FileText, component: <PDFViewerApp file="/cv.pdf" />, defaultPosition: { x: 120, y: 40 }, defaultSize: { width: 800, height: 660 } });
         break;
       case 'AIChat':
         addWindow({ ...baseWindow, id: 'aichat', title: 'Ethan IA', icon: Sparkles, component: <AIChatApp />, defaultPosition: { x: 250, y: 80 }, defaultSize: { width: 420, height: 560 } });
