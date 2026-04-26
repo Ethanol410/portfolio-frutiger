@@ -98,7 +98,16 @@ export const ExplorerApp = ({ initialPath = 'root' }: ExplorerProps) => {
         {currentFolder?.children?.map((item) => (
           <div
             key={item.id}
+            role="button"
+            tabIndex={0}
+            aria-label={`${item.type === 'folder' ? 'Dossier' : 'Fichier'} : ${item.name}`}
             onDoubleClick={() => handleNavigate(item)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                handleNavigate(item);
+              }
+            }}
             className="flex flex-col items-center gap-1.5 p-2 rounded-xl border border-transparent cursor-pointer group transition-all hover:scale-105"
             style={{
               background: 'transparent',
