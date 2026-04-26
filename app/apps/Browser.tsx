@@ -103,6 +103,11 @@ export const BrowserApp = () => {
         </div>
       </div>
 
+      {/* Barre de progression */}
+      <div
+        className={`h-0.5 bg-sky-400 shrink-0 transition-opacity duration-500 ${loading ? 'opacity-100' : 'opacity-0'}`}
+      />
+
       {/* Contenu */}
       {blocked ? (
         <div
