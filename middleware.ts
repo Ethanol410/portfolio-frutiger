@@ -33,7 +33,7 @@ function checkRateLimit(
     return { allowed: false, retryAfter };
   }
 
-  entry.count += 1;
+  store.set(key, { ...entry, count: entry.count + 1 });
   return { allowed: true, retryAfter: 0 };
 }
 
