@@ -64,7 +64,7 @@ export const portfolio: Portfolio = {
 
   availability: {
     status: "disponible",
-    label: "Disponible — Alternance / Stage dès sept. 2026",
+    label: "Disponible — Alternance dès sept. 2026",
   },
 
   bio: "À 20 ans, j'ai pris en charge seul une plateforme e-commerce à fort trafic après le départ de mon tuteur — et j'ai livré. C'est cette autonomie et cette capacité à m'adapter sous pression qui définissent mon profil. Développeur FullStack en alternance chez Ici Carte Grise depuis 2 ans, je construis en parallèle des projets de recherche à l'IUT qui croisent IA et interfaces web (UI Drift, Agentix Canvas). Lauréat du prix campus Pépite, je candidate à l'ENSSAT (IA & Multimédia) et au Master MIAGE pour concevoir les systèmes intelligents de demain.",
