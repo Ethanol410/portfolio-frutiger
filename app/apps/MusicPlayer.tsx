@@ -338,7 +338,7 @@ export const MusicPlayerApp = () => {
         </button>
       </div>
 
-      {activeTab === 'local' && (<div className="flex flex-col flex-1 overflow-hidden relative z-10">
+      {activeTab === 'local' && (<div className="flex flex-col flex-1 overflow-hidden min-h-0 relative z-10">
 
       {/* Visualizer FFT temps réel (Web Audio API) */}
       <div
@@ -446,7 +446,7 @@ export const MusicPlayerApp = () => {
 
       {/* Playlist */}
       <div
-        className="flex-1 overflow-y-auto mt-3 mx-3 mb-3 rounded-xl"
+        className="flex-1 min-h-0 overflow-y-auto mt-3 mx-3 mb-3 rounded-xl"
         style={{
           background: 'rgba(255,255,255,0.55)',
           border: '1px solid rgba(186,230,253,0.5)',
@@ -488,7 +488,7 @@ export const MusicPlayerApp = () => {
       </div>)}
 
       {activeTab === 'spotify' && (
-        <div className="flex-1 overflow-y-auto flex flex-col gap-3 px-3 py-3 relative z-10">
+        <div className="flex-1 min-h-0 overflow-y-auto flex flex-col gap-3 px-3 py-3 relative z-10">
           {/* Now Playing avec pochette tournante grand format */}
           {spotifyNowPlaying ? (
             <>
@@ -625,7 +625,7 @@ export const MusicPlayerApp = () => {
           {/* Top genres (chips) */}
           {spotifyRecentlyStats && spotifyRecentlyStats.topGenres.length > 0 && (
             <div
-              className="rounded-xl px-3 py-2.5"
+              className="rounded-xl px-3 py-2.5 shrink-0"
               style={{
                 background: 'rgba(255,255,255,0.6)',
                 border: '1px solid rgba(186,230,253,0.5)',
@@ -664,29 +664,57 @@ export const MusicPlayerApp = () => {
             <div className="px-3 py-1.5 flex items-center gap-1.5 border-b border-violet-100/60">
               <Sparkles size={11} className="text-violet-500" />
               <span className="text-[10px] text-violet-700 uppercase tracking-widest font-bold flex-1">Reco IA, par Ethan IA</span>
-              <button
-                type="button"
-                onClick={() => fetchMusicRecos()}
-                disabled={musicRecosLoading || spotifyRecentlyPlayed.length === 0}
-                className="text-[10px] font-semibold px-2 py-0.5 rounded-md transition-colors disabled:opacity-40"
-                style={{
-                  background: 'linear-gradient(135deg, #a78bfa, #7c3aed)',
-                  color: 'white',
-                  boxShadow: '0 2px 6px rgba(124,58,237,0.3)',
-                }}
-              >
-                {musicRecosLoading ? (
-                  <span className="inline-flex items-center gap-1">
-                    <Loader2 size={9} className="animate-spin" /> Analyse…
-                  </span>
-                ) : musicRecos.length > 0 ? 'Refaire' : 'Demander'}
-              </button>
+              {spotifyRecentlyPlayed.length > 0 && (
+                <button
+                  type="button"
+                  onClick={() => fetchMusicRecos()}
+                  disabled={musicRecosLoading}
+                  className="text-[10px] font-semibold px-2 py-0.5 rounded-md transition-colors disabled:opacity-40"
+                  style={{
+                    background: 'linear-gradient(135deg, #a78bfa, #7c3aed)',
+                    color: 'white',
+                    boxShadow: '0 2px 6px rgba(124,58,237,0.3)',
+                  }}
+                >
+                  {musicRecosLoading ? (
+                    <span className="inline-flex items-center gap-1">
+                      <Loader2 size={9} className="animate-spin" /> Analyse…
+                    </span>
+                  ) : musicRecos.length > 0 ? 'Refaire' : 'Demander'}
+                </button>
+              )}
             </div>
             <div className="px-3 py-2.5">
-              {musicRecosError && (
+              {/* Cas 1 : pas d'historique d'écoute (scope OAuth manquant) */}
+              {spotifyRecentlyPlayed.length === 0 && !musicRecosLoading && (
+                <div className="text-[11px] text-sky-800/80 leading-relaxed space-y-2">
+                  <p>
+                    Pour activer la recommandation IA, il faut l&apos;<strong>historique d&apos;écoute Spotify</strong>.
+                    Aujourd&apos;hui le token OAuth n&apos;a pas le scope <code className="bg-violet-100/60 px-1 rounded">user-read-recently-played</code>.
+                  </p>
+                  <p className="flex flex-wrap gap-2">
+                    <a
+                      href="/api/spotify/login"
+                      className="inline-flex items-center gap-1 px-2 py-1 text-[10px] font-semibold text-white rounded-md"
+                      style={{
+                        background: 'linear-gradient(135deg, #1db954, #0d8e3f)',
+                        boxShadow: '0 2px 6px rgba(29,185,84,0.3)',
+                      }}
+                    >
+                      Activer le scope (flow OAuth)
+                    </a>
+                    <span className="text-[10px] text-sky-500/70 self-center">
+                      puis recharger
+                    </span>
+                  </p>
+                </div>
+              )}
+              {/* Cas 2 : erreur retournée par la route */}
+              {musicRecosError && spotifyRecentlyPlayed.length > 0 && (
                 <div className="text-[11px] text-red-600/80 italic">{musicRecosError}</div>
               )}
-              {!musicRecosError && musicRecos.length === 0 && !musicRecosLoading && (
+              {/* Cas 3 : prêt mais pas encore demandé */}
+              {!musicRecosError && musicRecos.length === 0 && !musicRecosLoading && spotifyRecentlyPlayed.length > 0 && (
                 <p className="text-[11px] text-sky-700/70 leading-relaxed">
                   Demande à <strong>Ethan IA</strong> 5 recommandations de pistes basées sur tes 50 dernières écoutes
                   (modèle Llama 3.3 via Groq, croisement des genres et artistes détectés).
@@ -722,7 +750,7 @@ export const MusicPlayerApp = () => {
           {/* Recently played */}
           {spotifyRecentlyPlayed.length > 0 && (
             <div
-              className="rounded-xl overflow-hidden"
+              className="rounded-xl overflow-hidden shrink-0"
               style={{
                 background: 'rgba(255,255,255,0.65)',
                 border: '1px solid rgba(186,230,253,0.5)',
@@ -762,7 +790,7 @@ export const MusicPlayerApp = () => {
           {/* Top Tracks du mois */}
           {spotifyTopTracks.length > 0 && (
             <div
-              className="rounded-xl overflow-hidden"
+              className="rounded-xl overflow-hidden shrink-0 mb-2"
               style={{
                 background: 'rgba(255,255,255,0.65)',
                 border: '1px solid rgba(186,230,253,0.5)',
