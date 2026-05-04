@@ -1,9 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useOSStore, AppWindow } from '@/app/store/useOSStore';
-import { Monitor, Calendar, Music } from 'lucide-react';
+import { Monitor, Calendar, Music, FileText, Mail, Github, Linkedin } from 'lucide-react';
 import { MusicPlayerApp } from '@/app/apps/MusicPlayer';
+import { ContactApp } from '@/app/apps/Contact';
+import { PDFViewerApp } from '@/app/apps/PDFViewer';
 import { StartMenu } from './StartMenu';
 import { useIsMobile } from '@/app/hooks/useIsMobile';
+import { portfolio } from '@/app/data/portfolio';
 
 export const Taskbar = () => {
   const { windows, activeWindowId, focusApp, minimizeApp, addWindow } = useOSStore();
@@ -28,6 +31,36 @@ export const Taskbar = () => {
       zIndex: 10,
       defaultPosition: { x: 50, y: 40 },
       defaultSize: { width: 500, height: 600 },
+    });
+  };
+
+  const openCV = () => {
+    addWindow({
+      id: 'cv',
+      title: 'Mon CV',
+      icon: FileText,
+      component: <PDFViewerApp file="/cv.pdf" />,
+      isOpen: true,
+      isMinimized: false,
+      isMaximized: false,
+      zIndex: 10,
+      defaultPosition: { x: 120, y: 40 },
+      defaultSize: { width: 800, height: 660 },
+    });
+  };
+
+  const openContact = () => {
+    addWindow({
+      id: 'contact',
+      title: 'Me Contacter',
+      icon: Mail,
+      component: <ContactApp />,
+      isOpen: true,
+      isMinimized: false,
+      isMaximized: false,
+      zIndex: 10,
+      defaultPosition: { x: 300, y: 60 },
+      defaultSize: { width: 550, height: 580 },
     });
   };
 
@@ -107,6 +140,22 @@ export const Taskbar = () => {
           <Monitor size={18} /> <span className="font-bold">Start</span>
         </button>
 
+        {/* Bandeau de disponibilité, lecture seule, hidden on small screens. */}
+        {!isMobile && (
+          <div
+            className="hidden md:flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[11px] font-medium text-emerald-200 shrink-0"
+            style={{
+              background: 'rgba(16,185,129,0.12)',
+              border: '1px solid rgba(16,185,129,0.35)',
+              boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.05)',
+            }}
+            title={portfolio.availability.label}
+          >
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse shrink-0" />
+            <span className="max-w-[260px] truncate">{portfolio.availability.label}</span>
+          </div>
+        )}
+
         <div className="w-[1px] h-6 bg-white/20 mx-1" />
 
         {!isMobile && (
@@ -149,7 +198,61 @@ export const Taskbar = () => {
           </button>
         )}
 
-        <div className="ml-auto relative" ref={calendarRef}>
+        {/* Boutons utilitaires (Mode recruteur, CV, Contact, GitHub, LinkedIn) */}
+        <div className="ml-auto flex items-center gap-1 mr-1">
+          <a
+            href="/recruiter"
+            title="Mode recruteur, vue CV plate scannable"
+            aria-label="Mode recruteur"
+            className="px-2.5 py-1 mr-1 text-[10px] font-semibold text-white rounded-md flex items-center gap-1.5 transition-all hover:scale-105 active:scale-95"
+            style={{
+              background: 'linear-gradient(180deg, rgba(15,23,42,0.85) 0%, rgba(2,6,23,0.92) 100%)',
+              border: '1px solid rgba(125,211,252,0.45)',
+              boxShadow: '0 2px 6px rgba(2,6,23,0.35), inset 0 1px 0 rgba(125,211,252,0.25)',
+            }}
+          >
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse shrink-0" />
+            <span className="hidden sm:inline">Mode recruteur</span>
+          </a>
+          <button
+            onClick={openCV}
+            title="Mon CV"
+            aria-label="Ouvrir mon CV"
+            className="p-1.5 rounded-md text-blue-200 hover:bg-white/10 hover:text-white transition-colors"
+          >
+            <FileText size={14} />
+          </button>
+          <button
+            onClick={openContact}
+            title="Me contacter"
+            aria-label="Ouvrir le formulaire de contact"
+            className="p-1.5 rounded-md text-blue-200 hover:bg-white/10 hover:text-white transition-colors"
+          >
+            <Mail size={14} />
+          </button>
+          <a
+            href={portfolio.github}
+            target="_blank"
+            rel="noopener noreferrer"
+            title="GitHub"
+            aria-label="Voir mon GitHub"
+            className="p-1.5 rounded-md text-blue-200 hover:bg-white/10 hover:text-white transition-colors"
+          >
+            <Github size={14} />
+          </a>
+          <a
+            href={portfolio.linkedin}
+            target="_blank"
+            rel="noopener noreferrer"
+            title="LinkedIn"
+            aria-label="Voir mon LinkedIn"
+            className="p-1.5 rounded-md text-blue-200 hover:bg-white/10 hover:text-white transition-colors"
+          >
+            <Linkedin size={14} />
+          </a>
+        </div>
+
+        <div className="relative" ref={calendarRef}>
           <button
             onClick={() => setShowCalendar(!showCalendar)}
             className="flex flex-col items-center px-3 py-1 text-xs font-medium text-gray-200 hover:bg-white/10 hover:text-white rounded transition-colors focus:ring-1 focus:ring-white/30"

@@ -18,6 +18,28 @@ export interface SpotifyTopTrack {
   albumArt: string | null;
 }
 
+export interface SpotifyRecentlyPlayedTrack {
+  id: string;
+  title: string;
+  artist: string;
+  albumArt: string | null;
+  playedAt: string;
+  durationMs: number;
+}
+
+export interface SpotifyRecentlyStats {
+  topGenres: { name: string; count: number }[];
+  topArtists: { name: string; count: number }[];
+  totalMinutes: number;
+  uniqueArtists: number;
+}
+
+export interface MusicReco {
+  title: string;
+  artist: string;
+  reason: string;
+}
+
 export interface AppWindow {
   id: string;
   title: string;
@@ -64,13 +86,23 @@ interface OSState {
   spotifyNowPlaying: SpotifyNowPlaying | null;
   spotifyTopTracks: SpotifyTopTrack[];
   spotifyIsListening: boolean;
+  spotifyRecentlyPlayed: SpotifyRecentlyPlayedTrack[];
+  spotifyRecentlyStats: SpotifyRecentlyStats | null;
   fetchNowPlaying: () => Promise<void>;
   fetchTopTracks: () => Promise<void>;
+  fetchRecentlyPlayed: () => Promise<void>;
+  tickSpotifyProgress: (deltaMs: number) => void;
+
+  // Recommandations IA basées sur l'écoute récente
+  musicRecos: MusicReco[];
+  musicRecosLoading: boolean;
+  musicRecosError: string | null;
+  fetchMusicRecos: () => Promise<void>;
 }
 
 export const useOSStore = create<OSState>()(
   persist(
-    (set) => ({
+    (set, get) => ({
       windows: {},
       activeWindowId: null,
       maxZIndex: 10,
@@ -167,6 +199,11 @@ export const useOSStore = create<OSState>()(
       spotifyNowPlaying: null,
       spotifyTopTracks: [],
       spotifyIsListening: false,
+      spotifyRecentlyPlayed: [],
+      spotifyRecentlyStats: null,
+      musicRecos: [],
+      musicRecosLoading: false,
+      musicRecosError: null,
 
       fetchNowPlaying: async () => {
         try {
@@ -188,6 +225,72 @@ export const useOSStore = create<OSState>()(
           set({ spotifyTopTracks: data ?? [] });
         } catch {
           set({ spotifyTopTracks: [] });
+        }
+      },
+
+      // Avance la progression localement entre 2 fetchs pour fluidifier la barre.
+      // Appelé toutes les secondes par le MusicPlayer quand isPlaying === true.
+      // Le prochain fetchNowPlaying resync la valeur officielle.
+      tickSpotifyProgress: (deltaMs: number) => set((state) => {
+        if (!state.spotifyNowPlaying || !state.spotifyIsListening) return state;
+        const np = state.spotifyNowPlaying;
+        const next = Math.min(np.progressMs + deltaMs, np.durationMs);
+        return { spotifyNowPlaying: { ...np, progressMs: next } };
+      }),
+
+      fetchRecentlyPlayed: async () => {
+        try {
+          const res = await fetch('/api/spotify/recently-played');
+          const data = await res.json() as {
+            tracks?: SpotifyRecentlyPlayedTrack[];
+            topGenres?: { name: string; count: number }[];
+            topArtists?: { name: string; count: number }[];
+            totalMinutes?: number;
+            uniqueArtists?: number;
+          };
+          set({
+            spotifyRecentlyPlayed: data?.tracks ?? [],
+            spotifyRecentlyStats: {
+              topGenres: data?.topGenres ?? [],
+              topArtists: data?.topArtists ?? [],
+              totalMinutes: data?.totalMinutes ?? 0,
+              uniqueArtists: data?.uniqueArtists ?? 0,
+            },
+          });
+        } catch {
+          set({ spotifyRecentlyPlayed: [], spotifyRecentlyStats: null });
+        }
+      },
+
+      fetchMusicRecos: async () => {
+        const state = get();
+        if (state.spotifyRecentlyPlayed.length === 0 || !state.spotifyRecentlyStats) {
+          set({ musicRecosError: "Pas d'historique d'écoute disponible." });
+          return;
+        }
+        set({ musicRecosLoading: true, musicRecosError: null });
+        try {
+          const res = await fetch('/api/ai/music-recos', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              tracks: state.spotifyRecentlyPlayed.map((t) => ({ title: t.title, artist: t.artist })),
+              topGenres: state.spotifyRecentlyStats.topGenres,
+              topArtists: state.spotifyRecentlyStats.topArtists,
+            }),
+          });
+          if (!res.ok) {
+            set({ musicRecosLoading: false, musicRecosError: 'Indisponible pour le moment.' });
+            return;
+          }
+          const data = await res.json() as { recos?: MusicReco[]; error?: string };
+          if (data.error || !Array.isArray(data.recos)) {
+            set({ musicRecosLoading: false, musicRecosError: data.error ?? 'Réponse inattendue.' });
+            return;
+          }
+          set({ musicRecos: data.recos, musicRecosLoading: false });
+        } catch {
+          set({ musicRecosLoading: false, musicRecosError: 'Erreur réseau.' });
         }
       },
     }),

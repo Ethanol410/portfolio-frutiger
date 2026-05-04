@@ -14,17 +14,25 @@ const fadeUp = {
 };
 
 const SKILL_LABELS: Record<string, string> = {
+  ia: 'IA & Machine Learning',
+  multimedia: 'Multimédia',
+  web: 'Développement web',
+  backend: 'Backend & API',
+  devops: 'DevOps & outils',
+  soft: 'Soft skills',
   frontend: 'Front-End',
-  backend: 'Back-End',
-  ai: 'IA & LLM',
   tools: 'Outils',
   databases: 'Bases de données',
 };
 
 const SKILL_COLORS: Record<string, string> = {
+  ia: 'bg-violet-50 text-violet-700 border-violet-100',
+  multimedia: 'bg-fuchsia-50 text-fuchsia-700 border-fuchsia-100',
+  web: 'bg-blue-50 text-blue-700 border-blue-100',
+  backend: 'bg-purple-50 text-purple-700 border-purple-100',
+  devops: 'bg-emerald-50 text-emerald-700 border-emerald-100',
+  soft: 'bg-amber-50 text-amber-700 border-amber-100',
   frontend: 'bg-blue-50 text-blue-600 border-blue-100',
-  backend: 'bg-purple-50 text-purple-600 border-purple-100',
-  ai: 'bg-emerald-50 text-emerald-600 border-emerald-100',
   tools: 'bg-gray-100 text-gray-600 border-gray-200',
   databases: 'bg-orange-50 text-orange-600 border-orange-100',
 };
@@ -37,7 +45,8 @@ export const AboutApp = () => {
       <motion.div variants={fadeUp} className="w-full aero-card rounded-xl p-6 flex flex-col items-center text-center">
         <Image src={portfolio.avatar} alt={portfolio.fullName} width={96} height={96} className="rounded-full object-cover mb-4 shadow-lg border-4 border-blue-100" />
         <h2 className="text-2xl font-bold text-gray-800">{portfolio.fullName}</h2>
-        <p className="text-blue-600 font-medium mb-1">{portfolio.title}</p>
+        <p className="text-blue-600 font-semibold mb-0.5">{portfolio.title}</p>
+        <p className="text-blue-500/80 text-xs mb-2">{portfolio.subtitle}</p>
         <div className="flex items-center gap-2 text-gray-500 text-sm mb-3">
           <MapPin size={14} /> {portfolio.location}
         </div>

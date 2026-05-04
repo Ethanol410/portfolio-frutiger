@@ -22,10 +22,16 @@ export async function GET() {
         <div style={{ fontSize: 72, fontWeight: 'bold', marginBottom: 20, textAlign: 'center' }}>
           Ethan Collin
         </div>
-        <div style={{ fontSize: 36, opacity: 0.85, textAlign: 'center' }}>
-          Développeur Web FullStack & IA — BUT MMI
+        <div style={{ fontSize: 36, opacity: 0.9, textAlign: 'center', lineHeight: 1.25 }}>
+          Apprenti ingénieur IA & interfaces intelligentes
         </div>
-        <div style={{ fontSize: 24, opacity: 0.55, marginTop: 32, textAlign: 'center' }}>
+        <div style={{ fontSize: 22, opacity: 0.75, marginTop: 18, textAlign: 'center' }}>
+          Co-auteur d&apos;un projet de recherche soumis à ACM UIST 2026
+        </div>
+        <div style={{ fontSize: 22, opacity: 0.75, marginTop: 4, textAlign: 'center' }}>
+          Alternance ingénieur IA, septembre 2026, Lannion ou Dinan
+        </div>
+        <div style={{ fontSize: 20, opacity: 0.55, marginTop: 28, textAlign: 'center' }}>
           portfolio-frutiger.vercel.app
         </div>
       </div>

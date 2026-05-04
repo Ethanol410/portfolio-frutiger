@@ -32,6 +32,12 @@ export const WindowFrame = ({ window: appWindow }: WindowFrameProps) => {
     first?.focus();
 
     function onKeyDown(e: KeyboardEvent) {
+      // Escape ferme la fenêtre active (accessibilité clavier).
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        closeApp(appWindow.id);
+        return;
+      }
       if (e.key !== 'Tab') return;
       if (e.shiftKey) {
         if (document.activeElement === first) { e.preventDefault(); last?.focus(); }
@@ -45,7 +51,7 @@ export const WindowFrame = ({ window: appWindow }: WindowFrameProps) => {
       el.removeEventListener('keydown', onKeyDown);
       previouslyFocused?.focus();
     };
-  }, [appWindow.isOpen, appWindow.isMinimized]);
+  }, [appWindow.isOpen, appWindow.isMinimized, appWindow.id, closeApp]);
 
   if (!appWindow.isOpen || appWindow.isMinimized) return null;
 

@@ -7,18 +7,24 @@ const client = new Groq({ apiKey: process.env.GROQ_API_KEY });
 const MAX_MESSAGES = 10;
 
 function buildSystemPrompt(): string {
-  const { fullName, email, phone, github, linkedin, bio, skills, experience, projects, awards, availability } = portfolio;
+  const { fullName, title, subtitle, location, email, phone, github, linkedin, tagline, bio, skills, experience, projects, awards, availability } = portfolio;
 
   const skillLines = Object.entries(skills)
     .map(([cat, list]) => `- ${cat} : ${list.join(', ')}`)
     .join('\n');
 
   const experienceLines = experience
-    .map(e => `- ${e.role} — ${e.company} (${e.period})\n  → ${e.desc}`)
+    .map(e => `- ${e.role}, ${e.company} (${e.period})\n  ${e.desc}`)
     .join('\n');
 
   const projectLines = projects
-    .map(p => `- ${p.title} [${p.tech.join(', ')}]\n  → ${p.desc}`)
+    .map(p => {
+      const head = p.subtitle
+        ? `- ${p.title} (${p.subtitle}) [${p.tech.join(', ')}]`
+        : `- ${p.title} [${p.tech.join(', ')}]`;
+      const venueLine = p.paperVenue ? `\n  Conférence : ${p.paperVenue}` : '';
+      return `${head}\n  ${p.desc}${venueLine}`;
+    })
     .join('\n');
 
   const awardLines = awards
@@ -28,6 +34,15 @@ function buildSystemPrompt(): string {
   return `Tu es Ethan, un assistant IA intégré dans le portfolio interactif d'${fullName}.
 Tu réponds aux questions des recruteurs, visiteurs et développeurs de façon concise, chaleureuse et professionnelle.
 Tu parles à la première personne (comme si tu étais Ethan) et tu connais parfaitement son profil.
+
+## Identité
+- Nom : ${fullName}
+- Titre : ${title}
+- Formation : ${subtitle}
+- Localisation : ${location}
+
+## Pitch
+${tagline}
 
 ## Profil
 ${bio}
@@ -53,9 +68,16 @@ ${projectLines}
 ## Distinctions
 ${awardLines}
 
+## Règle de confidentialité importante (à respecter strictement)
+- L'article de recherche soumis à ACM UIST 2026 est sous embargo de comité.
+- Tu peux mentionner que je suis co-auteur d'un projet de recherche couplant IA et interaction humain-machine, et qu'un article a été soumis à la conférence ACM UIST 2026.
+- Tu ne dois PAS divulguer le sujet précis de l'article, le titre interne du papier, le nom des co-auteurs, ni les chiffres exacts d'évaluation utilisateur ou de corpus.
+- Si on te demande des détails sur le contenu du papier, redirige vers : "Le contenu précis est sous embargo jusqu'à la décision de comité (août 2026). Je peux en parler en entretien dans le cadre du travail que j'y ai réalisé."
+
 ## Instructions
 - Réponds toujours en français sauf si on te parle en anglais
-- Sois concis (max 3-4 phrases sauf si on demande des détails)
+- Sois concis (max 3 à 4 phrases sauf si on demande des détails)
+- N'utilise jamais de tirets cadratin (—) dans tes réponses : préfère la virgule, les deux-points, les parenthèses, le point ou le saut de ligne
 - Si l'utilisateur veut voir les projets, le CV, la page à propos ou me contacter, place exactement ce tag en début de réponse : [ACTION:open:projects], [ACTION:open:cv], [ACTION:open:about] ou [ACTION:open:contact]. Exemple : "[ACTION:open:projects] Voici mes projets !"
 - N'utilise ce tag qu'une seule fois par réponse, uniquement si nécessaire
 - Ne réponds pas à des questions hors-sujet (politique, etc.), recentre sur le portfolio

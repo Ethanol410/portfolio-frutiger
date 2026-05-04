@@ -5,10 +5,12 @@ type RateLimitEntry = { count: number; resetAt: number };
 const store = new Map<string, RateLimitEntry>();
 
 const LIMITS: { prefix: string; max: number; windowMs: number }[] = [
-  { prefix: '/api/contact',  max: 5,  windowMs: 60_000 },
-  { prefix: '/api/ai/chat', max: 10, windowMs: 60_000 },
-  { prefix: '/api/github',  max: 30, windowMs: 60_000 },
-  { prefix: '/api/spotify', max: 30, windowMs: 60_000 },
+  { prefix: '/api/contact',          max: 5,  windowMs: 60_000 },
+  // /api/ai/music-recos avant /api/ai/chat pour matcher d'abord le plus spécifique
+  { prefix: '/api/ai/music-recos',   max: 6,  windowMs: 60_000 },
+  { prefix: '/api/ai/chat',          max: 10, windowMs: 60_000 },
+  { prefix: '/api/github',           max: 30, windowMs: 60_000 },
+  { prefix: '/api/spotify',          max: 30, windowMs: 60_000 },
 ];
 
 function getRateLimit(pathname: string) {

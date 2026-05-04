@@ -13,41 +13,41 @@ interface ResearchNote {
 
 const notes: ResearchNote[] = [
   {
-    id: 'ui-drift',
-    title: 'UI Drift',
-    subtitle: 'Détection des instabilités LLM dans les interfaces web',
-    date: '2025 — 2026',
-    tags: ['IA', 'LLM', 'Interfaces', 'Recherche'],
-    link: 'https://github.com/Ethanol410/site-drift',
-    content: `## Problème
+    id: 'recherche-uist',
+    title: 'Recherche IA, soumission ACM UIST 2026',
+    subtitle: "Couplage IA et interaction humain-machine, IUT Lannion (Université de Rennes)",
+    date: '2025 à 2026',
+    tags: ['IA', 'Recherche HCI', 'LLM', 'UIST 2026'],
+    content: `## Contexte
 
-Quand on demande à un LLM de modifier une interface web, il ne se contente pas d'appliquer le changement demandé. Il introduit aussi des modifications non-sollicitées : restructurations de code, changements stylistiques, renommages, réorganisations. Ces "dérives" (drifts) s'accumulent et rendent le système instable.
+Projet de recherche mené à l'IUT de Lannion (Université de Rennes), couplant intelligence artificielle et interaction humain-machine. Encadré par un chercheur de l'IRISA. L'article a été soumis à la conférence ACM UIST 2026, l'une des conférences de référence en interaction humain-machine. Résultats d'évaluation attendus en août 2026.
 
-## Question de recherche
+## Pourquoi UIST
 
-Comment détecter, quantifier et visualiser ces dérives afin de redonner à l'utilisateur le contrôle sur les modifications apportées par un LLM ?
+UIST (ACM Symposium on User Interface Software and Technology) rassemble chaque année les travaux de recherche les plus pointus sur les nouvelles façons de concevoir et de comprendre les interfaces. Y soumettre un papier en cycle de licence est rare.
 
-## Approche
+## Mon rôle
 
-- **Modélisation formelle** des dérives : structurelles, sémantiques, stylistiques
-- **Métriques quantitatives** : score de dérive, surface impactée, écart par rapport à l'intention
-- **Prototype fonctionnel** : outil de comparaison avant/après avec heatmap des zones modifiées
-- **Interfaces de contrôle** : permettre à l'utilisateur de valider ou rejeter chaque dérive
+Co-auteur. Contribution au prototype web et à l'instrumentation de l'évaluation utilisateur menée pour le papier.
 
-## Ce que j'ai appris
+## Ce que ça m'a appris
 
-Les LLMs ont un biais fort vers la "correction" perçue du code. Même sans demande explicite, ils reformatent, renomment et réorganisent. Ce comportement est documenté mais rarement mesuré. UI Drift essaie de le rendre visible.`,
+Travailler à plusieurs voix sur un objet de recherche où la rigueur formelle (modélisation, mesures, étude utilisateur) compte autant que la qualité d'exécution. Apprendre à itérer un prototype sous contrainte de calendrier de soumission. Tenir un standard d'écriture scientifique avec des chercheurs de l'IRISA.
+
+## Pour en savoir plus
+
+Le contenu précis de l'article est sous embargo jusqu'à la décision de comité (août 2026). Je peux en parler en entretien dans le cadre de mon travail réalisé.`,
   },
   {
     id: 'agentix',
     title: 'Agentix Canvas',
     subtitle: 'Brainstorming collaboratif avec orchestration multi-agents IA',
-    date: '2025 — 2026',
+    date: '2025 à 2026',
     tags: ['Multi-agents', 'LLM', 'Collaboration', 'Temps réel'],
     link: 'https://github.com/Ethanol410/ProjetWorkshop',
     content: `## Vision
 
-Créer un espace de brainstorming où plusieurs agents IA coopèrent pour aider un groupe à structurer ses idées, générer des plans d'action et explorer des pistes créatives — le tout en temps réel.
+Créer un espace de brainstorming où plusieurs agents IA coopèrent pour aider un groupe à structurer ses idées, générer des plans d'action et explorer des pistes créatives, le tout en temps réel.
 
 ## L'assistant Isa
 
@@ -65,32 +65,38 @@ Isa est l'agent coordinateur d'Agentix Canvas. Il orchestre les autres agents sp
 
 ## Défis rencontrés
 
-La synchronisation des agents en temps réel est complexe : éviter les conflits de réponses, gérer les latences, maintenir la cohérence du contexte entre agents. On a résolu ça avec une file de messages et un état partagé côté serveur.`,
+La synchronisation des agents en temps réel est complexe : éviter les conflits de réponses, gérer les latences, maintenir la cohérence du contexte entre agents. On a résolu ça avec une file de messages et un état partagé côté serveur.
+
+## Distinction
+
+Lauréat du Prix du Campus Pépite 2025, dans l'écosystème entrepreneurial de Lannion.`,
   },
   {
-    id: 'modall',
-    title: 'Modall',
-    subtitle: 'Enceintes modulaires — Prix du campus Pépite 2025',
-    date: '2025',
-    tags: ['Design', 'Hardware', 'Entrepreneuriat', 'Prix Pépite'],
-    content: `## Concept
+    id: 'ethanos-assistant',
+    title: 'EthanOS Assistant',
+    subtitle: "Assistant conversationnel intégré au portfolio (Groq + Anthropic)",
+    date: '2026',
+    tags: ['LLM', 'Streaming SSE', 'Architecture résiliente'],
+    link: 'https://github.com/Ethanol410/portfolio-frutiger',
+    content: `## L'idée
 
-Modall est un système d'enceintes modulaires conçu pour s'adapter à tous les espaces. Les modules s'assemblent magnétiquement et communiquent en Bluetooth mesh pour créer des configurations audio personnalisées.
+Embarquer un assistant conversationnel directement dans le portfolio, capable de présenter mon parcours et de déclencher l'ouverture des fenêtres de l'OS simulé (CV, projets, contact). Le chat n'est pas un gadget : il prouve que je sais intégrer un LLM dans une interface réelle, avec un comportement maîtrisé.
 
-## Prix du campus Pépite
+## Architecture
 
-Lauréat du concours Pépite à l'IUT de Lannion en 2025. Le jury a distingué l'approche modulaire, le design épuré et le potentiel commercial du projet dans les espaces de coworking et événementiels.
+- Double provider : Groq (Llama 3.3) en principal, Anthropic Claude en fallback
+- Streaming SSE côté API route Next.js
+- Parsing d'actions inter-fenêtres au format \`[ACTION:open:AppName]\`
+- Suggestions contextuelles basées sur l'historique de conversation
+- Persistance localStorage de la conversation
 
-## Ma contribution
+## Ce que ça démontre
 
-- Design produit et direction artistique
-- Prototype fonctionnel (impression 3D + électronique)
-- Pitch et présentation devant le jury
-- Business plan et étude de marché
+- Intégration LLM en prod (auth, streaming, gestion d'erreur, fallback)
+- Composition d'un system prompt à partir des données du portfolio
+- Pattern d'action déclenchée par le LLM pour piloter l'UI
 
-## Ce que j'ai appris
-
-Aller au bout d'une idée jusqu'au stade prototype-présentable en quelques semaines. Convaincre des non-techniciens. Défendre un projet sous pression.`,
+Tu peux le tester en cliquant sur l'icône Ethan IA depuis le bureau.`,
   },
 ];
 
@@ -164,7 +170,7 @@ export const ResearchApp = () => {
       </div>
 
       <div className="flex-1 overflow-y-auto p-4 flex flex-col gap-3">
-        <p className="text-xs text-gray-500 px-1">Notes sur mes projets de recherche et initiatives personnelles.</p>
+        <p className="text-xs text-gray-500 px-1">Notes sur mes projets de recherche et mes initiatives en IA appliquée.</p>
 
         {notes.map(note => (
           <button

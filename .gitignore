@@ -39,3 +39,17 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Documents privés (embargo UIST, secrets de session, copies de travail)
+conferenceDriftLens.pdf
+docs/SESSION-RECAP-*.md
+docs/COMMUNICATION-TEMPLATES.md
+docs/profile-README.md
+
+# Documents internes (audit, plans de travail, specs non publiques)
+docs/AUDIT.md
+docs/superpowers/
+tasks/
+
+# Outils Claude Code locaux
+.claude/

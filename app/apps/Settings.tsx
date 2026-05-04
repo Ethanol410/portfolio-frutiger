@@ -19,7 +19,7 @@ const wallpapers = [
 ];
 
 const TAG_LABELS: Record<string, string> = {
-  aero: 'Frutiger Aero — Asadal Stock',
+  aero: 'Frutiger Aero (Asadal Stock)',
   win7: 'Windows 7',
   dark: 'Sombre',
 };

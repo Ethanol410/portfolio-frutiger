@@ -21,9 +21,8 @@ export const myComputer: FileNode[] = [
     type: 'folder',
     children: [
       { id: '21', name: 'Portfolio OS Frutiger', type: 'app', content: 'https://github.com/Ethanol410/portfolio-frutiger' },
-      { id: '22', name: 'UI Drift', type: 'app', content: 'https://github.com/Ethanol410/site-drift' },
-      { id: '23', name: 'Agentix Canvas', type: 'app', content: 'https://github.com/Ethanol410/ProjetWorkshop' },
-      { id: '24', name: 'Weight Tracker MVP', type: 'app', content: 'https://github.com/Ethanol410/weight-tracker-mvp' },
+      { id: '22', name: 'Agentix Canvas', type: 'app', content: 'https://github.com/Ethanol410/ProjetWorkshop' },
+      { id: '23', name: 'Weight Tracker MVP', type: 'app', content: 'https://github.com/Ethanol410/weight-tracker-mvp' },
     ]
   },
   {

@@ -25,6 +25,19 @@ html, body {
   touch-action: none;
 }
 
+/*
+ * Override pour les pages "plates" (ex: /recruiter) qui ne sont pas l'OS simulé.
+ * Le layout client applique cette classe sur <html> et <body> au mount, et la
+ * retire au unmount, ce qui restaure le comportement OS sur les autres routes.
+ */
+html.scroll-page,
+body.scroll-page {
+  overflow: auto !important;
+  height: auto !important;
+  min-height: 100% !important;
+  touch-action: auto !important;
+}
+
 body {
   background: var(--background);
   color: var(--foreground);
