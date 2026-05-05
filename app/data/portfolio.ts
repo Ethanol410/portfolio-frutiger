@@ -216,7 +216,7 @@ Isa est l'agent coordinateur d'Agentix Canvas. Il orchestre les autres agents sp
 La synchronisation des agents en temps réel est complexe : éviter les conflits de réponses, gérer les latences, maintenir la cohérence du contexte entre agents. Résolu par une file de messages et un état partagé côté serveur.`,
       tech: ["React", "WebSockets", "LLM (Claude, Groq)", "Architecture multi-agents"],
       color: "bg-emerald-600",
-      githubUrl: "https://github.com/Web-Interactive-Systems/project-agentic-canvas-Ethanol410",
+      githubUrl: null,
       demoUrl: null,
       classement: "star",
     },
@@ -428,6 +428,112 @@ Fan project éducatif et non commercial, inspiré de l'univers du Studio Ghibli.
       githubUrl: "https://github.com/Ethanol410/ProjetWorkshop",
       demoUrl: null,
       classement: "secondary",
+    },
+    {
+      id: 9,
+      title: "Audio Investigation Game",
+      subtitle: "Forensique audio interactive pour le festival Crime & Science 2026, avec Stream Deck+ physique",
+      desc: "Application web immersive de criminalistique audio. Le joueur reçoit un enregistrement dégradé, applique en temps réel des filtres Web Audio (low-pass, high-pass, band-pass, notch, compresseur, pitch, inversion) et démasque le coupable parmi 4 suspects. Pilotage via un Elgato Stream Deck+ branché en WebHID, sans driver. Deux scénarios narratifs (adulte et enfants) à partir d'une seule architecture data-driven.",
+      details: `## Le projet
+Une installation interactive immersive conçue pour le **festival [Crime & Science 2026](https://www.crimeetscience.com/)**, qui se tient au Pôle Phoenix de Pleumeur-Bodou du 8 au 31 mai 2026. L'objectif : faire vivre au public l'expérience d'un analyste son de la police scientifique, avec manipulation de signaux réels, choix narratifs et hardware tangible.
+
+## Deux scénarios sur le même moteur
+- **Le Corbeau de Quissioux** (public adulte) : ambiance forensique noir et cyan, terminal de police scientifique, mission de décodage d'un appel anonyme pour démasquer un ravisseur d'enfant.
+- **Agressions à Brain City** (enfants et ados) : esthétique cartoon kid-tech, palette jaune / teal / corail, mascotte "Ricardo Pouleto" qui guide le joueur. Mission d'aider une poule inspectrice à confondre un agresseur.
+
+Le moteur audio, l'UX et les contrôles physiques sont identiques. Seuls la narration, les visuels et les seuils de détection changent. **Architecture entièrement data-driven** : ajouter un scénario, c'est ajouter un objet dans \`src/data/scenarios.ts\`.
+
+## Feature phare, le Stream Deck+ physique
+L'application pilote en **WebHID** un **Elgato Stream Deck+** (8 touches LCD, 4 encodeurs rotatifs, écran tactile horizontal). Le poste joueur devient une vraie console d'analyse forensique :
+- **Page A** : Lecture, Inverse, Graves, Aigus, Voix, Buzz, Murmure, switch page
+- **Page B** : Comparaison A/B, Reset, presets Clear / Masque / Analyse
+- **4 encodeurs** : Volume, fréquence Low-pass, fréquence High-pass, Pitch (de –12 à +12 demi-tons)
+- **Push-encoder** pour reset rapide / mute / toggle
+- **Accélération de rotation x9** sur rotation rapide (<30 ms entre events) pour balayer 20 kHz à la vitesse du geste
+- **Skin Brain City automatique** : labels remplacés par emojis selon le scénario (🐘 ELEPH, 🐝 ABEILL, 🤖 ROBOT, 🧹 BALAI, 🔎 LOUPE)
+- **LCD strip** affiche en temps réel chaque potentiomètre avec barre de progression et unité (Hz, st, x)
+- Une **deuxième Stream Deck** peut être branchée pour piloter la grille des suspects
+
+Aucun driver à installer, tout passe par le navigateur via \`@elgato-stream-deck/webhid\`.
+
+## Le moteur audio
+Singleton \`AudioEngine\` basé sur la **Web Audio API native**, avec Tone.js juste pour l'unlock du contexte. Pipeline complet :
+
+\`\`\`
+Source → LowPass → HighPass → BandPass → Notch → Compressor → Makeup → Gain → Analyser → Output
+\`\`\`
+
+- **5 filtres biquad** indépendants, désactivés en restant dans le graphe (allpass ou cutoff extrême)
+- **Compresseur agressif** (ratio 12:1, threshold –30 dB, +6 dB makeup), déclenché par le bouton "Murmure / Loupe"
+- **Pitch + Speed unifiés** en un seul \`playbackRate = speed × 2^(semitones/12)\`
+- **Inversion** pré-calculée sur le Blob au chargement (pour révéler MURDER derrière REDRUM)
+- **AnalyserNode** (FFT 2048, smoothing 0.8) qui alimente 4 visualisations : waveform Wavesurfer, spectrogramme glissant, frequency bars, peak/RMS meter
+- **Comparaison A/B** instantanée par bypass parallèle remixé en cross-fade de gain (zéro click audio)
+
+## Système d'indices déclaratif
+Chaque scénario définit des indices **purement déclaratifs** avec une fonction \`check(state) => boolean\` :
+
+\`\`\`ts
+{
+  id: 'message-cache',
+  label: 'Message REDRUM inversé découvert',
+  hint: 'Reverse activé (MURDER)',
+  check: (s) => s.isReversed,
+}
+\`\`\`
+
+Le tableau de bord poll tous les triggers à chaque changement et auto-révèle les indices au joueur. **Aucune logique métier dispersée** dans les composants. Brain City ajoute une fonction \`proximity(state) => 0..1\` pour que Ricardo Pouleto réagisse en temps réel au curseur du joueur.
+
+## Stack technique
+- **React 18** + **TypeScript 5 strict** (\`noUnusedLocals\`, ESLint 0 warning toléré)
+- **Vite 5** (build et dev), **Vitest** + Testing Library
+- **Zustand 4** + middleware \`persist\` (volume, filtres, pitch, notes persistés en localStorage)
+- **Web Audio API native**, **Tone.js 15** (unlock context), **Wavesurfer.js 7** (UI playback)
+- **Framer Motion 11** (transitions de routes, stagger, springs)
+- **\`@elgato-stream-deck/webhid\` 7** (WebHID, Chrome / Edge / Brave uniquement)
+- **React Joyride 3** (onboarding, tour interactif)
+- **TailwindCSS 3** avec deux thèmes complets (forensique sombre + bento kid-tech)
+- **PWA** via \`vite-plugin-pwa\` et Workbox \`autoUpdate\`, fonctionnement 100 % offline une fois chargé
+
+## Architecture
+Principe directeur : **many small files, few large files**. Chaque hook, service et mapping est isolé pour rester testable et remplaçable.
+
+\`\`\`
+src/
+├── stores/audioStore.ts          Zustand, source de vérité unique persistée
+├── services/
+│   ├── audioEngine.ts            Singleton Web Audio API
+│   ├── audioAnalysis.ts          FFT helpers
+│   ├── filterActions.ts          Bridge store ↔ engine
+│   └── streamdeck/               Intégration WebHID Elgato (orchestrateur, mappings, dispatch, LCD)
+├── data/scenarios.ts             Narration, suspects, indices, briefs
+└── components/
+    ├── Workspace/Dashboard.tsx   Écran principal de jeu
+    ├── Visualization/            Spectrogram, FrequencyBars, AudioMeter
+    ├── BrainCity/                Ricardo, KidsToolPanel, événements
+    └── StreamDeck/               Statut connexion + suspect panel
+\`\`\`
+
+## Flow applicatif
+\`/intro\` (cinématique) → \`/setup\` (choix scénario) → \`/\` (login agent, RequireAudio) → \`/briefing\` (narratif + onboarding) → \`/workspace\` (★ écran principal) → \`/suspects\` (grille, écoute, interrogatoire) → \`/debrief\` (verdict).
+
+Routes de gameplay protégées par \`RequireAudio\` qui redirige vers \`/intro\` tant que les fichiers audio ne sont pas chargés.
+
+## État au moment de l'écriture
+Setup, pipeline audio (5 filtres + compresseur + analyser), 4 visualisations, 2 scénarios complets, Stream Deck+ pages A/B + LCD, Stream Deck dédiée suspects, onboarding Joyride, PWA offline et tests Vitest sont **livrés**. Phase de polish festival en cours pour le 8 mai.
+
+## Ce que ça démontre
+Pour un profil **IA et Multimédia ENSSAT IAM** :
+- Maîtrise de la **Web Audio API native** au-delà du tutoriel : pipeline complet, filtres biquad, compresseur, analyse FFT, A/B sans click audio
+- Capacité à intégrer du **hardware physique** dans une app web moderne via WebHID
+- **Architecture data-driven** réutilisable, pas de copier-coller entre scénarios
+- **Livrable réel** dans un cadre événementiel public, pas un projet de tiroir
+- Souci de la **rigueur d'ingénierie** : TS strict, 0 warning ESLint, tests, PWA offline`,
+      tech: ["React 18", "TypeScript 5 strict", "Vite 5", "Web Audio API", "Tone.js", "Wavesurfer.js", "Zustand", "Framer Motion", "WebHID (Stream Deck+)", "TailwindCSS", "PWA", "Vitest"],
+      color: "bg-indigo-600",
+      githubUrl: null,
+      demoUrl: null,
+      classement: "star",
     },
   ],
 
