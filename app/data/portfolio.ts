@@ -216,7 +216,7 @@ Isa est l'agent coordinateur d'Agentix Canvas. Il orchestre les autres agents sp
 La synchronisation des agents en temps réel est complexe : éviter les conflits de réponses, gérer les latences, maintenir la cohérence du contexte entre agents. Résolu par une file de messages et un état partagé côté serveur.`,
       tech: ["React", "WebSockets", "LLM (Claude, Groq)", "Architecture multi-agents"],
       color: "bg-emerald-600",
-      githubUrl: "https://github.com/Ethanol410/ProjetWorkshop",
+      githubUrl: null,
       demoUrl: null,
       classement: "star",
     },
@@ -377,6 +377,57 @@ C'est exactement la posture que je veux apporter dans une équipe IA : repérer 
       githubUrl: null,
       demoUrl: null,
       classement: "star",
+    },
+    {
+      id: 8,
+      title: "Calendrier de l'Avent Chihiro",
+      subtitle: "Expérience narrative interactive inspirée du Voyage de Chihiro (Studio Ghibli)",
+      desc: "PWA narrative qui revisite l'univers du film de Miyazaki sous forme de calendrier de l'Avent. Le joueur incarne un personnage piégé dans l'établissement thermal de Yubaba et progresse à travers des journées interactives mêlant dialogues, mini-jeux et animations. Construit en JavaScript vanilla, sans framework, avec Canvas, Web Audio API et support PWA installable.",
+      details: `## Le concept
+Une application web narrative inspirée du film *Le Voyage de Chihiro* (千と千尋の神隠し). Le joueur incarne un personnage piégé dans l'établissement thermal de Yubaba et progresse à travers des journées interactives qui mélangent narration, mini-jeux et découverte progressive.
+
+## Trois journées jouables
+- **Jour 1, Le Contrat** : rencontre avec Yubaba, signature interactive d'un contrat magique sur Canvas, vol du nom du joueur, apparition de Zeniba.
+- **Jour 4, Le Nettoyage** : mini-jeu de frottage d'assiette avec détection de mouvement, barre de progression pixel par pixel, feedback audio temps réel.
+- **Jour 24, La Libération** : confrontation finale avec Yubaba, aide de Kamaji, mini-jeu de destruction du contrat par clics successifs, scène finale cinématique avec le train.
+
+## Mécaniques de jeu détaillées
+- **Système de signature** sur Canvas HTML5 : détection tactile et souris, compteur de pixels pour validation, curseur personnalisé en pinceau.
+- **Mini-jeu de nettoyage** : calcul de progression basé sur la distance parcourue, seuil de 250 points pour valider la tâche.
+- **Destruction du contrat** : 4 états visuels progressifs (intact, fissuré, brisé, détruit), animation de tremblement à chaque clic, 9 clics nécessaires.
+
+## Système narratif
+Moteur de dialogue personnalisé avec :
+- Effet **typewriter** lettre par lettre, avec son de machine à écrire
+- Système de **speakers** avec changement dynamique de personnage (Yubaba, Zeniba, Kamaji)
+- **CSS contextuel** par personnage qui parle
+- **Positionnement dynamique** des personnages (gauche, droite, centre)
+- **Transitions fluides** entre changements de speaker
+
+## Stack technique
+- **HTML5** + **CSS3** + **JavaScript Vanilla** (zéro dépendance externe)
+- **Canvas API** pour signature et dessin
+- **Web Audio API** pour les effets sonores contextuels (typing, brush, magic, cleaning) et la musique d'ambiance
+- **Touch Events** + **Pointer Events** pour le support tactile mobile
+- **PWA** : manifest.json, mode standalone, icône personnalisée, support iOS et Android
+- **Système de calques** avec z-index hiérarchique (background, character, UI, items, effets, menu, scène finale)
+
+## Architecture
+Machine à états pour la progression : \`currentStep\` (Jour 1, 0-14), \`day4Step\` (0-5), \`day24Step\` (0-7), avec garde \`isTyping\` pour bloquer les clics pendant les animations de texte.
+
+## Bonus, page de vote des Noiraudes
+Mini-jeu secondaire (\`vote.html\`) : cliquer sur les Noiraudes pour donner des étoiles, avec animations de particules et système de score cumulatif.
+
+## Ce que ça démontre
+Un projet construit **sans framework**, qui prouve la maîtrise des fondamentaux web (Canvas, Web Audio, Touch Events, PWA) et la capacité à concevoir un moteur narratif complet (machine à états, transitions, gestion de speakers) à partir de rien. La direction artistique fan-art Ghibli respecte le matériau d'origine tout en en proposant une lecture interactive.
+
+## Crédit
+Fan project éducatif et non commercial, inspiré de l'univers du Studio Ghibli. Tous les droits sur les personnages et l'univers original appartiennent au Studio Ghibli et Hayao Miyazaki.`,
+      tech: ["HTML5", "CSS3", "JavaScript Vanilla", "Canvas API", "Web Audio API", "PWA", "Touch Events"],
+      color: "bg-rose-500",
+      githubUrl: "https://github.com/Ethanol410/ProjetWorkshop",
+      demoUrl: null,
+      classement: "secondary",
     },
   ],
 

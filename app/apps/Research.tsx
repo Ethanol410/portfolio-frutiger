@@ -44,7 +44,6 @@ Le contenu précis de l'article est sous embargo jusqu'à la décision de comit�
     subtitle: 'Brainstorming collaboratif avec orchestration multi-agents IA',
     date: '2025 à 2026',
     tags: ['Multi-agents', 'LLM', 'Collaboration', 'Temps réel'],
-    link: 'https://github.com/Ethanol410/ProjetWorkshop',
     content: `## Vision
 
 Créer un espace de brainstorming où plusieurs agents IA coopèrent pour aider un groupe à structurer ses idées, générer des plans d'action et explorer des pistes créatives, le tout en temps réel.
