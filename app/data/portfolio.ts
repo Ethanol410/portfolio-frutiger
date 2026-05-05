@@ -216,7 +216,7 @@ Isa est l'agent coordinateur d'Agentix Canvas. Il orchestre les autres agents sp
 La synchronisation des agents en temps réel est complexe : éviter les conflits de réponses, gérer les latences, maintenir la cohérence du contexte entre agents. Résolu par une file de messages et un état partagé côté serveur.`,
       tech: ["React", "WebSockets", "LLM (Claude, Groq)", "Architecture multi-agents"],
       color: "bg-emerald-600",
-      githubUrl: null,
+      githubUrl: "https://github.com/Web-Interactive-Systems/project-agentic-canvas-Ethanol410",
       demoUrl: null,
       classement: "star",
     },
