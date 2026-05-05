@@ -535,6 +535,56 @@ Pour un profil **IA et Multimédia ENSSAT IAM** :
       demoUrl: null,
       classement: "star",
     },
+    {
+      id: 10,
+      title: "Bot Telegram, Veille Claude Code",
+      subtitle: "Agrégateur autonome de news Claude Code, classification LLM et publication multi-canal",
+      desc: "Bot Python qui scrape une dizaine de sources (blog Anthropic, GitHub, Reddit, Hacker News, X, YouTube, communautés) toutes les 8 heures, classe la pertinence avec Gemini Flash, scoring 0 à 100, déduplication, puis publie les actualités sur Telegram et Discord. Tournant en cron sur GitHub Actions, cache mutualisé sur GitHub Gist, fallbacks en cascade pour ne jamais tomber en silence.",
+      details: `## L'idée
+Je voulais ne plus rater une release ou une discussion importante autour de Claude Code (mon outil quotidien). Plutôt qu'un dashboard, j'ai construit un **bot autonome** qui me pousse les news pertinentes sur Telegram et Discord, classées par signal et dédupliquées dans le temps.
+
+## Architecture
+- **Cron GitHub Actions** : exécution toutes les 8 heures (heure de Paris), sans serveur à maintenir
+- **10+ sources** scrapées en parallèle (\`ThreadPoolExecutor\`) : blog Anthropic, dépôts GitHub officiels, Reddit r/ClaudeAI, Hacker News, posts X, vidéos YouTube, communautés Discord publiques, articles tech
+- **Pipeline** : fetch → parse → classification LLM → scoring → dédup → publish
+- **Cache mutualisé sur GitHub Gist** (TTL 7 jours) : les hashes des news déjà publiées survivent entre runs et entre forks, sans base de données
+- **Fallbacks en cascade** : si une source tombe (rate limit, 503, captcha), le bot continue sur les autres et logge l'incident, jamais d'arrêt en silence
+
+## Classification IA
+Chaque candidat passe par **Gemini Flash** avec un prompt structuré qui rend un JSON :
+- catégorie (release, tutoriel, discussion, alerte sécurité, autre)
+- score de pertinence 0 à 100
+- résumé 1 ligne
+- tags
+
+Seuls les items **score ≥ seuil** sont publiés. Le seuil est ajustable par variable d'environnement, plus exigeant le matin, plus permissif le soir.
+
+## Publication
+- **Telegram** via le bot officiel, format Markdown avec liens cliquables, image preview
+- **Discord** via webhook, embed structuré
+- **Anti-spam** : on n'envoie jamais plus de 5 items par run, le reste passe au run suivant
+
+## Stack technique
+- **Python 3.12**
+- **Gemini Flash** (Google AI) pour la classification, choisi pour le ratio coût / qualité sur du JSON-output
+- **Scrapling** pour le scraping résilient (anti-bot, retry, headers réalistes)
+- **\`requests\`** pour les API officielles
+- **\`ThreadPoolExecutor\`** pour le fetch parallèle des sources
+- **GitHub Actions** pour le cron, **GitHub Gist** pour le cache partagé
+- **\`dataclass NewsItem\`** comme modèle métier unique
+
+## Ce que ça démontre
+- **Intégration LLM en prod** sur un cas concret de classification, pas un POC tutoriel
+- **Architecture résiliente** : sources hétérogènes, fallbacks, dédup persistée sans BDD dédiée
+- **Discipline de coût** : Gemini Flash ciblé, batch de candidats, seuils ajustables
+- **Diversification stack** : Python en complément de TypeScript, montre que je sais sortir de mon écosystème principal
+- **Outil que j'utilise vraiment** : il tourne aujourd'hui, je consulte ses notifs tous les matins`,
+      tech: ["Python 3.12", "Gemini Flash", "GitHub Actions", "Scrapling", "requests", "ThreadPoolExecutor", "GitHub Gist", "Telegram Bot API", "Discord Webhook"],
+      color: "bg-amber-500",
+      githubUrl: "https://github.com/Ethanol410/infoscraptelegram",
+      demoUrl: null,
+      classement: "star",
+    },
   ],
 
   awards: [
