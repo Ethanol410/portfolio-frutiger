@@ -82,7 +82,7 @@ export const portfolio: Portfolio = {
 
   tagline: "Co-auteur d'un projet de recherche IA et interaction humain-machine soumis à UIST 2026. 2 ans d'alternance full-stack en production. Je conçois des systèmes où LLM et interfaces collaborent.",
 
-  bio: "À 20 ans, j'ai repris seul la plateforme e-commerce d'Ici Carte Grise après le départ de mon tuteur (plusieurs milliers de transactions par mois en PHP 8, MySQL, intégrations API), et je l'ai tenue en prod tout en encadrant une nouvelle alternante. C'est cette capacité à livrer sous pression qui définit mon profil. En parallèle, à l'IUT MMI de Lannion, j'ai contribué à un projet de recherche couplant IA et interaction humain-machine, encadré par un chercheur de l'IRISA (Université de Rennes). L'article a été soumis à la conférence ACM UIST 2026. J'ai également co-créé Agentix Canvas, un outil de brainstorming collaboratif piloté par agents IA, lauréat du Prix du Campus Pépite 2025. En septembre 2026, je rejoins le cycle ingénieur ENSSAT, option IAM (IA & Multimédia) en alternance. Je cherche une entreprise d'accueil à Lannion ou Dinan pour conduire des projets d'IA appliquée pendant 3 ans.",
+  bio: "À 20 ans, j'ai repris seul la plateforme e-commerce d'Ici Carte Grise après le départ de mon tuteur (plusieurs milliers de transactions par mois en PHP 8, MySQL, intégrations API), et je l'ai tenue en prod tout en encadrant une nouvelle alternante. C'est cette capacité à livrer sous pression qui définit mon profil. En parallèle, à l'IUT MMI de Lannion, j'ai contribué à un projet de recherche couplant IA et interaction humain-machine, encadré par un chercheur de l'IRISA (Université de Rennes). L'article a été soumis à la conférence ACM UIST 2026. J'ai aussi créé Agentix Canvas, un outil de brainstorming collaboratif piloté par agents IA. En première année de BUT MMI, j'ai monté Modall avec deux étudiants de l'ENSSAT, un projet d'enceintes audio modulaires qui a remporté le Prix Pépite Campus à Quimper en mars 2024. En septembre 2026, je rejoins le cycle ingénieur ENSSAT, option IAM (IA & Multimédia) en alternance. Je cherche une entreprise d'accueil à Lannion ou Dinan pour conduire des projets d'IA appliquée pendant 3 ans.",
 
   skills: {
     ia: [
@@ -139,10 +139,10 @@ export const portfolio: Portfolio = {
       desc: "Projet de recherche couplant IA et interaction humain-machine, encadré par un chercheur de l'IRISA (Université de Rennes). Contribution au prototype web et à l'instrumentation de l'évaluation utilisateur. Article soumis à la conférence ACM UIST 2026.",
     },
     {
-      role: "Recherche, co-créateur d'Agentix Canvas",
+      role: "Recherche, créateur d'Agentix Canvas",
       company: "IUT de Lannion",
       period: "2025 à 2026",
-      desc: "Outil de brainstorming collaboratif temps réel avec orchestration multi-agents IA (assistant Isa). Cartes mentales, plans d'action générés automatiquement, intégration LLM dans une interface réactive. Lauréat du Prix du Campus Pépite 2025.",
+      desc: "Outil de brainstorming collaboratif temps réel avec orchestration multi-agents IA (assistant Isa). Cartes mentales, plans d'action générés automatiquement, intégration LLM dans une interface réactive.",
     },
   ],
 
@@ -176,7 +176,7 @@ Le contenu précis de l'article est sous embargo jusqu'à la décision de comit�
     {
       id: 2,
       title: "Agentix Canvas",
-      subtitle: "Brainstorming collaboratif piloté par agents IA · Lauréat Pépite 2025",
+      subtitle: "Brainstorming collaboratif piloté par agents IA",
       desc: "Canvas temps réel où Isa, un assistant orchestrant 3 agents (Idées, Critique, Structuration), enrichit une session de brainstorming humaine. Génération de cartes mentales, propositions de plans d'action, validation croisée entre agents.",
       details: `## Vision
 Créer un espace de brainstorming où plusieurs agents IA coopèrent pour aider un groupe à structurer ses idées, générer des plans d'action et explorer des pistes créatives, le tout en temps réel.
@@ -194,10 +194,7 @@ Isa est l'agent coordinateur d'Agentix Canvas. Il orchestre les autres agents sp
 - Plans d'action exportables
 
 ## Défis rencontrés
-La synchronisation des agents en temps réel est complexe : éviter les conflits de réponses, gérer les latences, maintenir la cohérence du contexte entre agents. Résolu par une file de messages et un état partagé côté serveur.
-
-## Distinction
-Lauréat du **Prix du Campus Pépite 2025**, dans l'écosystème entrepreneurial de Lannion.`,
+La synchronisation des agents en temps réel est complexe : éviter les conflits de réponses, gérer les latences, maintenir la cohérence du contexte entre agents. Résolu par une file de messages et un état partagé côté serveur.`,
       tech: ["React", "WebSockets", "LLM (Claude, Groq)", "Architecture multi-agents"],
       color: "bg-emerald-600",
       githubUrl: "https://github.com/Ethanol410/ProjetWorkshop",
@@ -294,13 +291,41 @@ Application de suivi de poids construite en mode production-ready : schéma de b
       demoUrl: null,
       classement: "secondary",
     },
+    {
+      id: 6,
+      title: "Modall",
+      subtitle: "Enceintes audio modulaires · Lauréat Pépite Campus 2024",
+      desc: "Projet d'enceintes audio modulaires pensées comme des Legos, monté en première année de BUT MMI avec deux étudiants de l'ENSSAT. Lauréat du Prix Pépite Campus à Quimper le 12 mars 2024.",
+      details: `## L'idée
+Permettre à l'utilisateur de construire son enceinte selon ses besoins (taille, puissance, format) avec des modules audio interconnectables, à la manière des Legos. Une enceinte qui grandit avec ses usages plutôt qu'un objet fini.
+
+## Équipe et contexte
+Projet collaboratif mené pendant ma première année de BUT MMI, en équipe avec **deux étudiants de l'ENSSAT**. C'est notamment cette collaboration qui m'a fait connaître l'école et qui pèse aujourd'hui dans mon choix d'y candidater pour le cycle ingénieur.
+
+## Mes contributions
+- Design produit et direction artistique
+- Prototype fonctionnel (impression 3D plus électronique)
+- Pitch et présentation devant le jury Pépite
+- Business plan et étude de marché initiale
+
+## Distinction
+**Lauréat du Prix Pépite Campus**, à Quimper, le 12 mars 2024. Pépite récompense l'entrepreneuriat étudiant et nous a permis de valider l'approche modulaire, le design épuré et le potentiel produit.
+
+## Aujourd'hui
+Le projet est en pause, nos parcours respectifs nous ont menés ailleurs. Mais l'expérience reste fondatrice : c'est là que j'ai compris que je voulais travailler dans des contextes pluridisciplinaires où le logiciel rencontre le matériel et le design, et que j'ai pris confiance dans ma capacité à porter une idée jusqu'à un objet réel défendable devant un jury.`,
+      tech: ["Design produit", "Impression 3D", "Électronique", "Pitch entrepreneurial"],
+      color: "bg-cyan-600",
+      githubUrl: null,
+      demoUrl: null,
+      classement: "secondary",
+    },
   ],
 
   awards: [
     {
-      title: "Prix du Campus, Concours Pépite",
-      desc: "Lauréat du prix campus dans l'écosystème entrepreneurial de Lannion. Projet associé : Agentix Canvas (brainstorming collaboratif piloté par agents IA).",
-      year: "2025",
+      title: "Prix Pépite Campus",
+      desc: "Lauréat du Prix Pépite Campus à Quimper, le 12 mars 2024, pour Modall, un projet d'enceintes audio modulaires monté en équipe avec deux étudiants de l'ENSSAT pendant ma première année de BUT MMI. Pépite récompense l'entrepreneuriat étudiant dans l'écosystème campus.",
+      year: "2024",
     },
   ],
 

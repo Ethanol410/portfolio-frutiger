@@ -21,7 +21,7 @@ const MISSIONS = [
 const ARGUMENTS = [
   "Co-auteur d'un projet de recherche IA et interaction humain-machine, article soumis à ACM UIST 2026",
   "2 ans d'alternance full-stack déjà validés (autonomie en production)",
-  "Lauréat du Prix du Campus Pépite 2025 (Agentix Canvas)",
+  "Lauréat du Prix Pépite Campus 2024 (Modall, en équipe avec deux étudiants de l'ENSSAT)",
   "Encadrement d'une nouvelle alternante chez Ici Carte Grise",
 ];
 

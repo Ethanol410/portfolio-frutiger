@@ -65,11 +65,7 @@ Isa est l'agent coordinateur d'Agentix Canvas. Il orchestre les autres agents sp
 
 ## Défis rencontrés
 
-La synchronisation des agents en temps réel est complexe : éviter les conflits de réponses, gérer les latences, maintenir la cohérence du contexte entre agents. On a résolu ça avec une file de messages et un état partagé côté serveur.
-
-## Distinction
-
-Lauréat du Prix du Campus Pépite 2025, dans l'écosystème entrepreneurial de Lannion.`,
+La synchronisation des agents en temps réel est complexe : éviter les conflits de réponses, gérer les latences, maintenir la cohérence du contexte entre agents. On a résolu ça avec une file de messages et un état partagé côté serveur.`,
   },
   {
     id: 'ethanos-assistant',
@@ -97,6 +93,35 @@ Embarquer un assistant conversationnel directement dans le portfolio, capable de
 - Pattern d'action déclenchée par le LLM pour piloter l'UI
 
 Tu peux le tester en cliquant sur l'icône Ethan IA depuis le bureau.`,
+  },
+  {
+    id: 'modall',
+    title: 'Modall',
+    subtitle: "Enceintes audio modulaires, Lauréat Pépite Campus 2024",
+    date: '2024',
+    tags: ['Entrepreneuriat', 'Design produit', 'Hardware', 'Pépite'],
+    content: `## L'idée
+
+Modall est un projet d'enceintes audio modulaires, pensées comme des Legos. L'utilisateur construit son enceinte selon ses besoins (taille, puissance, format) avec des modules interconnectables. Une enceinte qui grandit avec ses usages plutôt qu'un objet fini.
+
+## Équipe
+
+Projet collaboratif mené pendant ma première année de BUT MMI, en équipe avec **deux étudiants de l'ENSSAT**. C'est par cette collaboration que j'ai connu l'école et la qualité de leur formation, ce qui pèse aujourd'hui dans mon choix d'y candidater pour le cycle ingénieur.
+
+## Mes contributions
+
+- Design produit et direction artistique
+- Prototype fonctionnel (impression 3D et électronique)
+- Pitch et présentation devant le jury Pépite
+- Business plan et étude de marché initiale
+
+## Distinction
+
+Lauréat du **Prix Pépite Campus** à Quimper, le **12 mars 2024**. Pépite récompense l'entrepreneuriat étudiant dans l'écosystème campus.
+
+## Aujourd'hui
+
+Le projet est en pause, nos parcours respectifs nous ont menés ailleurs. Mais l'expérience reste fondatrice : c'est là que j'ai compris que je voulais travailler dans des contextes pluridisciplinaires où le logiciel rencontre le matériel et le design.`,
   },
 ];
 
