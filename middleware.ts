@@ -67,14 +67,17 @@ export function middleware(request: NextRequest) {
   }
 
   if (pathname.startsWith('/api/ai/chat')) {
-    const token = request.headers.get('x-app-token');
     const expected = process.env.APP_TOKEN;
-
-    if (!expected || token !== expected) {
-      return new NextResponse(
-        JSON.stringify({ error: 'Non autorisé.' }),
-        { status: 401, headers: { 'Content-Type': 'application/json' } }
-      );
+    // Si APP_TOKEN n'est pas configurée côté serveur, on ne bloque pas
+    // (le rate-limit reste actif). Évite un 401 silencieux en prod.
+    if (expected) {
+      const token = request.headers.get('x-app-token');
+      if (token !== expected) {
+        return new NextResponse(
+          JSON.stringify({ error: 'Non autorisé.' }),
+          { status: 401, headers: { 'Content-Type': 'application/json' } }
+        );
+      }
     }
   }
 
