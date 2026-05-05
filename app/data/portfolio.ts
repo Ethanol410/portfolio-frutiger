@@ -42,6 +42,13 @@ interface Recommendation {
   quote: string;
 }
 
+interface Engagement {
+  title: string;
+  role: string;
+  desc: string;
+  period: string;
+}
+
 export interface Portfolio {
   name: string;
   fullName: string;
@@ -61,13 +68,14 @@ export interface Portfolio {
   projects: Project[];
   awards: Award[];
   recommendations: Recommendation[];
+  engagements: Engagement[];
 }
 
 export const portfolio: Portfolio = {
   name: "Ethan",
   fullName: "Ethan Collin",
   title: "Apprenti ingénieur IA & interfaces intelligentes",
-  subtitle: "BUT MMI Lannion. Cycle ENSSAT IAM dès septembre 2026.",
+  subtitle: "BUT MMI Lannion (parcours Développement Web et dispositifs interactifs). Cycle ENSSAT IAM dès septembre 2026.",
   location: "Lannion · Dinan · Côtes-d'Armor",
   email: "ethan.collin2304@gmail.com",
   phone: "06 04 46 10 27",
@@ -80,9 +88,9 @@ export const portfolio: Portfolio = {
     label: "Alternance ingénieur IA, septembre 2026, Lannion ou Dinan",
   },
 
-  tagline: "Co-auteur d'un projet de recherche IA et interaction humain-machine soumis à UIST 2026. 2 ans d'alternance full-stack en production. Je conçois des systèmes où LLM et interfaces collaborent.",
+  tagline: "Co-auteur d'un projet de recherche IA et interaction humain-machine soumis à UIST 2026. 2 ans d'alternance full-stack en production. Je veux passer de l'utilisation à la conception de l'IA, et concevoir sous contraintes réelles.",
 
-  bio: "À 20 ans, j'ai repris seul la plateforme e-commerce d'Ici Carte Grise après le départ de mon tuteur (plusieurs milliers de transactions par mois en PHP 8, MySQL, intégrations API), et je l'ai tenue en prod tout en encadrant une nouvelle alternante. C'est cette capacité à livrer sous pression qui définit mon profil. En parallèle, à l'IUT MMI de Lannion, j'ai contribué à un projet de recherche couplant IA et interaction humain-machine, encadré par un chercheur de l'IRISA (Université de Rennes). L'article a été soumis à la conférence ACM UIST 2026. J'ai aussi créé Agentix Canvas, un outil de brainstorming collaboratif piloté par agents IA. En première année de BUT MMI, j'ai monté Modall avec deux étudiants de l'ENSSAT, un projet d'enceintes audio modulaires qui a remporté le Prix Pépite Campus à Quimper en mars 2024. En septembre 2026, je rejoins le cycle ingénieur ENSSAT, option IAM (IA & Multimédia) en alternance. Je cherche une entreprise d'accueil à Lannion ou Dinan pour conduire des projets d'IA appliquée pendant 3 ans.",
+  bio: "À 20 ans, j'ai repris seul la plateforme e-commerce d'Ici Carte Grise après le départ de mon tuteur (plusieurs milliers de transactions par mois en PHP 8, MySQL, intégrations API), et je l'ai tenue en prod tout en encadrant une nouvelle alternante. C'est cette capacité à concevoir sous contraintes réelles qui définit mon profil. Cette expérience m'a aussi appris que maintenir un code existant demande autant d'ingénierie que d'écrire du neuf. En parallèle, à l'IUT MMI de Lannion, j'ai contribué à un projet de recherche couplant IA et interaction humain-machine, encadré par un chercheur de l'IRISA (Université de Rennes). L'article a été soumis à la conférence ACM UIST 2026. J'ai aussi créé Agentix Canvas, un outil de brainstorming collaboratif piloté par agents IA. En première année de BUT MMI, j'ai monté Modall avec deux étudiants de l'ENSSAT, un projet d'enceintes audio modulaires lauréat du Prix Pépite Campus à Quimper en mars 2024. Conscient que mon bagage maths est à renforcer pour un cycle ingénieur, j'ai construit MathQuest, une PWA d'auto-formation aux mathématiques que j'utilise quotidiennement. Je n'attends pas l'école pour combler mes lacunes : je transforme les constats en action. En septembre 2026, je rejoins le cycle ingénieur ENSSAT, option IAM (IA et Multimédia) en alternance. Je cherche une entreprise d'accueil à Lannion ou Dinan pour passer de l'utilisation à la conception de l'IA, sur trois ans.",
 
   skills: {
     ia: [
@@ -95,15 +103,19 @@ export const portfolio: Portfolio = {
     multimedia: [
       "Web Audio API",
       "Canvas 2D",
+      "D3.js (visualisations interactives)",
       "Animations Framer Motion",
       "Traitement d'image (en cours)",
     ],
     web: [
-      "TypeScript",
+      "TypeScript strict",
       "React 19",
       "Next.js 16 (App Router)",
+      "Next.js 15 (PWA, MathQuest)",
       "Tailwind CSS 4",
       "Zustand",
+      "KaTeX (rendu LaTeX)",
+      "Dexie (IndexedDB, persistance offline)",
     ],
     backend: [
       "PHP 8.2 (production)",
@@ -112,10 +124,17 @@ export const portfolio: Portfolio = {
       "REST API",
       "Intégrations API (Resend, Spotify, GitHub, ANTS, Stripe)",
     ],
+    architecture: [
+      "Design patterns : Singleton, Observer, Factory, Strategy",
+      "Architecture MVC (au quotidien chez Ici Carte Grise)",
+      "Pub/Sub et reactivité (Zustand, addEventListener)",
+      "Streaming SSE et orchestration multi-agents",
+    ],
     devops: [
       "Git, GitHub Actions",
       "Vercel, déploiement continu",
-      "Tests (Vitest, 97 % de couverture sur Weight Tracker)",
+      "Tests : Vitest (unit, 97 % de couverture sur Weight Tracker), Playwright (e2e)",
+      "PWA (offline-first, IndexedDB, Service Workers)",
     ],
     soft: [
       "Autonomie sous pression",
@@ -319,6 +338,46 @@ Le projet est en pause, nos parcours respectifs nous ont menés ailleurs. Mais l
       demoUrl: null,
       classement: "secondary",
     },
+    {
+      id: 7,
+      title: "MathQuest",
+      subtitle: "PWA d'auto-formation aux mathématiques pour l'IA et le ML",
+      desc: "Application web progressive construite seul pour combler activement mes lacunes en mathématiques avant le cycle ingénieur. 4 modules progressifs dont un dédié maths pour l'IA et le ML (gradient, tenseurs, rétropropagation). Utilisation quotidienne, 10 à 15 minutes par soir.",
+      details: `## Pourquoi ce projet
+J'ai un parcours non scientifique (bac STMG, BUT MMI). Pour préparer un cycle ingénieur en IA et multimédia, je sais que mon bagage maths est à renforcer. Au lieu d'attendre l'école pour le faire, j'ai construit mon propre dispositif de remédiation, utilisable au quotidien.
+
+## L'idée
+Une PWA qui déroule un programme structuré, avec exercices interactifs, formules rendues en LaTeX, visualisations dynamiques et persistance hors-ligne. 4 modules progressifs :
+- **Maths discrètes** : logique, ensembles, arithmétique modulaire, dénombrement
+- **Algèbre linéaire** : matrices, systèmes, espaces vectoriels, valeurs propres
+- **Analyse et probabilités** : fonctions, suites, lois usuelles, Bayes
+- **Maths pour l'IA et le ML** : gradient, tenseurs, rétropropagation, descente de gradient
+
+## Stack technique
+- **Next.js 15** + **React 19** + **TypeScript strict**
+- **KaTeX** pour le rendu LaTeX des formules
+- **D3.js** pour les visualisations interactives (graphiques, courbes, vecteurs)
+- **Zustand** pour la gestion d'état
+- **Dexie** (IndexedDB) pour la persistance hors-ligne et le suivi de progression
+- **Vitest** et **Playwright** pour les tests unitaires et end-to-end
+- **PWA** : installable, offline-first, notifications de rappel
+
+## Discipline d'usage
+J'utilise MathQuest 10 à 15 minutes chaque soir, en complément de mon alternance. Un compteur de séries quotidiennes et un système d'objectifs hebdomadaires me permettent de tenir le rythme.
+
+## Ce que ça prouve
+Trois choses :
+1. **Lucidité** : je sais reconnaître mes lacunes et je ne les cache pas.
+2. **Action** : je ne me contente pas du constat, je construis l'outil pour les combler.
+3. **Discipline d'apprentissage** : pas une initiative ponctuelle, un dispositif quotidien.
+
+C'est exactement la posture que je veux apporter dans une équipe IA : repérer un trou, construire un outil mesurable, l'utiliser avec rigueur.`,
+      tech: ["Next.js 15", "React 19", "TypeScript", "KaTeX", "D3.js", "Zustand", "Dexie", "Vitest", "Playwright", "PWA"],
+      color: "bg-violet-600",
+      githubUrl: null,
+      demoUrl: null,
+      classement: "star",
+    },
   ],
 
   awards: [
@@ -349,6 +408,15 @@ Le projet est en pause, nos parcours respectifs nous ont menés ailleurs. Mais l
       name: "Gwendal Jamain",
       role: "Développeur Web, Ici Carte Grise",
       quote: "Sérieux, rigueur et curiosité intellectuelle remarquables. Travail fiable, structuré et réfléchi. Recommandation sans réserve.",
+    },
+  ],
+
+  engagements: [
+    {
+      title: "BDE de l'IUT de Lannion",
+      role: "Chef de projet",
+      period: "2024 à 2026",
+      desc: "Chef de projet au Bureau des Étudiants. Responsable de deux opérations : la vente hebdomadaire de viennoiseries du vendredi matin (gestion fournisseur, trésorerie, logistique, financement des événements du BDE), et le concours de design du pull du BDE (animation de la communauté étudiante, organisation du vote, coordination avec le fournisseur, livraison dans les temps). Faire bouger un collectif autour d'un objectif commun, c'est une compétence d'ingénieur autant qu'une compétence associative.",
     },
   ],
 };

@@ -14,6 +14,7 @@ const SECTION_TITLES: Record<string, string> = {
   multimedia: "Multimédia",
   web: "Développement web",
   backend: "Backend & API",
+  architecture: "Architecture & patterns",
   devops: "DevOps & outils",
   soft: "Soft skills",
 };
@@ -306,6 +307,31 @@ export default function RecruiterPage() {
             ))}
           </div>
         </section>
+
+        {/* Engagement / Vie associative */}
+        {portfolio.engagements.length > 0 && (
+          <section
+            className="rounded-2xl p-6"
+            style={{
+              background: "rgba(255,255,255,0.85)",
+              border: "1px solid rgba(186,230,253,0.55)",
+              boxShadow: "0 2px 10px rgba(14,165,233,0.08)",
+            }}
+          >
+            <h2 className="text-xs font-bold text-sky-600 uppercase tracking-widest mb-3">Engagement</h2>
+            <div className="flex flex-col gap-3">
+              {portfolio.engagements.map((eng, i) => (
+                <div key={i}>
+                  <div className="font-semibold text-slate-900 text-sm">{eng.title}</div>
+                  <div className="text-xs text-emerald-700 font-medium">
+                    {eng.role} · {eng.period}
+                  </div>
+                  <p className="text-xs text-slate-600 leading-relaxed mt-1">{eng.desc}</p>
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
 
         {/* Distinctions */}
         {portfolio.awards.length > 0 && (

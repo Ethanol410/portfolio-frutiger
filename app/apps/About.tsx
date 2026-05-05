@@ -1,7 +1,7 @@
 import React from 'react';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
-import { Github, Linkedin, Mail, MapPin, Award, Quote, Phone, Zap } from 'lucide-react';
+import { Github, Linkedin, Mail, MapPin, Award, Quote, Phone, Zap, Users } from 'lucide-react';
 import { portfolio } from '@/app/data/portfolio';
 
 const stagger = {
@@ -18,6 +18,7 @@ const SKILL_LABELS: Record<string, string> = {
   multimedia: 'Multimédia',
   web: 'Développement web',
   backend: 'Backend & API',
+  architecture: 'Architecture & patterns',
   devops: 'DevOps & outils',
   soft: 'Soft skills',
   frontend: 'Front-End',
@@ -30,6 +31,7 @@ const SKILL_COLORS: Record<string, string> = {
   multimedia: 'bg-fuchsia-50 text-fuchsia-700 border-fuchsia-100',
   web: 'bg-blue-50 text-blue-700 border-blue-100',
   backend: 'bg-purple-50 text-purple-700 border-purple-100',
+  architecture: 'bg-indigo-50 text-indigo-700 border-indigo-100',
   devops: 'bg-emerald-50 text-emerald-700 border-emerald-100',
   soft: 'bg-amber-50 text-amber-700 border-amber-100',
   frontend: 'bg-blue-50 text-blue-600 border-blue-100',
@@ -156,6 +158,27 @@ export const AboutApp = () => {
                 <div>
                   <div className="font-semibold text-gray-800 text-sm">{award.title} <span className="text-yellow-600 font-normal">· {award.year}</span></div>
                   <div className="text-xs text-gray-500 mt-0.5">{award.desc}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </motion.div>
+      )}
+
+      {/* Engagement / Vie associative */}
+      {portfolio.engagements.length > 0 && (
+        <motion.div variants={fadeUp} className="w-full aero-card rounded-xl p-6">
+          <h3 className="font-bold text-gray-800 mb-3 border-b pb-2 flex items-center gap-2">
+            <Users size={16} className="text-emerald-500" /> Engagement
+          </h3>
+          <div className="flex flex-col gap-3">
+            {portfolio.engagements.map((eng, i) => (
+              <div key={i} className="flex gap-3 bg-emerald-50 border border-emerald-100 rounded-lg p-3">
+                <Users size={20} className="text-emerald-500 shrink-0 mt-0.5" />
+                <div>
+                  <div className="font-semibold text-gray-800 text-sm">{eng.title}</div>
+                  <div className="text-xs text-emerald-700 font-medium">{eng.role} · {eng.period}</div>
+                  <div className="text-xs text-gray-500 mt-0.5 leading-relaxed">{eng.desc}</div>
                 </div>
               </div>
             ))}
