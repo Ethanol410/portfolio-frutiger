@@ -11,6 +11,67 @@ export const SKILL_LABELS: Record<string, string> = {
 
 export const SKILL_ORDER = ['ia', 'multimedia', 'web', 'backend', 'architecture', 'devops'];
 
+// ── Sidebar data ─────────────────────────────────────────────────
+
+export const CV_SOFT_SKILLS = [
+  'Esprit d\'équipe',
+  'Pouvoir de conviction',
+  'Autonomie',
+  'Adaptabilité & Lucidité',
+];
+
+export const CV_COMPETENCES = [
+  'Développement Web',
+  'Bases de données',
+  'Langages & Algorithmique',
+  'IA & Cloud',
+];
+
+export const CV_INTERESTS = [
+  'Musculation / Nutrition',
+  'Informatique',
+  'Vidéos',
+  'Voyage',
+];
+
+export const CV_LANGUAGES = [
+  { name: 'Anglais', level: 'B1', note: 'Lecture tech courante' },
+  { name: 'Français', level: 'Natif', note: 'Prix d\'excellence' },
+];
+
+// ── Structured experiences for CV print ──────────────────────────
+
+export interface CvExperience {
+  period: string;
+  role: string;
+  company: string;
+  missions: string;
+  tools: string;
+  learned: string;
+  accent: 'red' | 'green';
+}
+
+export const CV_EXPERIENCES: CvExperience[] = [
+  {
+    period: 'Août 2024 → 2026',
+    role: 'Alternant Développeur Full Stack Natif',
+    company: 'Ici Carte Grise · Brest (29)',
+    missions: 'Reprise en solo de la plateforme B2C (prod, PHP 8.2 / MySQL) après départ du tuteur. Développement d\'une solution modulaire B2B (eProcess). Encadrement d\'une nouvelle alternante.',
+    tools: 'PHP 7.4 / 8.2 · JavaScript · MySQL · Firebase · Docker · GitHub · LlamaExtract',
+    learned: 'Autonomie sous pression · rigueur · gestion de projet agile',
+    accent: 'red',
+  },
+  {
+    period: '2025 → aujourd\'hui',
+    role: 'Développeur web freelance',
+    company: 'Freelance',
+    missions: 'Conception, développement et hébergement de sites vitrines et d\'applications métier avec parcours client complexe. Accompagnement complet (recueil des besoins, maintenance, SAV).',
+    tools: 'Next.js · Tailwind · TypeScript · Stripe · Prisma · Zod · WordPress · Elementor',
+    learned: 'Sens de l\'écoute · gestion client · responsive design',
+    accent: 'green',
+  },
+];
+
 export const FORMATIONS = [
   {
     title: 'Cycle ingénieur ENSSAT, option IAM (IA & Multimédia)',
