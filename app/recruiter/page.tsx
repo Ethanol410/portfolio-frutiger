@@ -92,6 +92,32 @@ const BOKEH_ORBS = [
   { left: "40%", top: "3%",  w: 190, dur: "9.5s", delay: "1s",   color: "rgba(100,200,230,.13)" },
 ];
 
+/* Rising bubble definitions */
+const BUBBLES = [
+  { left: "12%",  size: 28, dur: "18s",  delay: "0s"   },
+  { left: "28%",  size: 18, dur: "24s",  delay: "4s"   },
+  { left: "45%",  size: 34, dur: "21s",  delay: "7s"   },
+  { left: "62%",  size: 22, dur: "19s",  delay: "2s"   },
+  { left: "78%",  size: 14, dur: "26s",  delay: "9s"   },
+  { left: "88%",  size: 30, dur: "22s",  delay: "5s"   },
+  { left: "6%",   size: 20, dur: "28s",  delay: "12s"  },
+  { left: "55%",  size: 16, dur: "20s",  delay: "16s"  },
+];
+
+/* Decorative 3D glossy orbs */
+const GLOSS_ORBS = [
+  {
+    right: "3%", bottom: "18%", size: 52,
+    colors: ["rgba(255,255,255,.85) 0%, rgba(255,255,255,.3) 22%, transparent 50%", "rgba(0,60,140,.18) 0%, transparent 44%", "#5cd0ea 0%, #0096c7 42%, #0077b6 68%, #023e8a 100%"],
+    glow: "rgba(72,202,228,.5)",
+  },
+  {
+    left: "1%", top: "38%", size: 36,
+    colors: ["rgba(255,255,255,.80) 0%, rgba(255,255,255,.25) 20%, transparent 50%", "rgba(0,40,120,.15) 0%, transparent 40%", "#80d8ee 0%, #48cae4 40%, #0096c7 65%, #0077b6 100%"],
+    glow: "rgba(100,210,235,.45)",
+  },
+];
+
 export default function RecruiterPage() {
   const starProjects      = portfolio.projects.filter(p => p.classement === "star");
   const secondaryProjects = portfolio.projects.filter(p => p.classement === "secondary");
@@ -124,6 +150,13 @@ export default function RecruiterPage() {
           0%   { transform: translate(-50%,-50%) scale(1);    opacity: 1; }
           50%  { transform: translate(-50%,-50%) scale(1.08); opacity: 0.7; }
           100% { transform: translate(-50%,-50%) scale(1);    opacity: 1; }
+        }
+
+        @keyframes bubble-rise {
+          0%   { transform: translateY(0)      scale(1);    opacity: 0; }
+          5%   { opacity: 0.55; }
+          85%  { opacity: 0.35; }
+          100% { transform: translateY(-105vh) scale(0.75); opacity: 0; }
         }
 
         .btn-aqua {
@@ -163,11 +196,12 @@ export default function RecruiterPage() {
         .btn-glass:hover { background: rgba(255,255,255,.65); }
       `}</style>
 
-      {/* ── BOKEH ORBS (fixed behind content) ── */}
+      {/* ── BOKEH ORBS + BUBBLES + GLOSSY ORBS (fixed behind content) ── */}
       <div
         aria-hidden="true"
         style={{ position: "fixed", inset: 0, zIndex: 0, pointerEvents: "none", overflow: "hidden" }}
       >
+        {/* Bokeh soft blurs */}
         {BOKEH_ORBS.map((o, i) => (
           <div
             key={i}
@@ -181,6 +215,51 @@ export default function RecruiterPage() {
               background: `radial-gradient(circle, ${o.color} 0%, transparent 68%)`,
               transform: "translate(-50%, -50%)",
               animation: `bokeh-float ${o.dur} ${o.delay} ease-in-out infinite`,
+            }}
+          />
+        ))}
+
+        {/* Rising bubbles */}
+        {BUBBLES.map((b, i) => (
+          <div
+            key={`b${i}`}
+            style={{
+              position: "absolute",
+              left: b.left,
+              bottom: "-60px",
+              width: b.size,
+              height: b.size,
+              borderRadius: "50%",
+              background: [
+                "radial-gradient(circle at 35% 30%, rgba(255,255,255,.75) 0%, rgba(255,255,255,.2) 25%, transparent 52%)",
+                "radial-gradient(circle at 60% 68%, rgba(0,100,180,.12) 0%, transparent 45%)",
+                "radial-gradient(circle, rgba(200,240,255,.35) 0%, rgba(150,220,245,.15) 60%, transparent 100%)",
+              ].join(", "),
+              border: "1px solid rgba(255,255,255,.55)",
+              boxShadow: "inset 0 1px 0 rgba(255,255,255,.6), 0 2px 6px rgba(0,100,180,.08)",
+              animation: `bubble-rise ${b.dur} ${b.delay} ease-in infinite`,
+            }}
+          />
+        ))}
+
+        {/* 3D Glossy decorative orbs */}
+        {GLOSS_ORBS.map((o, i) => (
+          <div
+            key={`g${i}`}
+            style={{
+              position: "absolute",
+              ...(o.right ? { right: o.right } : { left: (o as { left: string }).left }),
+              ...(o.bottom ? { bottom: o.bottom } : { top: (o as { top: string }).top }),
+              width: o.size,
+              height: o.size,
+              borderRadius: "50%",
+              background: [
+                `radial-gradient(circle at 36% 30%, ${o.colors[0]})`,
+                `radial-gradient(circle at 64% 70%, ${o.colors[1]})`,
+                `radial-gradient(circle at 50% 50%, ${o.colors[2]})`,
+              ].join(", "),
+              boxShadow: `0 0 ${o.size * 0.6}px ${o.glow}, 0 4px 12px rgba(0,50,120,.2), inset 0 -2px 8px rgba(0,40,100,.15)`,
+              animation: `bokeh-float ${14 + i * 3}s ${i * 2}s ease-in-out infinite`,
             }}
           />
         ))}
@@ -607,9 +686,6 @@ export default function RecruiterPage() {
           </section>
         )}
 
-        {/* ── GRASS SILHOUETTE ── */}
-        <GrassSilhouette />
-
         {/* ── FOOTER ── */}
         <footer className="r-s pb-12 flex flex-col items-center gap-4" style={{ animationDelay: "720ms" }}>
           <div
@@ -662,40 +738,3 @@ function AeroLabel({ children }: { children: React.ReactNode }) {
   );
 }
 
-function GrassSilhouette() {
-  return (
-    <div
-      aria-hidden="true"
-      style={{ width: "100%", pointerEvents: "none", marginTop: "4px", overflow: "hidden", lineHeight: 0 }}
-    >
-      <svg
-        viewBox="0 0 800 90"
-        preserveAspectRatio="none"
-        style={{ width: "100%", height: 64, display: "block" }}
-      >
-        {/* Back hill — soft teal */}
-        <path
-          d="M0,90 L0,68 C25,50 48,72 72,60 C96,48 112,66 136,57 C160,48 175,68 200,60 C225,52 240,70 265,63 C290,56 305,72 330,66 C355,60 370,74 395,68 C420,62 435,76 460,71 C485,66 498,78 523,74 C548,70 562,80 587,76 C612,72 626,82 651,79 C676,76 690,84 715,82 C740,80 754,86 779,84 L800,84 L800,90 Z"
-          fill="rgba(0,190,170,.13)"
-        />
-        {/* Front hill — aqua */}
-        <path
-          d="M0,90 L0,76 C22,66 38,78 62,72 C86,66 98,76 122,71 C146,66 160,76 184,72 C208,68 222,78 246,74 C270,70 282,79 306,76 C330,73 342,81 366,78 C390,75 403,83 427,80 C451,77 463,84 487,82 C511,80 523,86 547,84 C571,82 583,87 607,86 C631,85 643,88 667,87 C691,86 703,89 727,88 L800,90 L800,90 Z"
-          fill="rgba(0,160,210,.16)"
-        />
-        {/* Tall grass blades */}
-        <path d="M55,90 C53,74 51,56 56,38 C61,56 63,74 61,90 Z" fill="rgba(0,180,170,.28)" />
-        <path d="M55,90 C56,78 58,65 54,52 C52,65 50,78 51,90 Z" fill="rgba(0,200,180,.20)" />
-        <path d="M160,90 C158,76 156,58 162,40 C168,58 170,76 168,90 Z" fill="rgba(0,170,190,.26)" />
-        <path d="M160,90 C162,80 164,67 160,54 C157,67 155,80 156,90 Z" fill="rgba(0,190,200,.18)" />
-        <path d="M290,90 C288,72 286,54 292,35 C298,54 300,72 298,90 Z" fill="rgba(0,175,185,.27)" />
-        <path d="M420,90 C418,76 416,60 422,44 C428,60 430,76 428,90 Z" fill="rgba(0,165,205,.24)" />
-        <path d="M420,90 C422,80 424,67 420,54 C417,67 415,80 416,90 Z" fill="rgba(0,185,215,.17)" />
-        <path d="M545,90 C543,74 541,56 547,38 C553,56 555,74 553,90 Z" fill="rgba(0,172,188,.26)" />
-        <path d="M670,90 C668,76 666,59 672,42 C678,59 680,76 678,90 Z" fill="rgba(0,168,202,.25)" />
-        <path d="M670,90 C672,80 674,67 670,54 C667,67 665,80 666,90 Z" fill="rgba(0,185,215,.17)" />
-        <path d="M760,90 C758,77 756,62 762,46 C768,62 770,77 768,90 Z" fill="rgba(0,175,195,.24)" />
-      </svg>
-    </div>
-  );
-}

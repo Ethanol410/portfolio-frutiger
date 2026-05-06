@@ -126,14 +126,33 @@ export const Taskbar = () => {
         {startOpen && <StartMenu onClose={() => setStartOpen(false)} />}
       </div>
 
-      <div className="h-12 md:h-10 bg-slate-900/80 backdrop-blur-xl border-t border-white/20 flex items-center px-2 gap-2 shadow-2xl taskbar-safe">
+      <div
+        className="h-12 md:h-10 flex items-center px-2 gap-2 taskbar-safe"
+        style={{
+          background: 'linear-gradient(180deg, rgba(28,55,130,0.78) 0%, rgba(8,18,65,0.94) 100%)',
+          backdropFilter: 'blur(22px) saturate(180%)',
+          WebkitBackdropFilter: 'blur(22px) saturate(180%)',
+          borderTop: '1px solid rgba(120,170,255,0.32)',
+          boxShadow: '0 -1px 0 rgba(255,255,255,0.08), inset 0 1px 0 rgba(120,170,255,0.18), 0 -4px 24px rgba(0,10,60,0.55)',
+        }}
+      >
 
         <button
           ref={startButtonRef}
-          className={`
-            flex items-center gap-2 px-4 py-2 md:px-3 md:py-1 rounded-md text-white font-bold text-sm shadow-sm transition-all focus:ring-2 focus:ring-white/50 outline-none
-            ${startOpen ? 'bg-blue-600' : 'bg-gradient-to-b from-emerald-500 to-emerald-700 active:scale-95'}
-          `}
+          className="flex items-center gap-2 px-4 py-2 md:px-3 md:py-1 rounded-md text-white font-bold text-sm transition-all focus:ring-2 focus:ring-emerald-400/50 outline-none active:scale-95"
+          style={startOpen ? {
+            background: 'linear-gradient(180deg, rgba(37,99,235,0.9) 0%, rgba(29,78,216,0.95) 100%)',
+            border: '1px solid rgba(96,165,250,0.5)',
+            boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.2), 0 2px 8px rgba(0,0,80,0.4)',
+          } : {
+            background: [
+              'radial-gradient(circle at 42% 30%, rgba(255,255,255,.70) 0%, rgba(255,255,255,.12) 28%, transparent 52%)',
+              'radial-gradient(circle at 60% 72%, rgba(0,80,20,.25) 0%, transparent 48%)',
+              'linear-gradient(180deg, #4ade80 0%, #16a34a 42%, #15803d 100%)',
+            ].join(', '),
+            border: '1px solid rgba(22,163,74,.75)',
+            boxShadow: '0 0 14px rgba(74,222,128,.45), 0 2px 8px rgba(0,0,0,.3), inset 0 1px 0 rgba(255,255,255,.38)',
+          }}
           onClick={() => setStartOpen(!startOpen)}
           aria-label="Ouvrir le menu démarrer"
         >

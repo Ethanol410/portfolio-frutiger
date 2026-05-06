@@ -79,39 +79,79 @@ export const WindowFrame = ({ window: appWindow }: WindowFrameProps) => {
       style={{ zIndex: appWindow.zIndex, position: 'absolute' }}
       className={`flex flex-col aero-glass overflow-hidden shadow-2xl`}
     >
-      {/* Barre de titre */}
+      {/* Barre de titre — Vista Aero chrome */}
       <div
-        className="h-9 bg-gradient-to-r from-cyan-600 to-blue-600 flex items-center justify-between px-3 select-none touch-none"
+        className="h-9 flex items-center justify-between px-3 select-none touch-none relative overflow-hidden"
+        style={{
+          background: 'linear-gradient(180deg, rgba(90,165,245,0.97) 0%, rgba(38,110,220,0.93) 48%, rgba(22,82,195,0.97) 100%)',
+          borderBottom: '1px solid rgba(10,50,160,0.45)',
+          boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.42), inset 0 -1px 0 rgba(0,0,0,0.12)',
+        }}
         onDoubleClick={() => !isMobile && toggleMaximizeApp(appWindow.id)}
       >
-        <div className="flex items-center gap-2 text-white font-bold text-sm drop-shadow-md">
+        {/* Glass reflection strip */}
+        <div
+          aria-hidden="true"
+          style={{
+            position: 'absolute', top: 0, left: 0, right: 0, height: '50%',
+            background: 'linear-gradient(180deg, rgba(255,255,255,.22) 0%, rgba(255,255,255,.04) 100%)',
+            pointerEvents: 'none',
+          }}
+        />
+
+        <div className="flex items-center gap-2 text-white font-bold text-sm drop-shadow relative z-10">
           <appWindow.icon size={16} /> {appWindow.title}
         </div>
-        <div className="flex gap-2">
+
+        <div className="flex gap-1.5 relative z-10">
+          {/* Minimize — amber orb */}
           <button
             aria-label="Réduire"
             onClick={(e) => { e.stopPropagation(); soft(); minimizeApp(appWindow.id); }}
-            className="p-3 md:p-1 hover:bg-white/20 rounded"
+            className="p-3 md:p-0.5 hover:brightness-110 transition-all"
+            style={{
+              width: 18, height: 18, borderRadius: '50%',
+              background: 'radial-gradient(circle at 38% 30%, rgba(255,255,255,.75) 0%, rgba(255,210,50,.55) 30%, rgba(180,130,0,.9) 100%)',
+              border: '1px solid rgba(140,100,0,.45)',
+              boxShadow: 'inset 0 1px 0 rgba(255,255,255,.35), 0 1px 4px rgba(0,0,0,.35)',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+            }}
           >
-            <Minimize2 size={12} color="white" />
+            <Minimize2 size={8} color="rgba(90,60,0,.7)" />
           </button>
 
+          {/* Maximize — green orb */}
           {!isMobile && (
             <button
-              aria-label={appWindow.isMaximized ? "Restaurer" : "Agrandir"}
+              aria-label={appWindow.isMaximized ? 'Restaurer' : 'Agrandir'}
               onClick={(e) => { e.stopPropagation(); toggleMaximizeApp(appWindow.id); }}
-              className="p-3 md:p-1 hover:bg-white/20 rounded"
+              className="p-3 md:p-0.5 hover:brightness-110 transition-all"
+              style={{
+                width: 18, height: 18, borderRadius: '50%',
+                background: 'radial-gradient(circle at 38% 30%, rgba(255,255,255,.75) 0%, rgba(100,220,100,.55) 30%, rgba(20,140,20,.9) 100%)',
+                border: '1px solid rgba(10,100,10,.45)',
+                boxShadow: 'inset 0 1px 0 rgba(255,255,255,.35), 0 1px 4px rgba(0,0,0,.35)',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+              }}
             >
-              {appWindow.isMaximized ? <Copy size={12} color="white" /> : <Maximize2 size={12} color="white" />}
+              {appWindow.isMaximized ? <Copy size={8} color="rgba(0,70,0,.7)" /> : <Maximize2 size={8} color="rgba(0,70,0,.7)" />}
             </button>
           )}
 
+          {/* Close — red orb */}
           <button
             aria-label="Fermer"
             onClick={(e) => { e.stopPropagation(); soft(); closeApp(appWindow.id); }}
-            className="bg-red-500 hover:bg-red-600 p-3 md:p-1 rounded-sm border border-red-700"
+            className="p-3 md:p-0.5 hover:brightness-110 transition-all"
+            style={{
+              width: 18, height: 18, borderRadius: '50%',
+              background: 'radial-gradient(circle at 38% 30%, rgba(255,255,255,.75) 0%, rgba(255,100,100,.55) 30%, rgba(200,20,20,.9) 100%)',
+              border: '1px solid rgba(150,10,10,.45)',
+              boxShadow: 'inset 0 1px 0 rgba(255,255,255,.35), 0 1px 4px rgba(0,0,0,.35)',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+            }}
           >
-            <X size={12} color="white" />
+            <X size={8} color="rgba(120,0,0,.8)" />
           </button>
         </div>
       </div>
