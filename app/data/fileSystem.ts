@@ -12,7 +12,7 @@ export const myComputer: FileNode[] = [
     name: 'Documents',
     type: 'folder',
     children: [
-      { id: '11', name: 'cv.pdf', type: 'file', content: '/cv.pdf' },
+      { id: '11', name: 'cv_ethan_collin.pdf', type: 'file', content: '/cv_ethan_collin.pdf' },
     ]
   },
   {

@@ -85,9 +85,8 @@ export default function RecruiterPage() {
 
             <div className="mt-5 flex flex-wrap gap-2">
               <a
-                href="/cv.pdf"
-                target="_blank"
-                rel="noopener noreferrer"
+                href="/cv_ethan_collin.pdf"
+                download="cv_ethan_collin.pdf"
                 className="px-4 py-2 text-sm font-semibold text-white rounded-full"
                 style={{
                   background: "linear-gradient(180deg, #1976d2 0%, #1254a0 100%)",
@@ -95,6 +94,18 @@ export default function RecruiterPage() {
                 }}
               >
                 Télécharger mon CV
+              </a>
+              <a
+                href="/cv_ethan_collin.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-4 py-2 text-sm font-semibold text-white rounded-full"
+                style={{
+                  background: "linear-gradient(180deg, #0891b2 0%, #0e7490 100%)",
+                  boxShadow: "0 3px 8px rgba(14,116,144,0.3), inset 0 1px 0 rgba(255,255,255,0.3)",
+                }}
+              >
+                Voir le CV
               </a>
               <a
                 href={`mailto:${portfolio.email}`}

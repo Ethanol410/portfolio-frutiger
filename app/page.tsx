@@ -140,7 +140,7 @@ export default function Desktop() {
         addWindow({ ...baseWindow, id: 'paint', title: 'Paint', icon: Palette, component: <PaintApp />, defaultPosition: { x: 80, y: 40 }, defaultSize: { width: 900, height: 660 } });
         break;
       case 'CV':
-        addWindow({ ...baseWindow, id: 'cv', title: 'Mon CV', icon: FileText, component: <PDFViewerApp file="/cv.pdf" />, defaultPosition: { x: 120, y: 40 }, defaultSize: { width: 800, height: 660 } });
+        addWindow({ ...baseWindow, id: 'cv', title: 'Mon CV', icon: FileText, component: <PDFViewerApp file="/cv_ethan_collin.pdf" />, defaultPosition: { x: 120, y: 40 }, defaultSize: { width: 800, height: 660 } });
         break;
       case 'AIChat':
         addWindow({ ...baseWindow, id: 'aichat', title: 'Ethan IA', icon: Sparkles, component: <AIChatApp />, defaultPosition: { x: 250, y: 80 }, defaultSize: { width: 420, height: 560 } });

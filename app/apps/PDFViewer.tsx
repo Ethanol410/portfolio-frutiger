@@ -7,7 +7,7 @@ interface PDFViewerProps {
 }
 
 export const PDFViewerApp = ({ file, fileUrl }: PDFViewerProps) => {
-  const src = file || fileUrl || '/cv.pdf';
+  const src = file || fileUrl || '/cv_ethan_collin.pdf';
 
   return (
     <div className="flex flex-col h-full aero-app">
@@ -35,7 +35,7 @@ export const PDFViewerApp = ({ file, fileUrl }: PDFViewerProps) => {
 
         <a
           href={src}
-          download
+          download="cv_ethan_collin.pdf"
           className="flex items-center gap-1.5 text-xs text-white px-3 py-1.5 rounded-lg transition-all hover:opacity-90"
           style={{
             background: 'linear-gradient(135deg,#0284c7,#38bdf8)',

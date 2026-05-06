@@ -39,7 +39,7 @@ export const Taskbar = () => {
       id: 'cv',
       title: 'Mon CV',
       icon: FileText,
-      component: <PDFViewerApp file="/cv.pdf" />,
+      component: <PDFViewerApp file="/cv_ethan_collin.pdf" />,
       isOpen: true,
       isMinimized: false,
       isMaximized: false,

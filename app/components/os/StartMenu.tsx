@@ -85,7 +85,7 @@ export const StartMenu = ({ onClose }: StartMenuProps) => {
         addWindow({ ...baseWindow, id: 'contact', title: 'Me Contacter', icon: Mail, component: <ContactApp />, defaultPosition: { x: 200, y: 100 } });
         break;
       case 'CV':
-        addWindow({ ...baseWindow, id: 'cv', title: 'Mon CV', icon: FileText, component: <PDFViewerApp file="/cv.pdf" />, defaultPosition: { x: 120, y: 60 } });
+        addWindow({ ...baseWindow, id: 'cv', title: 'Mon CV', icon: FileText, component: <PDFViewerApp file="/cv_ethan_collin.pdf" />, defaultPosition: { x: 120, y: 60 } });
         break;
       case 'AIChat':
         addWindow({ ...baseWindow, id: 'aichat', title: 'Ethan IA', icon: Sparkles, component: <AIChatApp />, defaultSize: { width: 420, height: 560 } });

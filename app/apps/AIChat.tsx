@@ -108,7 +108,7 @@ export const AIChatApp = () => {
         addWindow({ ...base, id: 'contact', title: 'Me Contacter', icon: Mail, component: <ContactApp />, defaultSize: { width: 520, height: 480 } });
         break;
       case 'cv':
-        addWindow({ ...base, id: 'cv', title: 'Mon CV', icon: FileText, component: <PDFViewerApp file="/cv.pdf" />, defaultSize: { width: 700, height: 540 } });
+        addWindow({ ...base, id: 'cv', title: 'Mon CV', icon: FileText, component: <PDFViewerApp file="/cv_ethan_collin.pdf" />, defaultSize: { width: 700, height: 540 } });
         break;
     }
   };
