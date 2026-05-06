@@ -9,6 +9,49 @@ export const metadata: Metadata = {
   robots: { index: true, follow: true },
 };
 
+/* ─── Frutiger Aero colour constants ─── */
+const AQ  = "#0096c7";   // aqua primary
+const AQD = "#0077b6";   // deep aqua
+const AQL = "#48cae4";   // light aqua
+
+/* Shared style objects */
+const GLASS: React.CSSProperties = {
+  background: "rgba(255,255,255,0.48)",
+  backdropFilter: "blur(18px) saturate(190%)",
+  WebkitBackdropFilter: "blur(18px) saturate(190%)",
+  border: "1px solid rgba(255,255,255,0.72)",
+  boxShadow: "0 6px 32px rgba(0,100,180,0.13), 0 1px 3px rgba(0,0,0,0.07), inset 0 1px 0 rgba(255,255,255,0.92)",
+};
+
+const GLASS_CARD: React.CSSProperties = {
+  ...GLASS,
+  borderRadius: "14px",
+};
+
+/* Project colour map — keep per-project identity inside glass frame */
+const PROJECT_COLORS: Record<string, { accent: string }> = {
+  "bg-violet-600":  { accent: "#7c3aed" },
+  "bg-emerald-600": { accent: "#059669" },
+  "bg-blue-500":    { accent: "#3b82f6" },
+  "bg-fuchsia-600": { accent: "#c026d3" },
+  "bg-orange-500":  { accent: "#f97316" },
+  "bg-cyan-600":    { accent: "#0891b2" },
+  "bg-rose-500":    { accent: "#f43f5e" },
+  "bg-indigo-600":  { accent: "#4f46e5" },
+  "bg-amber-500":   { accent: "#f59e0b" },
+};
+
+/* Skill category colours — aqua family with touches of teal/sky */
+const SKILL_COLORS: Record<string, { bg: string; text: string; border: string }> = {
+  ia:           { bg: "rgba(0,119,182,.12)",  text: AQD,     border: "rgba(0,119,182,.35)"  },
+  multimedia:   { bg: "rgba(8,145,178,.12)",  text: "#0e7490",border: "rgba(8,145,178,.35)" },
+  web:          { bg: "rgba(72,202,228,.14)",  text: "#0077a8",border: "rgba(72,202,228,.4)" },
+  backend:      { bg: "rgba(2,119,189,.12)",   text: "#015f7a",border: "rgba(2,119,189,.35)" },
+  architecture: { bg: "rgba(0,150,199,.1)",    text: "#005f7a",border: "rgba(0,150,199,.3)"  },
+  devops:       { bg: "rgba(100,160,190,.12)", text: "#1e4d6b",border: "rgba(100,160,190,.35)"},
+  soft:         { bg: "rgba(14,165,233,.1)",   text: "#075985",border: "rgba(14,165,233,.3)" },
+};
+
 const SECTION_TITLES: Record<string, string> = {
   ia: "IA & Machine Learning",
   multimedia: "Multimédia",
@@ -19,372 +62,371 @@ const SECTION_TITLES: Record<string, string> = {
   soft: "Soft skills",
 };
 
+const BIO_BLOCKS = [
+  {
+    num: "01",
+    headline: "Concevoir sous contraintes réelles",
+    text: "À 20 ans, reprise en solo de la plateforme e-commerce d'Ici Carte Grise — plusieurs milliers de transactions par mois, PHP 8, MySQL, API métier — après le départ du tuteur. Tenu en prod deux ans, tout en encadrant une nouvelle alternante.",
+  },
+  {
+    num: "02",
+    headline: "Recherche et publication",
+    text: "Projet de recherche IA & interaction humain-machine à l'IUT MMI de Lannion, encadré par un chercheur de l'IRISA. Co-auteur d'un article soumis à ACM UIST 2026. Lauréat du Prix Pépite Campus 2024 pour Modall.",
+  },
+  {
+    num: "03",
+    headline: "Je transforme les constats en action",
+    text: "Conscient d'un bagage maths à renforcer, j'ai construit MathQuest — une PWA d'auto-formation utilisée 15 min chaque soir. En septembre 2026, cycle ingénieur ENSSAT IAM en alternance à Lannion ou Dinan.",
+  },
+];
+
+const NUNITO = "var(--font-nunito, 'Segoe UI', system-ui, sans-serif)";
+const MONO   = "var(--font-geist-mono, ui-monospace, monospace)";
+
 export default function RecruiterPage() {
+  const starProjects      = portfolio.projects.filter(p => p.classement === "star");
+  const secondaryProjects = portfolio.projects.filter(p => p.classement === "secondary");
+
   return (
     <main
-      // Conteneur en position fixe sur toute la viewport, avec son propre
-      // scroll vertical. Cette approche est immune au `overflow: hidden`
-      // imposé sur html/body par globals.css (pour la simulation OS).
       className="fixed inset-0 overflow-y-auto overflow-x-hidden"
       style={{
-        background: "linear-gradient(160deg, #f0f9ff 0%, #e0f2fe 50%, #f8fafc 100%)",
+        fontFamily: NUNITO,
+        /* Frutiger Aero sky — vivid aqua gradient with light bloom */
+        background: [
+          "radial-gradient(ellipse 900px 700px at 50% -5%, rgba(255,255,255,0.72) 0%, transparent 55%)",
+          "radial-gradient(ellipse 400px 300px at 85% 90%, rgba(0,180,216,.18) 0%, transparent 60%)",
+          "linear-gradient(170deg, #b8e8f5 0%, #caf0f8 28%, #ddf6ff 55%, #eef9ff 80%, #f5fbff 100%)",
+        ].join(", "),
         WebkitOverflowScrolling: "touch",
       }}
     >
-      {/* Bandeau dispo, en haut, toujours visible */}
+      <style>{`
+        @keyframes r-up {
+          from { opacity:0; transform:translateY(16px); }
+          to   { opacity:1; transform:translateY(0);    }
+        }
+        .r-s { animation: r-up .5s cubic-bezier(.22,1,.36,1) both; }
+
+        /* Gloss sheen on the primary button */
+        .btn-aqua {
+          background:
+            linear-gradient(180deg,
+              rgba(255,255,255,.45) 0%,
+              rgba(255,255,255,.05) 50%,
+              rgba(0,80,140,.12)   100%
+            ),
+            linear-gradient(180deg, ${AQL} 0%, ${AQD} 100%);
+          box-shadow:
+            0 2px 18px rgba(0,119,182,.45),
+            inset 0 1px 0 rgba(255,255,255,.65),
+            inset 0 -1px 0 rgba(0,60,120,.15);
+          color: #fff;
+          font-weight: 700;
+          border-radius: 999px;
+          padding: .6rem 1.4rem;
+          font-size: .875rem;
+          transition: filter .15s;
+          white-space: nowrap;
+        }
+        .btn-aqua:hover { filter: brightness(1.06); }
+
+        .btn-glass {
+          background: rgba(255,255,255,.45);
+          backdrop-filter: blur(12px);
+          border: 1px solid rgba(0,150,200,.45);
+          color: ${AQD};
+          font-weight: 600;
+          border-radius: 999px;
+          padding: .6rem 1.4rem;
+          font-size: .875rem;
+          transition: background .15s;
+          white-space: nowrap;
+        }
+        .btn-glass:hover { background: rgba(255,255,255,.65); }
+      `}</style>
+
+      {/* ── Availability banner ── */}
       <div
-        className="sticky top-0 z-40 w-full px-6 py-2.5 flex items-center justify-between gap-4"
+        className="sticky top-0 z-40 w-full px-5 py-2.5 flex items-center justify-between gap-4"
         style={{
-          background: "rgba(16,185,129,0.92)",
-          borderBottom: "1px solid rgba(16,185,129,0.55)",
-          backdropFilter: "blur(8px)",
+          background: "rgba(5,150,105,.88)",
+          backdropFilter: "blur(12px)",
+          borderBottom: "1px solid rgba(255,255,255,.25)",
+          boxShadow: "0 1px 8px rgba(0,100,60,.2), inset 0 1px 0 rgba(255,255,255,.25)",
         }}
       >
-        <div className="flex items-center gap-2 text-white text-sm font-semibold">
+        <div className="flex items-center gap-2.5 text-white text-sm font-bold" style={{ fontFamily: NUNITO }}>
           <span className="w-2 h-2 rounded-full bg-white animate-pulse" />
           {portfolio.availability.label}
         </div>
-        <Link
-          href="/"
-          className="text-xs text-white/90 hover:text-white underline-offset-2 hover:underline"
-        >
-          Voir la version OS interactive
+        <Link href="/" className="text-xs font-semibold text-white/75 hover:text-white transition-colors">
+          Portfolio OS ↗
         </Link>
       </div>
 
-      <div className="mx-auto max-w-3xl px-6 py-10 flex flex-col gap-8">
-        {/* Hero */}
-        <header className="flex flex-col md:flex-row gap-6 items-start">
-          <div className="shrink-0">
-            <div
-              className="rounded-full overflow-hidden border-4 border-white"
-              style={{ boxShadow: "0 6px 24px rgba(80,150,220,0.25)" }}
-            >
-              <Image
-                src={portfolio.avatar}
-                alt={portfolio.fullName}
-                width={120}
-                height={120}
-                className="object-cover"
-                priority
-              />
+      <div className="mx-auto max-w-3xl px-5 py-10 flex flex-col gap-9">
+
+        {/* ── HERO ── */}
+        <section className="r-s" style={{ animationDelay: "0ms" }}>
+          <div
+            className="rounded-2xl p-6"
+            style={{
+              ...GLASS,
+              borderRadius: "20px",
+              /* extra inner glow to reinforce the glass look */
+              boxShadow: "0 8px 40px rgba(0,100,180,.14), 0 1px 3px rgba(0,0,0,.06), inset 0 1px 0 rgba(255,255,255,.95), inset 0 -1px 0 rgba(0,100,180,.06)",
+            }}
+          >
+            <div className="flex flex-col sm:flex-row gap-5 items-start sm:items-center">
+              {/* Avatar with aqua ring + glow */}
+              <div className="shrink-0 relative">
+                <div
+                  className="absolute inset-0 rounded-full"
+                  style={{
+                    transform: "scale(1.2)",
+                    background: `radial-gradient(circle, ${AQL}55 0%, transparent 70%)`,
+                  }}
+                />
+                <div
+                  className="relative rounded-full overflow-hidden"
+                  style={{
+                    boxShadow: `0 0 0 3px rgba(255,255,255,.9), 0 0 0 5px ${AQL}, 0 6px 24px rgba(0,150,200,.35)`,
+                  }}
+                >
+                  <Image
+                    src={portfolio.avatar}
+                    alt={portfolio.fullName}
+                    width={108}
+                    height={108}
+                    className="object-cover block"
+                    priority
+                  />
+                </div>
+              </div>
+
+              <div className="flex-1 min-w-0">
+                <h1
+                  className="text-4xl leading-tight"
+                  style={{ fontFamily: NUNITO, fontWeight: 900, color: "#012a4a", letterSpacing: "-.02em" }}
+                >
+                  {portfolio.fullName}
+                </h1>
+                <p className="text-base font-bold mt-1" style={{ color: AQ }}>
+                  {portfolio.title}
+                </p>
+                <p className="text-sm font-medium text-slate-500 mt-0.5">{portfolio.subtitle}</p>
+                <p className="text-xs mt-0.5 font-semibold text-slate-400" style={{ fontFamily: MONO }}>
+                  {portfolio.location}
+                </p>
+              </div>
             </div>
-          </div>
 
-          <div className="flex-1">
-            <h1 className="text-3xl font-black text-slate-900 leading-tight">
-              {portfolio.fullName}
-            </h1>
-            <p className="text-lg text-sky-700 font-semibold mt-1">{portfolio.title}</p>
-            <p className="text-sm text-slate-600 mt-1">{portfolio.subtitle}</p>
-            <p className="text-sm text-slate-500 mt-1">{portfolio.location}</p>
-
-            <p className="mt-4 text-[15px] text-slate-700 leading-relaxed">
+            <p className="mt-5 text-[15px] leading-relaxed font-semibold" style={{ color: "#1e3a5f" }}>
               {portfolio.tagline}
             </p>
 
-            <div className="mt-5 flex flex-wrap gap-2">
-              <a
-                href="/cv_ethan_collin.pdf"
-                download="cv_ethan_collin.pdf"
-                className="px-4 py-2 text-sm font-semibold text-white rounded-full"
-                style={{
-                  background: "linear-gradient(180deg, #1976d2 0%, #1254a0 100%)",
-                  boxShadow: "0 3px 8px rgba(25,118,210,0.3), inset 0 1px 0 rgba(255,255,255,0.3)",
-                }}
-              >
-                Télécharger mon CV
+            <div className="mt-5 flex flex-wrap items-center gap-3">
+              <a href="/cv_ethan_collin.pdf" download="cv_ethan_collin.pdf" className="btn-aqua">
+                ↓ Télécharger le CV
               </a>
-              <a
-                href="/cv_ethan_collin.pdf"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="px-4 py-2 text-sm font-semibold text-white rounded-full"
-                style={{
-                  background: "linear-gradient(180deg, #0891b2 0%, #0e7490 100%)",
-                  boxShadow: "0 3px 8px rgba(14,116,144,0.3), inset 0 1px 0 rgba(255,255,255,0.3)",
-                }}
-              >
-                Voir le CV
-              </a>
-              <a
-                href={`mailto:${portfolio.email}`}
-                className="px-4 py-2 text-sm font-semibold text-white rounded-full"
-                style={{
-                  background: "linear-gradient(180deg, #16a34a 0%, #15803d 100%)",
-                  boxShadow: "0 3px 8px rgba(22,163,74,0.3), inset 0 1px 0 rgba(255,255,255,0.3)",
-                }}
-              >
+              <a href={`mailto:${portfolio.email}`} className="btn-glass">
                 {portfolio.email}
               </a>
-              <a
-                href={portfolio.github}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="px-4 py-2 text-sm font-semibold text-slate-800 rounded-full"
-                style={{
-                  background: "rgba(255,255,255,0.92)",
-                  border: "1px solid rgba(150,200,255,0.6)",
-                  boxShadow: "0 2px 6px rgba(80,150,220,0.1)",
-                }}
-              >
-                GitHub
-              </a>
-              <a
-                href={portfolio.linkedin}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="px-4 py-2 text-sm font-semibold text-white rounded-full"
-                style={{
-                  background: "linear-gradient(180deg, #2563eb 0%, #1d4ed8 100%)",
-                  boxShadow: "0 3px 8px rgba(29,78,216,0.3), inset 0 1px 0 rgba(255,255,255,0.3)",
-                }}
-              >
-                LinkedIn
-              </a>
+              <div className="flex items-center gap-3 text-sm font-semibold" style={{ color: AQD, fontFamily: MONO }}>
+                <a href={portfolio.github} target="_blank" rel="noopener noreferrer" className="hover:opacity-70 transition-opacity">GitHub ↗</a>
+                <span style={{ color: AQL }}>·</span>
+                <a href={portfolio.linkedin} target="_blank" rel="noopener noreferrer" className="hover:opacity-70 transition-opacity">LinkedIn ↗</a>
+                <span style={{ color: AQL }}>·</span>
+                <a href={`tel:${portfolio.phone.replace(/\s/g, "")}`} className="hover:opacity-70 transition-opacity">{portfolio.phone}</a>
+              </div>
             </div>
           </div>
-        </header>
-
-        {/* Bio */}
-        <section
-          className="rounded-2xl p-6"
-          style={{
-            background: "rgba(255,255,255,0.85)",
-            border: "1px solid rgba(186,230,253,0.55)",
-            boxShadow: "0 2px 10px rgba(14,165,233,0.08)",
-          }}
-        >
-          <h2 className="text-xs font-bold text-sky-600 uppercase tracking-widest mb-3">À propos</h2>
-          <p className="text-sm text-slate-700 leading-relaxed whitespace-pre-line">
-            {portfolio.bio}
-          </p>
         </section>
 
-        {/* Projets phares */}
-        <section
-          className="rounded-2xl p-6"
-          style={{
-            background: "rgba(255,255,255,0.85)",
-            border: "1px solid rgba(186,230,253,0.55)",
-            boxShadow: "0 2px 10px rgba(14,165,233,0.08)",
-          }}
-        >
-          <h2 className="text-xs font-bold text-sky-600 uppercase tracking-widest mb-4">Projets phares</h2>
-          <div className="flex flex-col gap-5">
-            {portfolio.projects
-              .filter(p => p.classement === "star")
-              .map(p => (
-                <article key={p.id} className="border-l-2 border-violet-300 pl-4">
-                  <h3 className="font-bold text-slate-900 text-base">{p.title}</h3>
+        {/* ── À PROPOS — 3 blocks ── */}
+        <section className="r-s" style={{ animationDelay: "80ms" }}>
+          <AeroLabel>À propos</AeroLabel>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+            {BIO_BLOCKS.map((b, i) => (
+              <div key={b.num} style={GLASS_CARD} className="p-4">
+                <div
+                  className="text-lg font-black mb-1.5"
+                  style={{ color: i === 0 ? AQD : i === 1 ? "#7c3aed" : "#059669", fontFamily: MONO, lineHeight: 1 }}
+                >
+                  {b.num}
+                </div>
+                <h3 className="text-sm font-bold mb-2 leading-snug" style={{ color: "#012a4a" }}>
+                  {b.headline}
+                </h3>
+                <p className="text-xs leading-relaxed" style={{ color: "#2d4a62" }}>{b.text}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* ── PROJETS PHARES ── */}
+        <section className="r-s" style={{ animationDelay: "160ms" }}>
+          <AeroLabel>Projets phares</AeroLabel>
+          <div className="flex flex-col gap-3">
+            {starProjects.map((p) => {
+              const accent = PROJECT_COLORS[p.color]?.accent ?? AQ;
+              return (
+                <article
+                  key={p.id}
+                  style={{
+                    ...GLASS_CARD,
+                    borderLeft: `3px solid ${accent}`,
+                    padding: "1.25rem 1.25rem 1.25rem 1rem",
+                  }}
+                >
+                  <div className="flex items-start justify-between gap-2 flex-wrap">
+                    <h3 className="font-bold text-base leading-tight" style={{ color: "#012a4a" }}>{p.title}</h3>
+                    {p.paperVenue && (
+                      <span
+                        className="text-[10px] font-bold px-2 py-0.5 rounded-full shrink-0"
+                        style={{
+                          background: `${accent}18`,
+                          color: accent,
+                          border: `1px solid ${accent}35`,
+                          fontFamily: MONO,
+                        }}
+                      >
+                        {p.paperVenue}
+                      </span>
+                    )}
+                  </div>
                   {p.subtitle && (
-                    <p className="text-xs text-violet-700 font-medium mt-0.5">{p.subtitle}</p>
+                    <p className="text-xs font-semibold mt-0.5" style={{ color: accent }}>{p.subtitle}</p>
                   )}
-                  {p.paperVenue && (
-                    <span className="inline-block mt-1 text-[10px] font-bold px-2 py-0.5 rounded-full text-violet-700 bg-violet-50 border border-violet-200">
-                      {p.paperVenue}
-                    </span>
-                  )}
-                  <p className="text-sm text-slate-700 leading-relaxed mt-2">{p.desc}</p>
-                  <div className="flex gap-1.5 flex-wrap mt-2">
-                    {p.tech.map(t => (
+                  <p className="text-sm leading-relaxed mt-2" style={{ color: "#2d4a62" }}>{p.desc}</p>
+                  <div className="flex flex-wrap gap-1.5 mt-3">
+                    {p.tech.map((t) => (
                       <span
                         key={t}
-                        className="px-2 py-0.5 text-[10px] rounded-full font-medium bg-sky-50 text-sky-700 border border-sky-100"
+                        className="px-2 py-0.5 text-[10px] rounded-full font-semibold"
+                        style={{
+                          background: "rgba(255,255,255,.6)",
+                          color: accent,
+                          border: `1px solid ${accent}30`,
+                          backdropFilter: "blur(6px)",
+                          fontFamily: MONO,
+                        }}
                       >
                         {t}
                       </span>
                     ))}
                   </div>
-                  <div className="flex gap-3 mt-2 text-xs">
-                    {p.githubUrl && (
-                      <a
-                        href={p.githubUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-sky-600 hover:text-sky-800 underline-offset-2 hover:underline"
-                      >
-                        Code GitHub
-                      </a>
-                    )}
-                    {p.demoUrl && p.demoUrl !== "#" && (
-                      <a
-                        href={p.demoUrl}
-                        target={p.demoUrl.startsWith("http") ? "_blank" : undefined}
-                        rel="noopener noreferrer"
-                        className="text-sky-600 hover:text-sky-800 underline-offset-2 hover:underline"
-                      >
-                        Démo
-                      </a>
-                    )}
-                  </div>
-                </article>
-              ))}
-          </div>
-        </section>
-
-        {/* Autres projets */}
-        <section
-          className="rounded-2xl p-6"
-          style={{
-            background: "rgba(255,255,255,0.85)",
-            border: "1px solid rgba(186,230,253,0.55)",
-            boxShadow: "0 2px 10px rgba(14,165,233,0.08)",
-          }}
-        >
-          <h2 className="text-xs font-bold text-sky-600 uppercase tracking-widest mb-4">Autres projets</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {portfolio.projects
-              .filter(p => p.classement === "secondary")
-              .map(p => (
-                <article key={p.id}>
-                  <h3 className="font-semibold text-slate-900 text-sm">{p.title}</h3>
-                  {p.subtitle && (
-                    <p className="text-[11px] text-slate-500 mt-0.5">{p.subtitle}</p>
+                  {(p.githubUrl || (p.demoUrl && p.demoUrl !== "#")) && (
+                    <div className="flex gap-3 mt-2.5 text-xs font-bold">
+                      {p.githubUrl && (
+                        <a href={p.githubUrl} target="_blank" rel="noopener noreferrer" className="hover:underline underline-offset-2" style={{ color: accent }}>
+                          Code GitHub ↗
+                        </a>
+                      )}
+                      {p.demoUrl && p.demoUrl !== "#" && (
+                        <a href={p.demoUrl} target={p.demoUrl.startsWith("http") ? "_blank" : undefined} rel="noopener noreferrer" className="hover:underline underline-offset-2" style={{ color: accent }}>
+                          Démo ↗
+                        </a>
+                      )}
+                    </div>
                   )}
-                  <p className="text-xs text-slate-600 leading-relaxed mt-1">{p.desc}</p>
-                  <div className="flex gap-2 mt-2 text-[11px]">
-                    {p.githubUrl && (
-                      <a
-                        href={p.githubUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-sky-600 hover:underline"
-                      >
-                        GitHub
-                      </a>
-                    )}
-                    {p.demoUrl && p.demoUrl !== "#" && (
-                      <a
-                        href={p.demoUrl}
-                        target={p.demoUrl.startsWith("http") ? "_blank" : undefined}
-                        rel="noopener noreferrer"
-                        className="text-sky-600 hover:underline"
-                      >
-                        Démo
-                      </a>
-                    )}
-                  </div>
                 </article>
-              ))}
+              );
+            })}
           </div>
         </section>
 
-        {/* Expérience */}
-        <section
-          className="rounded-2xl p-6"
-          style={{
-            background: "rgba(255,255,255,0.85)",
-            border: "1px solid rgba(186,230,253,0.55)",
-            boxShadow: "0 2px 10px rgba(14,165,233,0.08)",
-          }}
-        >
-          <h2 className="text-xs font-bold text-sky-600 uppercase tracking-widest mb-4">Parcours</h2>
-          <div className="flex flex-col gap-4">
-            {portfolio.experience.map((exp, i) => (
-              <div key={i}>
-                <div className="font-semibold text-slate-900 text-sm">{exp.role}</div>
-                <div className="text-xs text-sky-700 font-medium">
-                  {exp.company} · {exp.period}
-                </div>
-                <p className="text-xs text-slate-600 leading-relaxed mt-1">{exp.desc}</p>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* Compétences */}
-        <section
-          className="rounded-2xl p-6"
-          style={{
-            background: "rgba(255,255,255,0.85)",
-            border: "1px solid rgba(186,230,253,0.55)",
-            boxShadow: "0 2px 10px rgba(14,165,233,0.08)",
-          }}
-        >
-          <h2 className="text-xs font-bold text-sky-600 uppercase tracking-widest mb-4">Compétences</h2>
-          <div className="flex flex-col gap-3">
-            {Object.entries(portfolio.skills).map(([category, items]) => (
-              <div key={category}>
-                <div className="text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1.5">
-                  {SECTION_TITLES[category] ?? category}
-                </div>
-                <ul className="text-xs text-slate-700 leading-relaxed list-disc list-inside">
-                  {items.map(s => (
-                    <li key={s}>{s}</li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* Engagement / Vie associative */}
-        {portfolio.engagements.length > 0 && (
-          <section
-            className="rounded-2xl p-6"
-            style={{
-              background: "rgba(255,255,255,0.85)",
-              border: "1px solid rgba(186,230,253,0.55)",
-              boxShadow: "0 2px 10px rgba(14,165,233,0.08)",
-            }}
-          >
-            <h2 className="text-xs font-bold text-sky-600 uppercase tracking-widest mb-3">Engagement</h2>
-            <div className="flex flex-col gap-3">
-              {portfolio.engagements.map((eng, i) => (
-                <div key={i}>
-                  <div className="font-semibold text-slate-900 text-sm">{eng.title}</div>
-                  <div className="text-xs text-emerald-700 font-medium">
-                    {eng.role} · {eng.period}
+        {/* ── COMPÉTENCES ── */}
+        <section className="r-s" style={{ animationDelay: "240ms" }}>
+          <AeroLabel>Compétences</AeroLabel>
+          <div style={GLASS_CARD} className="p-5">
+            <div className="flex flex-col gap-4">
+              {Object.entries(portfolio.skills).map(([cat, items]) => {
+                const c = SKILL_COLORS[cat] ?? SKILL_COLORS.devops;
+                return (
+                  <div key={cat}>
+                    <div
+                      className="text-[10px] font-bold uppercase tracking-[.13em] mb-2"
+                      style={{ color: c.text, fontFamily: MONO }}
+                    >
+                      {SECTION_TITLES[cat] ?? cat}
+                    </div>
+                    <div className="flex flex-wrap gap-1.5">
+                      {items.map((s) => (
+                        <span
+                          key={s}
+                          className="px-2.5 py-1 text-xs rounded-full font-semibold"
+                          style={{
+                            background: c.bg,
+                            color: c.text,
+                            border: `1px solid ${c.border}`,
+                            backdropFilter: "blur(8px)",
+                          }}
+                        >
+                          {s}
+                        </span>
+                      ))}
+                    </div>
                   </div>
-                  <p className="text-xs text-slate-600 leading-relaxed mt-1">{eng.desc}</p>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+
+        {/* ── PARCOURS ── */}
+        <section className="r-s" style={{ animationDelay: "320ms" }}>
+          <AeroLabel>Parcours</AeroLabel>
+          <div style={GLASS_CARD} className="p-5">
+            <div className="flex flex-col divide-y" style={{ borderColor: "rgba(0,150,200,.12)" }}>
+              {portfolio.experience.map((exp, i) => (
+                <div
+                  key={i}
+                  className={`flex items-start gap-3 ${i > 0 ? "pt-4" : ""} ${i < portfolio.experience.length - 1 ? "pb-4" : ""}`}
+                >
+                  <div
+                    className="shrink-0 rounded-full mt-[7px]"
+                    style={{ width: 7, height: 7, background: `linear-gradient(135deg, ${AQL}, ${AQD})`, boxShadow: `0 0 6px ${AQL}` }}
+                  />
+                  <div className="flex-1 min-w-0">
+                    <div className="font-bold text-sm" style={{ color: "#012a4a" }}>{exp.role}</div>
+                    <div className="text-xs font-bold mt-0.5" style={{ color: AQ, fontFamily: MONO }}>
+                      {exp.company} · {exp.period}
+                    </div>
+                    <p className="text-xs leading-relaxed mt-1" style={{ color: "#2d4a62" }}>{exp.desc}</p>
+                  </div>
                 </div>
               ))}
             </div>
-          </section>
-        )}
+          </div>
+        </section>
 
-        {/* Distinctions */}
-        {portfolio.awards.length > 0 && (
-          <section
-            className="rounded-2xl p-6"
-            style={{
-              background: "rgba(255,255,255,0.85)",
-              border: "1px solid rgba(186,230,253,0.55)",
-              boxShadow: "0 2px 10px rgba(14,165,233,0.08)",
-            }}
-          >
-            <h2 className="text-xs font-bold text-sky-600 uppercase tracking-widest mb-3">Distinctions</h2>
-            <div className="flex flex-col gap-3">
-              {portfolio.awards.map((a, i) => (
-                <div key={i}>
-                  <div className="font-semibold text-slate-900 text-sm">
-                    {a.title} <span className="text-yellow-600 font-normal text-xs">· {a.year}</span>
-                  </div>
-                  <p className="text-xs text-slate-600 mt-0.5">{a.desc}</p>
-                </div>
-              ))}
-            </div>
-          </section>
-        )}
-
-        {/* Recommandations (extraits courts) */}
+        {/* ── RECOMMANDATIONS ── */}
         {portfolio.recommendations.length > 0 && (
-          <section
-            className="rounded-2xl p-6"
-            style={{
-              background: "rgba(255,255,255,0.85)",
-              border: "1px solid rgba(186,230,253,0.55)",
-              boxShadow: "0 2px 10px rgba(14,165,233,0.08)",
-            }}
-          >
-            <h2 className="text-xs font-bold text-sky-600 uppercase tracking-widest mb-3">Recommandations</h2>
-            <div className="flex flex-col gap-3">
+          <section className="r-s" style={{ animationDelay: "400ms" }}>
+            <AeroLabel>Recommandations</AeroLabel>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {portfolio.recommendations.map((r, i) => (
-                <blockquote key={i} className="border-l-2 border-sky-200 pl-3">
-                  <p className="text-xs text-slate-700 italic leading-relaxed">&ldquo;{r.quote}&rdquo;</p>
-                  <footer className="mt-1 text-[11px] text-slate-500">
-                    <span className="font-semibold text-slate-700">{r.name}</span>, {r.role}
+                <blockquote key={i} style={GLASS_CARD} className="p-5 flex flex-col">
+                  <div
+                    className="leading-none mb-2 select-none"
+                    style={{
+                      fontSize: "3rem",
+                      fontWeight: 900,
+                      color: `${AQL}70`,
+                      fontFamily: NUNITO,
+                      lineHeight: "0.8",
+                    }}
+                  >
+                    &ldquo;
+                  </div>
+                  <p className="text-sm leading-relaxed flex-1 italic" style={{ color: "#1e3a5f" }}>
+                    {r.quote}
+                  </p>
+                  <footer className="mt-4 pt-3" style={{ borderTop: "1px solid rgba(0,150,200,.18)" }}>
+                    <span className="text-sm font-bold block" style={{ color: "#012a4a" }}>{r.name}</span>
+                    <span className="text-xs font-medium" style={{ color: AQ }}>{r.role}</span>
                   </footer>
                 </blockquote>
               ))}
@@ -392,27 +434,155 @@ export default function RecruiterPage() {
           </section>
         )}
 
-        {/* Contact final */}
-        <section className="text-center text-xs text-slate-500 mt-4 mb-12">
-          <p>
-            Contact direct :{" "}
-            <a href={`mailto:${portfolio.email}`} className="text-sky-700 hover:underline">
-              {portfolio.email}
-            </a>
-            {" · "}
-            <a href={`tel:${portfolio.phone.replace(/\s/g, "")}`} className="text-sky-700 hover:underline">
-              {portfolio.phone}
-            </a>
-          </p>
-          <p className="mt-2 text-slate-400">
-            Vous lisez la version plate. La version interactive est sur{" "}
-            <Link href="/" className="text-sky-700 hover:underline">
+        {/* ── DISTINCTIONS ── */}
+        {portfolio.awards.length > 0 && (
+          <section className="r-s" style={{ animationDelay: "480ms" }}>
+            <AeroLabel>Distinctions</AeroLabel>
+            {portfolio.awards.map((a, i) => (
+              <div
+                key={i}
+                className="flex items-start gap-4 p-4"
+                style={{
+                  ...GLASS_CARD,
+                  background: "rgba(255,255,255,.52)",
+                  border: "1px solid rgba(255,200,50,.4)",
+                  boxShadow: "0 4px 20px rgba(200,160,0,.1), inset 0 1px 0 rgba(255,255,255,.9)",
+                }}
+              >
+                <div className="text-2xl select-none shrink-0 leading-none mt-0.5">🏆</div>
+                <div>
+                  <div className="font-bold text-sm" style={{ color: "#012a4a" }}>
+                    {a.title}
+                    <span className="ml-2 text-xs font-semibold" style={{ color: "#c77c00", fontFamily: MONO }}>{a.year}</span>
+                  </div>
+                  <p className="text-xs leading-relaxed mt-1" style={{ color: "#2d4a62" }}>{a.desc}</p>
+                </div>
+              </div>
+            ))}
+          </section>
+        )}
+
+        {/* ── AUTRES PROJETS ── */}
+        <section className="r-s" style={{ animationDelay: "560ms" }}>
+          <AeroLabel>Autres projets</AeroLabel>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            {secondaryProjects.map((p) => {
+              const accent = PROJECT_COLORS[p.color]?.accent ?? AQ;
+              return (
+                <article
+                  key={p.id}
+                  style={{ ...GLASS_CARD, borderTop: `3px solid ${accent}` }}
+                  className="p-4"
+                >
+                  <h3 className="font-bold text-sm" style={{ color: "#012a4a" }}>{p.title}</h3>
+                  {p.subtitle && (
+                    <p className="text-[11px] font-medium mt-0.5 leading-snug" style={{ color: "#5a8098" }}>{p.subtitle}</p>
+                  )}
+                  <p className="text-xs leading-relaxed mt-1.5" style={{ color: "#2d4a62" }}>{p.desc}</p>
+                  <div className="flex flex-wrap gap-1 mt-2.5">
+                    {p.tech.slice(0, 4).map((t) => (
+                      <span
+                        key={t}
+                        className="px-1.5 py-0.5 text-[10px] rounded font-semibold"
+                        style={{
+                          background: "rgba(255,255,255,.55)",
+                          color: accent,
+                          backdropFilter: "blur(6px)",
+                          fontFamily: MONO,
+                        }}
+                      >
+                        {t}
+                      </span>
+                    ))}
+                    {p.tech.length > 4 && (
+                      <span className="px-1.5 py-0.5 text-[10px] rounded font-semibold" style={{ background: "rgba(0,150,200,.1)", color: AQ, fontFamily: MONO }}>
+                        +{p.tech.length - 4}
+                      </span>
+                    )}
+                  </div>
+                  {(p.githubUrl || (p.demoUrl && p.demoUrl !== "#")) && (
+                    <div className="flex gap-3 mt-2.5 text-[11px] font-bold">
+                      {p.githubUrl && (
+                        <a href={p.githubUrl} target="_blank" rel="noopener noreferrer" className="hover:underline underline-offset-2" style={{ color: accent }}>GitHub ↗</a>
+                      )}
+                      {p.demoUrl && p.demoUrl !== "#" && (
+                        <a href={p.demoUrl} target={p.demoUrl.startsWith("http") ? "_blank" : undefined} rel="noopener noreferrer" className="hover:underline underline-offset-2" style={{ color: accent }}>Démo ↗</a>
+                      )}
+                    </div>
+                  )}
+                </article>
+              );
+            })}
+          </div>
+        </section>
+
+        {/* ── ENGAGEMENT ── */}
+        {portfolio.engagements.length > 0 && (
+          <section className="r-s" style={{ animationDelay: "640ms" }}>
+            <AeroLabel>Engagement</AeroLabel>
+            <div style={GLASS_CARD} className="p-5">
+              {portfolio.engagements.map((eng, i) => (
+                <div key={i}>
+                  <div className="font-bold text-sm" style={{ color: "#012a4a" }}>{eng.title}</div>
+                  <div className="text-xs font-bold mt-0.5" style={{ color: "#059669", fontFamily: MONO }}>
+                    {eng.role} · {eng.period}
+                  </div>
+                  <p className="text-xs leading-relaxed mt-1" style={{ color: "#2d4a62" }}>{eng.desc}</p>
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {/* ── FOOTER ── */}
+        <footer className="r-s pb-12 flex flex-col items-center gap-4" style={{ animationDelay: "720ms" }}>
+          <div
+            className="px-8 py-5 text-center"
+            style={{
+              ...GLASS_CARD,
+              /* aqua-tinted glass for the contact block */
+              background: "rgba(0,150,200,.1)",
+              border: `1px solid rgba(0,150,200,.3)`,
+              boxShadow: `0 4px 20px rgba(0,100,180,.12), inset 0 1px 0 rgba(255,255,255,.8)`,
+            }}
+          >
+            <p className="text-[10px] font-bold uppercase tracking-[.14em] mb-2" style={{ color: AQ, fontFamily: MONO }}>
+              Contact direct
+            </p>
+            <div className="flex flex-wrap items-center justify-center gap-3 text-sm">
+              <a href={`mailto:${portfolio.email}`} className="font-bold hover:underline underline-offset-2" style={{ color: AQD }}>
+                {portfolio.email}
+              </a>
+              <span style={{ color: AQL }}>·</span>
+              <a href={`tel:${portfolio.phone.replace(/\s/g, "")}`} className="font-bold hover:underline underline-offset-2" style={{ color: AQD }}>
+                {portfolio.phone}
+              </a>
+            </div>
+          </div>
+          <p className="text-xs font-semibold text-center" style={{ color: "#5a8098" }}>
+            Portfolio complet (EthanOS — OS simulé Frutiger Aero) :{" "}
+            <Link href="/" className="hover:underline underline-offset-2" style={{ color: AQ }}>
               portfolio-frutiger.vercel.app
             </Link>
-            .
           </p>
-        </section>
+        </footer>
+
       </div>
     </main>
+  );
+}
+
+function AeroLabel({ children }: { children: React.ReactNode }) {
+  return (
+    <h2
+      className="text-[10px] font-bold uppercase tracking-[.16em] mb-3"
+      style={{
+        color: AQ,
+        fontFamily: "var(--font-geist-mono, ui-monospace, monospace)",
+        textShadow: "0 0 12px rgba(0,180,216,.3)",
+      }}
+    >
+      {children}
+    </h2>
   );
 }
