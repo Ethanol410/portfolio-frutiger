@@ -263,6 +263,50 @@ export default function RecruiterPage() {
             }}
           />
         ))}
+
+        {/* Swoosh / ribbon shapes Vista */}
+        <svg
+          aria-hidden="true"
+          viewBox="0 0 1200 900"
+          preserveAspectRatio="xMidYMid slice"
+          style={{ position: "absolute", inset: 0, width: "100%", height: "100%", pointerEvents: "none" }}
+        >
+          <defs>
+            <linearGradient id="sw1" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%"   stopColor="rgba(72,202,228,0)"   />
+              <stop offset="30%"  stopColor="rgba(72,202,228,.16)" />
+              <stop offset="65%"  stopColor="rgba(0,150,200,.12)"  />
+              <stop offset="100%" stopColor="rgba(0,150,200,0)"    />
+            </linearGradient>
+            <linearGradient id="sw2" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%"   stopColor="rgba(100,220,200,0)"   />
+              <stop offset="35%"  stopColor="rgba(100,220,200,.10)" />
+              <stop offset="68%"  stopColor="rgba(72,200,220,.08)"  />
+              <stop offset="100%" stopColor="rgba(72,200,220,0)"    />
+            </linearGradient>
+            <linearGradient id="sw3" x1="100%" y1="0%" x2="0%" y2="0%">
+              <stop offset="0%"   stopColor="rgba(160,230,255,0)"   />
+              <stop offset="40%"  stopColor="rgba(160,230,255,.09)" />
+              <stop offset="75%"  stopColor="rgba(80,190,230,.07)"  />
+              <stop offset="100%" stopColor="rgba(80,190,230,0)"    />
+            </linearGradient>
+          </defs>
+          {/* Main swoosh — diagonale montante */}
+          <path
+            d="M-150,720 C100,590 320,360 640,235 C860,150 1060,162 1350,218 L1350,262 C1060,206 860,194 640,278 C320,403 100,633 -150,764 Z"
+            fill="url(#sw1)"
+          />
+          {/* Secondary swoosh — haut */}
+          <path
+            d="M-150,185 C80,228 280,308 520,278 C720,252 940,168 1350,212 L1350,240 C940,196 720,280 520,306 C280,336 80,256 -150,213 Z"
+            fill="url(#sw2)"
+          />
+          {/* Accent swoosh — milieu droit */}
+          <path
+            d="M650,820 C780,740 900,620 1100,520 C1200,468 1300,460 1350,462 L1350,488 C1300,486 1200,494 1100,546 C900,646 780,766 650,846 Z"
+            fill="url(#sw3)"
+          />
+        </svg>
       </div>
 
       {/* ── Availability banner ── */}
@@ -401,7 +445,7 @@ export default function RecruiterPage() {
           <AeroLabel>À propos</AeroLabel>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
             {BIO_BLOCKS.map((b, i) => (
-              <div key={b.num} style={GLASS_CARD} className="p-4">
+              <div key={b.num} style={GLASS_CARD} className="p-4 aero-dewdrop">
                 <div
                   className="text-lg font-black mb-1.5"
                   style={{ color: i === 0 ? AQD : i === 1 ? "#7c3aed" : "#059669", fontFamily: MONO, lineHeight: 1 }}
@@ -426,6 +470,7 @@ export default function RecruiterPage() {
               return (
                 <article
                   key={p.id}
+                  className="aero-dewdrop"
                   style={{
                     ...GLASS_CARD,
                     borderLeft: `3px solid ${accent}`,
@@ -492,7 +537,7 @@ export default function RecruiterPage() {
         {/* ── COMPÉTENCES ── */}
         <section className="r-s" style={{ animationDelay: "240ms" }}>
           <AeroLabel>Compétences</AeroLabel>
-          <div style={GLASS_CARD} className="p-5">
+          <div style={GLASS_CARD} className="p-5 aero-dewdrop">
             <div className="flex flex-col gap-4">
               {Object.entries(portfolio.skills).map(([cat, items]) => {
                 const c = SKILL_COLORS[cat] ?? SKILL_COLORS.devops;
@@ -530,7 +575,7 @@ export default function RecruiterPage() {
         {/* ── PARCOURS ── */}
         <section className="r-s" style={{ animationDelay: "320ms" }}>
           <AeroLabel>Parcours</AeroLabel>
-          <div style={GLASS_CARD} className="p-5">
+          <div style={GLASS_CARD} className="p-5 aero-dewdrop">
             <div className="flex flex-col divide-y" style={{ borderColor: "rgba(0,150,200,.12)" }}>
               {portfolio.experience.map((exp, i) => (
                 <div
@@ -560,7 +605,7 @@ export default function RecruiterPage() {
             <AeroLabel>Recommandations</AeroLabel>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {portfolio.recommendations.map((r, i) => (
-                <blockquote key={i} style={GLASS_CARD} className="p-5 flex flex-col">
+                <blockquote key={i} style={GLASS_CARD} className="p-5 flex flex-col aero-dewdrop">
                   <div
                     className="leading-none mb-2 select-none"
                     style={{
@@ -593,7 +638,7 @@ export default function RecruiterPage() {
             {portfolio.awards.map((a, i) => (
               <div
                 key={i}
-                className="flex items-start gap-4 p-4"
+                className="flex items-start gap-4 p-4 aero-dewdrop"
                 style={{
                   ...GLASS_CARD,
                   background: "rgba(255,255,255,.52)",
@@ -624,7 +669,7 @@ export default function RecruiterPage() {
                 <article
                   key={p.id}
                   style={{ ...GLASS_CARD, borderTop: `3px solid ${accent}` }}
-                  className="p-4"
+                  className="p-4 aero-dewdrop"
                 >
                   <h3 className="font-bold text-sm" style={{ color: "#012a4a" }}>{p.title}</h3>
                   {p.subtitle && (
@@ -672,7 +717,7 @@ export default function RecruiterPage() {
         {portfolio.engagements.length > 0 && (
           <section className="r-s" style={{ animationDelay: "640ms" }}>
             <AeroLabel>Engagement</AeroLabel>
-            <div style={GLASS_CARD} className="p-5">
+            <div style={GLASS_CARD} className="p-5 aero-dewdrop">
               {portfolio.engagements.map((eng, i) => (
                 <div key={i}>
                   <div className="font-bold text-sm" style={{ color: "#012a4a" }}>{eng.title}</div>
@@ -689,7 +734,7 @@ export default function RecruiterPage() {
         {/* ── FOOTER ── */}
         <footer className="r-s pb-12 flex flex-col items-center gap-4" style={{ animationDelay: "720ms" }}>
           <div
-            className="px-8 py-5 text-center"
+            className="px-8 py-5 text-center aero-dewdrop"
             style={{
               ...GLASS_CARD,
               background: "rgba(0,150,200,.1)",

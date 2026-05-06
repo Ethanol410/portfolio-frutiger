@@ -44,6 +44,41 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
+/* Frutiger Aero — Dewdrop hover effect */
+.aero-dewdrop {
+  position: relative;
+  transition: transform 0.22s ease, box-shadow 0.22s ease;
+}
+.aero-dewdrop:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 36px rgba(0,100,180,0.18), 0 2px 8px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.95) !important;
+}
+.aero-dewdrop::after {
+  content: '';
+  position: absolute;
+  top: 9px;
+  right: 13px;
+  width: 20px;
+  height: 24px;
+  border-radius: 50% 62% 50% 40% / 40% 50% 62% 50%;
+  background: radial-gradient(
+    circle at 38% 32%,
+    rgba(255,255,255,0.92) 0%,
+    rgba(255,255,255,0.48) 26%,
+    rgba(200,235,255,0.20) 54%,
+    transparent 100%
+  );
+  opacity: 0;
+  transform: scale(0.55);
+  transition: opacity 0.28s ease, transform 0.28s ease;
+  pointer-events: none;
+  z-index: 2;
+}
+.aero-dewdrop:hover::after {
+  opacity: 1;
+  transform: scale(1);
+}
+
 /* Frutiger Aero — Glassmorphism effect */
 .aero-glass {
   background: rgba(255, 255, 255, 0.45);

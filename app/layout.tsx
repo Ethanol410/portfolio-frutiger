@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono, Nunito } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
+// import { CursorTrail } from "@/app/components/CursorTrail";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -70,6 +71,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} ${nunito.variable} antialiased`}
       >
         {children}
+        {/* <CursorTrail /> */}
         <Analytics />
       </body>
     </html>
