@@ -34,7 +34,7 @@ export const DesktopIcon = ({ name, type, onDoubleClick, iconSrc }: DesktopIconP
     <motion.div
       drag={!isMobile}
       dragMomentum={false}
-      className="flex flex-col items-center gap-1 w-20 md:w-24 p-2 rounded hover:bg-white/10 border border-transparent hover:border-white/20 cursor-pointer group transition-colors active:cursor-grabbing active:scale-95"
+      className="flex flex-col items-center gap-1 w-20 md:w-24 p-2 rounded-lg hover:bg-white/15 border border-transparent hover:border-cyan-400/40 cursor-pointer group transition-all active:cursor-grabbing active:scale-95 hover:shadow-[0_0_20px_rgba(72,202,228,0.38)]"
       onClick={isMobile ? handleInteraction : undefined}
       onDoubleClick={!isMobile ? handleInteraction : undefined}
       onKeyDown={handleKeyDown}
@@ -42,7 +42,7 @@ export const DesktopIcon = ({ name, type, onDoubleClick, iconSrc }: DesktopIconP
       aria-label={`Ouvrir ${name}`}
       tabIndex={0}
     >
-      <div className="drop-shadow-xl transition-transform group-hover:scale-110 pointer-events-none">
+      <div className="drop-shadow-xl transition-all group-hover:scale-110 group-hover:drop-shadow-[0_0_10px_rgba(72,202,228,0.65)] pointer-events-none">
         {iconSrc ? (
           <img
             src={iconSrc}
@@ -58,7 +58,7 @@ export const DesktopIcon = ({ name, type, onDoubleClick, iconSrc }: DesktopIconP
         )}
       </div>
 
-      <span className="text-white text-[10px] md:text-xs text-center font-medium px-2 py-0.5 rounded bg-black/40 shadow-sm backdrop-blur-[2px] line-clamp-2 w-full break-words pointer-events-none group-hover:bg-blue-600">
+      <span className="text-white text-[10px] md:text-xs text-center font-medium px-2 py-0.5 rounded bg-black/40 shadow-sm backdrop-blur-[2px] line-clamp-2 w-full break-words pointer-events-none transition-all group-hover:bg-[rgba(0,150,200,0.88)] group-hover:shadow-[0_0_8px_rgba(0,180,216,0.55)]">
         {name}
       </span>
     </motion.div>

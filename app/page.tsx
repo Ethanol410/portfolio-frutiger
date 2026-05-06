@@ -408,6 +408,15 @@ export default function Desktop() {
 
       <div className={`h-full w-full ${isLocked ? "blur-sm scale-105 transition-all duration-700" : "transition-all duration-700 scale-100 blur-0"}`}>
 
+        {/* Frutiger Aero bokeh overlay — static radial blobs over the wallpaper */}
+        <div aria-hidden="true" className="absolute inset-0 pointer-events-none overflow-hidden" style={{ zIndex: 0 }}>
+          <div style={{ position: "absolute", left: "6%",  top: "10%", width: 380, height: 380, borderRadius: "50%", background: "radial-gradient(circle, rgba(72,202,228,.10) 0%, transparent 68%)"  }} />
+          <div style={{ position: "absolute", left: "75%", top: "5%",  width: 260, height: 260, borderRadius: "50%", background: "radial-gradient(circle, rgba(0,180,216,.08) 0%, transparent 68%)"   }} />
+          <div style={{ position: "absolute", left: "50%", top: "60%", width: 340, height: 340, borderRadius: "50%", background: "radial-gradient(circle, rgba(100,220,180,.07) 0%, transparent 68%)" }} />
+          <div style={{ position: "absolute", left: "18%", top: "68%", width: 200, height: 200, borderRadius: "50%", background: "radial-gradient(circle, rgba(48,210,220,.09) 0%, transparent 68%)"  }} />
+          <div style={{ position: "absolute", left: "88%", top: "45%", width: 170, height: 170, borderRadius: "50%", background: "radial-gradient(circle, rgba(160,220,255,.12) 0%, transparent 68%)" }} />
+        </div>
+
         <NotificationToaster />
         <ContextMenu />
 

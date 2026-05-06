@@ -10,11 +10,10 @@ export const metadata: Metadata = {
 };
 
 /* ─── Frutiger Aero colour constants ─── */
-const AQ  = "#0096c7";   // aqua primary
-const AQD = "#0077b6";   // deep aqua
-const AQL = "#48cae4";   // light aqua
+const AQ  = "#0096c7";
+const AQD = "#0077b6";
+const AQL = "#48cae4";
 
-/* Shared style objects */
 const GLASS: React.CSSProperties = {
   background: "rgba(255,255,255,0.48)",
   backdropFilter: "blur(18px) saturate(190%)",
@@ -28,7 +27,6 @@ const GLASS_CARD: React.CSSProperties = {
   borderRadius: "14px",
 };
 
-/* Project colour map — keep per-project identity inside glass frame */
 const PROJECT_COLORS: Record<string, { accent: string }> = {
   "bg-violet-600":  { accent: "#7c3aed" },
   "bg-emerald-600": { accent: "#059669" },
@@ -41,15 +39,14 @@ const PROJECT_COLORS: Record<string, { accent: string }> = {
   "bg-amber-500":   { accent: "#f59e0b" },
 };
 
-/* Skill category colours — aqua family with touches of teal/sky */
 const SKILL_COLORS: Record<string, { bg: string; text: string; border: string }> = {
-  ia:           { bg: "rgba(0,119,182,.12)",  text: AQD,     border: "rgba(0,119,182,.35)"  },
-  multimedia:   { bg: "rgba(8,145,178,.12)",  text: "#0e7490",border: "rgba(8,145,178,.35)" },
-  web:          { bg: "rgba(72,202,228,.14)",  text: "#0077a8",border: "rgba(72,202,228,.4)" },
-  backend:      { bg: "rgba(2,119,189,.12)",   text: "#015f7a",border: "rgba(2,119,189,.35)" },
-  architecture: { bg: "rgba(0,150,199,.1)",    text: "#005f7a",border: "rgba(0,150,199,.3)"  },
-  devops:       { bg: "rgba(100,160,190,.12)", text: "#1e4d6b",border: "rgba(100,160,190,.35)"},
-  soft:         { bg: "rgba(14,165,233,.1)",   text: "#075985",border: "rgba(14,165,233,.3)" },
+  ia:           { bg: "rgba(0,119,182,.12)",  text: AQD,      border: "rgba(0,119,182,.35)"  },
+  multimedia:   { bg: "rgba(8,145,178,.12)",  text: "#0e7490", border: "rgba(8,145,178,.35)" },
+  web:          { bg: "rgba(72,202,228,.14)",  text: "#0077a8", border: "rgba(72,202,228,.4)" },
+  backend:      { bg: "rgba(2,119,189,.12)",   text: "#015f7a", border: "rgba(2,119,189,.35)" },
+  architecture: { bg: "rgba(0,150,199,.1)",    text: "#005f7a", border: "rgba(0,150,199,.3)"  },
+  devops:       { bg: "rgba(100,160,190,.12)", text: "#1e4d6b", border: "rgba(100,160,190,.35)"},
+  soft:         { bg: "rgba(14,165,233,.1)",   text: "#075985", border: "rgba(14,165,233,.3)" },
 };
 
 const SECTION_TITLES: Record<string, string> = {
@@ -83,6 +80,18 @@ const BIO_BLOCKS = [
 const NUNITO = "var(--font-nunito, 'Segoe UI', system-ui, sans-serif)";
 const MONO   = "var(--font-geist-mono, ui-monospace, monospace)";
 
+/* Bokeh orb definitions */
+const BOKEH_ORBS = [
+  { left: "8%",  top: "12%", w: 360, dur: "8s",   delay: "0s",   color: "rgba(72,202,228,.16)"  },
+  { left: "80%", top: "8%",  w: 240, dur: "11s",  delay: "1.5s", color: "rgba(0,180,216,.12)"   },
+  { left: "55%", top: "70%", w: 400, dur: "13s",  delay: "3s",   color: "rgba(100,220,180,.10)" },
+  { left: "88%", top: "52%", w: 180, dur: "9s",   delay: "0.8s", color: "rgba(0,150,200,.14)"   },
+  { left: "22%", top: "85%", w: 300, dur: "10s",  delay: "4s",   color: "rgba(48,210,220,.10)"  },
+  { left: "3%",  top: "48%", w: 140, dur: "7s",   delay: "2s",   color: "rgba(160,220,255,.18)" },
+  { left: "62%", top: "28%", w: 220, dur: "12s",  delay: "5s",   color: "rgba(0,120,200,.08)"   },
+  { left: "40%", top: "3%",  w: 190, dur: "9.5s", delay: "1s",   color: "rgba(100,200,230,.13)" },
+];
+
 export default function RecruiterPage() {
   const starProjects      = portfolio.projects.filter(p => p.classement === "star");
   const secondaryProjects = portfolio.projects.filter(p => p.classement === "secondary");
@@ -92,9 +101,12 @@ export default function RecruiterPage() {
       className="fixed inset-0 overflow-y-auto overflow-x-hidden"
       style={{
         fontFamily: NUNITO,
-        /* Frutiger Aero sky — vivid aqua gradient with light bloom */
         background: [
           "radial-gradient(ellipse 900px 700px at 50% -5%, rgba(255,255,255,0.72) 0%, transparent 55%)",
+          /* aurora green */
+          "radial-gradient(ellipse 600px 450px at 15% 65%, rgba(80,220,140,.07) 0%, transparent 65%)",
+          /* aurora violet */
+          "radial-gradient(ellipse 500px 380px at 88% 22%, rgba(160,100,220,.055) 0%, transparent 65%)",
           "radial-gradient(ellipse 400px 300px at 85% 90%, rgba(0,180,216,.18) 0%, transparent 60%)",
           "linear-gradient(170deg, #b8e8f5 0%, #caf0f8 28%, #ddf6ff 55%, #eef9ff 80%, #f5fbff 100%)",
         ].join(", "),
@@ -108,7 +120,12 @@ export default function RecruiterPage() {
         }
         .r-s { animation: r-up .5s cubic-bezier(.22,1,.36,1) both; }
 
-        /* Gloss sheen on the primary button */
+        @keyframes bokeh-float {
+          0%   { transform: translate(-50%,-50%) scale(1);    opacity: 1; }
+          50%  { transform: translate(-50%,-50%) scale(1.08); opacity: 0.7; }
+          100% { transform: translate(-50%,-50%) scale(1);    opacity: 1; }
+        }
+
         .btn-aqua {
           background:
             linear-gradient(180deg,
@@ -146,6 +163,29 @@ export default function RecruiterPage() {
         .btn-glass:hover { background: rgba(255,255,255,.65); }
       `}</style>
 
+      {/* ── BOKEH ORBS (fixed behind content) ── */}
+      <div
+        aria-hidden="true"
+        style={{ position: "fixed", inset: 0, zIndex: 0, pointerEvents: "none", overflow: "hidden" }}
+      >
+        {BOKEH_ORBS.map((o, i) => (
+          <div
+            key={i}
+            style={{
+              position: "absolute",
+              left: o.left,
+              top: o.top,
+              width: o.w,
+              height: o.w,
+              borderRadius: "50%",
+              background: `radial-gradient(circle, ${o.color} 0%, transparent 68%)`,
+              transform: "translate(-50%, -50%)",
+              animation: `bokeh-float ${o.dur} ${o.delay} ease-in-out infinite`,
+            }}
+          />
+        ))}
+      </div>
+
       {/* ── Availability banner ── */}
       <div
         className="sticky top-0 z-40 w-full px-5 py-2.5 flex items-center justify-between gap-4"
@@ -165,7 +205,10 @@ export default function RecruiterPage() {
         </Link>
       </div>
 
-      <div className="mx-auto max-w-3xl px-5 py-10 flex flex-col gap-9">
+      <div
+        className="mx-auto max-w-3xl px-5 py-10 flex flex-col gap-9"
+        style={{ position: "relative", zIndex: 1 }}
+      >
 
         {/* ── HERO ── */}
         <section className="r-s" style={{ animationDelay: "0ms" }}>
@@ -174,10 +217,40 @@ export default function RecruiterPage() {
             style={{
               ...GLASS,
               borderRadius: "20px",
-              /* extra inner glow to reinforce the glass look */
+              position: "relative",
+              overflow: "hidden",
               boxShadow: "0 8px 40px rgba(0,100,180,.14), 0 1px 3px rgba(0,0,0,.06), inset 0 1px 0 rgba(255,255,255,.95), inset 0 -1px 0 rgba(0,100,180,.06)",
             }}
           >
+            {/* Lens flare */}
+            <div
+              aria-hidden="true"
+              style={{
+                position: "absolute",
+                top: "-40px",
+                right: "50px",
+                width: "220px",
+                height: "220px",
+                borderRadius: "50%",
+                background: "radial-gradient(circle, rgba(255,255,255,.78) 0%, rgba(255,255,255,.22) 28%, transparent 68%)",
+                pointerEvents: "none",
+              }}
+            />
+            {/* Secondary smaller flare */}
+            <div
+              aria-hidden="true"
+              style={{
+                position: "absolute",
+                top: "20px",
+                right: "180px",
+                width: "80px",
+                height: "80px",
+                borderRadius: "50%",
+                background: "radial-gradient(circle, rgba(255,255,255,.5) 0%, rgba(200,240,255,.2) 40%, transparent 70%)",
+                pointerEvents: "none",
+              }}
+            />
+
             <div className="flex flex-col sm:flex-row gap-5 items-start sm:items-center">
               {/* Avatar with aqua ring + glow */}
               <div className="shrink-0 relative">
@@ -534,13 +607,15 @@ export default function RecruiterPage() {
           </section>
         )}
 
+        {/* ── GRASS SILHOUETTE ── */}
+        <GrassSilhouette />
+
         {/* ── FOOTER ── */}
         <footer className="r-s pb-12 flex flex-col items-center gap-4" style={{ animationDelay: "720ms" }}>
           <div
             className="px-8 py-5 text-center"
             style={{
               ...GLASS_CARD,
-              /* aqua-tinted glass for the contact block */
               background: "rgba(0,150,200,.1)",
               border: `1px solid rgba(0,150,200,.3)`,
               boxShadow: `0 4px 20px rgba(0,100,180,.12), inset 0 1px 0 rgba(255,255,255,.8)`,
@@ -584,5 +659,43 @@ function AeroLabel({ children }: { children: React.ReactNode }) {
     >
       {children}
     </h2>
+  );
+}
+
+function GrassSilhouette() {
+  return (
+    <div
+      aria-hidden="true"
+      style={{ width: "100%", pointerEvents: "none", marginTop: "4px", overflow: "hidden", lineHeight: 0 }}
+    >
+      <svg
+        viewBox="0 0 800 90"
+        preserveAspectRatio="none"
+        style={{ width: "100%", height: 64, display: "block" }}
+      >
+        {/* Back hill — soft teal */}
+        <path
+          d="M0,90 L0,68 C25,50 48,72 72,60 C96,48 112,66 136,57 C160,48 175,68 200,60 C225,52 240,70 265,63 C290,56 305,72 330,66 C355,60 370,74 395,68 C420,62 435,76 460,71 C485,66 498,78 523,74 C548,70 562,80 587,76 C612,72 626,82 651,79 C676,76 690,84 715,82 C740,80 754,86 779,84 L800,84 L800,90 Z"
+          fill="rgba(0,190,170,.13)"
+        />
+        {/* Front hill — aqua */}
+        <path
+          d="M0,90 L0,76 C22,66 38,78 62,72 C86,66 98,76 122,71 C146,66 160,76 184,72 C208,68 222,78 246,74 C270,70 282,79 306,76 C330,73 342,81 366,78 C390,75 403,83 427,80 C451,77 463,84 487,82 C511,80 523,86 547,84 C571,82 583,87 607,86 C631,85 643,88 667,87 C691,86 703,89 727,88 L800,90 L800,90 Z"
+          fill="rgba(0,160,210,.16)"
+        />
+        {/* Tall grass blades */}
+        <path d="M55,90 C53,74 51,56 56,38 C61,56 63,74 61,90 Z" fill="rgba(0,180,170,.28)" />
+        <path d="M55,90 C56,78 58,65 54,52 C52,65 50,78 51,90 Z" fill="rgba(0,200,180,.20)" />
+        <path d="M160,90 C158,76 156,58 162,40 C168,58 170,76 168,90 Z" fill="rgba(0,170,190,.26)" />
+        <path d="M160,90 C162,80 164,67 160,54 C157,67 155,80 156,90 Z" fill="rgba(0,190,200,.18)" />
+        <path d="M290,90 C288,72 286,54 292,35 C298,54 300,72 298,90 Z" fill="rgba(0,175,185,.27)" />
+        <path d="M420,90 C418,76 416,60 422,44 C428,60 430,76 428,90 Z" fill="rgba(0,165,205,.24)" />
+        <path d="M420,90 C422,80 424,67 420,54 C417,67 415,80 416,90 Z" fill="rgba(0,185,215,.17)" />
+        <path d="M545,90 C543,74 541,56 547,38 C553,56 555,74 553,90 Z" fill="rgba(0,172,188,.26)" />
+        <path d="M670,90 C668,76 666,59 672,42 C678,59 680,76 678,90 Z" fill="rgba(0,168,202,.25)" />
+        <path d="M670,90 C672,80 674,67 670,54 C667,67 665,80 666,90 Z" fill="rgba(0,185,215,.17)" />
+        <path d="M760,90 C758,77 756,62 762,46 C768,62 770,77 768,90 Z" fill="rgba(0,175,195,.24)" />
+      </svg>
+    </div>
   );
 }
