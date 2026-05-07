@@ -166,7 +166,7 @@ export const WindowFrame = ({ window: appWindow }: WindowFrameProps) => {
       </div>
 
       {/* Contenu */}
-      <div className="flex-1 overflow-auto bg-white p-1 relative h-full text-gray-900">
+      <div className="flex-1 overflow-auto bg-transparent p-1 relative h-full text-gray-900">
         {appWindow.component}
       </div>
     </motion.div>

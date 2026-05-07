@@ -82,6 +82,10 @@ interface OSState {
   setLocked: (locked: boolean) => void;
   setCrashed: (crashed: boolean) => void; // <-- Nouveau
 
+  // Son système
+  soundsEnabled: boolean;
+  toggleSounds: () => void;
+
   // Spotify
   spotifyNowPlaying: SpotifyNowPlaying | null;
   spotifyTopTracks: SpotifyTopTrack[];
@@ -195,6 +199,9 @@ export const useOSStore = create<OSState>()(
       setLocked: (locked) => set({ isLocked: locked }),
       setCrashed: (crashed) => set({ isCrashed: crashed }), // <-- Action
 
+      soundsEnabled: true,
+      toggleSounds: () => set((s) => ({ soundsEnabled: !s.soundsEnabled })),
+
       // Spotify
       spotifyNowPlaying: null,
       spotifyTopTracks: [],
@@ -297,7 +304,7 @@ export const useOSStore = create<OSState>()(
 
     {
       name: 'ethanos-storage',
-      partialize: (state) => ({ wallpaper: state.wallpaper }),
+      partialize: (state) => ({ wallpaper: state.wallpaper, soundsEnabled: state.soundsEnabled }),
     }
   )
 );

@@ -1,6 +1,16 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useOSStore, AppWindow } from '@/app/store/useOSStore';
-import { Monitor, Calendar, Music, FileText, Mail, Github, Linkedin, Briefcase } from 'lucide-react';
+import { Calendar, Music, FileText, Mail, Github, Linkedin, Briefcase, Volume2, VolumeX } from 'lucide-react';
+
+/* Windows 4-quadrant flag (inline SVG) */
+const WinFlag = () => (
+  <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true" fill="none">
+    <rect x="1"  y="1"  width="7" height="7" rx="1" fill="#F25022" />
+    <rect x="10" y="1"  width="7" height="7" rx="1" fill="#7FBA00" />
+    <rect x="1"  y="10" width="7" height="7" rx="1" fill="#00A4EF" />
+    <rect x="10" y="10" width="7" height="7" rx="1" fill="#FFB900" />
+  </svg>
+);
 import { MusicPlayerApp } from '@/app/apps/MusicPlayer';
 import { ContactApp } from '@/app/apps/Contact';
 import { PDFViewerApp } from '@/app/apps/PDFViewer';
@@ -9,7 +19,7 @@ import { useIsMobile } from '@/app/hooks/useIsMobile';
 import { portfolio } from '@/app/data/portfolio';
 
 export const Taskbar = () => {
-  const { windows, activeWindowId, focusApp, minimizeApp, addWindow } = useOSStore();
+  const { windows, activeWindowId, focusApp, minimizeApp, addWindow, soundsEnabled, toggleSounds } = useOSStore();
   const [startOpen, setStartOpen] = useState(false);
   const [showCalendar, setShowCalendar] = useState(false);
   const [now, setNow] = useState(() => new Date());
@@ -156,7 +166,7 @@ export const Taskbar = () => {
           onClick={() => setStartOpen(!startOpen)}
           aria-label="Ouvrir le menu démarrer"
         >
-          <Monitor size={18} /> <span className="font-bold">Start</span>
+          <WinFlag /> <span className="font-bold">Start</span>
         </button>
 
         {/* Bandeau de disponibilité, lecture seule, hidden on small screens. */}
@@ -219,6 +229,15 @@ export const Taskbar = () => {
 
         {/* Boutons utilitaires (Mode recruteur, CV, Contact, GitHub, LinkedIn) */}
         <div className="ml-auto flex items-center gap-1 mr-1">
+          {/* Bascule son système */}
+          <button
+            onClick={toggleSounds}
+            title={soundsEnabled ? 'Couper les sons système' : 'Réactiver les sons système'}
+            aria-label={soundsEnabled ? 'Couper les sons système' : 'Réactiver les sons système'}
+            className="p-1.5 rounded-md text-blue-200 hover:bg-white/10 hover:text-white transition-colors"
+          >
+            {soundsEnabled ? <Volume2 size={14} /> : <VolumeX size={14} />}
+          </button>
           <a
             href="/recruiter"
             title="Mode recruteur, vue CV plate scannable"

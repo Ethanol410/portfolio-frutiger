@@ -358,8 +358,8 @@ export const MusicPlayerApp = () => {
             style={{
               width: 10,
               height: isPlaying ? `${Math.max(8, h)}%` : '8%',
-              background: `linear-gradient(180deg, #38bdf8 0%, #0ea5e9 50%, #0284c7 100%)`,
-              boxShadow: isPlaying ? '0 0 4px rgba(14,165,233,0.5)' : 'none',
+              background: `linear-gradient(180deg, #5cd683 0%, #4ecb71 50%, #2d8a4a 100%)`,
+              boxShadow: isPlaying ? '0 0 5px rgba(92,214,131,0.6)' : 'none',
               opacity: 0.85 + (i % 3) * 0.05,
               transition: 'height 80ms ease-out',
             }}
@@ -367,13 +367,37 @@ export const MusicPlayerApp = () => {
         ))}
       </div>
 
-      {/* Info piste */}
-      <div className="text-center mt-3 px-4 shrink-0">
-        <h3 className="font-bold text-sky-900 truncate text-sm">{tracks[currentTrack].title}</h3>
-        <p className="text-xs text-sky-600/70 mt-0.5">{tracks[currentTrack].artist}</p>
-        {isEnded && (
-          <p className="text-xs text-sky-400 animate-pulse mt-1">Piste suivante…</p>
-        )}
+      {/* Info piste avec CD rotatif */}
+      <div className="flex items-center gap-3 mt-3 px-4 shrink-0">
+        {/* Artwork CD */}
+        <div className="relative shrink-0">
+          <div
+            className={`w-14 h-14 rounded-full shadow-lg ring-2 ring-white/50 ${isPlaying ? 'cd-spinning' : ''}`}
+            style={{
+              background: 'conic-gradient(from 0deg, #1a1a2e 0%, #16213e 25%, #0f3460 50%, #533483 75%, #1a1a2e 100%)',
+              boxShadow: '0 4px 14px rgba(0,0,0,0.4), inset 0 0 8px rgba(255,255,255,0.05)',
+            }}
+          >
+            {/* Reflet glossy */}
+            <div
+              className="absolute inset-0 rounded-full"
+              style={{ background: 'linear-gradient(135deg, rgba(255,255,255,0.25) 0%, transparent 55%)' }}
+            />
+            {/* Centre du CD */}
+            <div
+              className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3.5 h-3.5 rounded-full ring-1 ring-white/30"
+              style={{ background: 'radial-gradient(circle, rgba(255,255,255,0.8) 0%, rgba(200,220,255,0.5) 100%)' }}
+            />
+          </div>
+        </div>
+        {/* Texte piste */}
+        <div className="flex-1 min-w-0">
+          <h3 className="font-bold text-sky-900 truncate text-sm">{tracks[currentTrack].title}</h3>
+          <p className="text-xs text-sky-600/70 mt-0.5 truncate">{tracks[currentTrack].artist}</p>
+          {isEnded && (
+            <p className="text-xs text-sky-400 animate-pulse mt-1">Piste suivante…</p>
+          )}
+        </div>
       </div>
 
       {/* Barre de progression */}
@@ -387,6 +411,7 @@ export const MusicPlayerApp = () => {
         />
         <div className="flex justify-between text-[10px] text-sky-500/80 mt-0.5">
           <span>{formatTime(currentTime)}</span>
+          <span className="text-sky-400/60">−{formatTime(Math.max(0, duration - currentTime))}</span>
           <span>{formatTime(duration)}</span>
         </div>
       </div>
@@ -403,14 +428,15 @@ export const MusicPlayerApp = () => {
         <button
           onClick={togglePlay}
           aria-label={isPlaying ? 'Pause' : 'Lecture'}
-          className="w-12 h-12 rounded-full flex items-center justify-center transition-all hover:scale-105 active:scale-95 relative overflow-hidden"
+          className="w-12 h-12 rounded-full flex items-center justify-center active:scale-95 relative overflow-hidden"
           style={{
-            background: 'linear-gradient(145deg,#5bbef5 0%,#2196f3 55%,#0d6fba 100%)',
-            boxShadow: '0 4px 16px rgba(14,165,233,0.45), inset 0 1px 0 rgba(255,255,255,0.4)',
+            background: 'linear-gradient(180deg, #5cd683 0%, #4ecb71 49.9%, #2d8a4a 50%, #1f6e36 100%)',
+            boxShadow: '0 4px 16px rgba(45,138,74,0.5), inset 0 1px 0 rgba(255,255,255,0.45)',
+            border: '1px solid rgba(0,0,0,0.2)',
           }}
         >
           <div className="absolute top-0 left-0 right-0 h-1/2 rounded-t-full"
-            style={{ background: 'linear-gradient(180deg,rgba(255,255,255,0.35) 0%,transparent 100%)' }} />
+            style={{ background: 'linear-gradient(180deg,rgba(255,255,255,0.4) 0%,transparent 100%)' }} />
           {isPlaying
             ? <Pause size={20} className="text-white relative z-10" />
             : <Play size={20} className="text-white relative z-10 ml-0.5" />
