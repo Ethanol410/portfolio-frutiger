@@ -41,7 +41,7 @@ export const BrowserApp = () => {
 
   return (
     <div className="flex flex-col h-full aero-app">
-      {/* Barre de navigation — glass aqua */}
+      {/* Barre de navigation : glass aqua */}
       <div
         className="flex flex-col gap-1.5 p-2 shrink-0"
         style={{

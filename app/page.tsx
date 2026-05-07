@@ -183,7 +183,7 @@ export default function Desktop() {
   // Global keyboard shortcuts
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      // Alt+F4 — close active window
+      // Alt+F4 : close active window
       if (e.altKey && e.key === 'F4') {
         e.preventDefault();
         if (activeWindowId) closeApp(activeWindowId);
@@ -214,7 +214,7 @@ export default function Desktop() {
             bottom: -50, left: -50,
           }} />
 
-          {/* Avatar — anneau glass aqua */}
+          {/* Avatar : anneau glass aqua */}
           <div className="relative">
             <div style={{
               background: 'rgba(255,255,255,0.65)',
@@ -413,7 +413,7 @@ export default function Desktop() {
 
       <div className={`h-full w-full ${isLocked ? "blur-sm scale-105 transition-all duration-700" : "transition-all duration-700 scale-100 blur-0"}`}>
 
-        {/* Frutiger Aero bokeh overlay — static radial blobs over the wallpaper */}
+        {/* Frutiger Aero bokeh overlay : static radial blobs over the wallpaper */}
         <div aria-hidden="true" className="absolute inset-0 pointer-events-none overflow-hidden" style={{ zIndex: 0 }}>
           <div style={{ position: "absolute", left: "6%",  top: "10%", width: 380, height: 380, borderRadius: "50%", background: "radial-gradient(circle, rgba(72,202,228,.10) 0%, transparent 68%)"  }} />
           <div style={{ position: "absolute", left: "75%", top: "5%",  width: 260, height: 260, borderRadius: "50%", background: "radial-gradient(circle, rgba(0,180,216,.08) 0%, transparent 68%)"   }} />
@@ -437,10 +437,7 @@ export default function Desktop() {
           <DesktopIcon name="Contact"     type="app" iconSrc={vistaIcons["Contact"]}     onDoubleClick={() => handleLaunch('Contact')} />
         </div>
 
-        {/* Bureau — colonne gauche suite : recherche */}
-        {/* (ajouté dans la colonne gauche en fin) */}
-
-        {/* Bureau — colonne droite : apps système */}
+        {/* Bureau : colonne droite */}
         <div className="absolute top-0 right-0 p-4 grid grid-cols-2 gap-3 z-0">
           <DesktopIcon name="Terminal"   type="app" iconSrc={vistaIcons["Terminal"]}   onDoubleClick={() => handleLaunch('Terminal')} />
           <DesktopIcon name="Internet"   type="app" iconSrc={vistaIcons["Internet"]}   onDoubleClick={() => handleLaunch('Browser')} />

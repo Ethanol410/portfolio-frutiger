@@ -27,7 +27,7 @@ export const SketchbookApp = () => {
         </div>
         <div className="flex-1 min-w-0">
           <div className="font-bold text-[13px] text-blue-950">Sketchpad</div>
-          <div className="text-[10px] text-blue-700/70">JSPaint — MS Paint classique</div>
+          <div className="text-[10px] text-blue-700/70">JSPaint, MS Paint classique</div>
         </div>
         <a
           href="https://jspaint.app"

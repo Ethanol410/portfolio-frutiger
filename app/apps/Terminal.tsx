@@ -30,7 +30,7 @@ const NEOFETCH = [
   { text: "  Kernel   Next.js 16 / React 19", type: 'output' as LineType },
   { text: "  Shell    bash (EthanOS Terminal)", type: 'output' as LineType },
   { text: "  WM       Zustand Window Manager", type: 'output' as LineType },
-  { text: "  CPU      TypeScript — 64 bits", type: 'output' as LineType },
+  { text: "  CPU      TypeScript  64 bits", type: 'output' as LineType },
   { text: "  Stack    Next.js · Tailwind · Framer Motion", type: 'output' as LineType },
   { text: "  User     Ethan Collin", type: 'output' as LineType },
   { text: "", type: 'output' as LineType },
@@ -103,16 +103,16 @@ export const TerminalApp = () => {
       case 'help':
         response = [
           { text: "Commandes disponibles :", type: 'info' },
-          { text: "  open [app]       — ouvrir une application", type: 'output' },
-          { text: "  close [id]       — fermer une fenêtre par ID", type: 'output' },
-          { text: "  wallpaper [url]  — changer le fond d'écran", type: 'output' },
-          { text: "  whoami           — afficher l'utilisateur", type: 'output' },
-          { text: "  ls               — lister les fenêtres ouvertes", type: 'output' },
-          { text: "  date             — afficher la date et l'heure", type: 'output' },
-          { text: "  echo [texte]     — afficher du texte", type: 'output' },
-          { text: "  neofetch         — infos système", type: 'output' },
-          { text: "  clear            — vider le terminal", type: 'output' },
-          { text: "  reboot           — redémarrer l'OS", type: 'output' },
+          { text: "  open [app]       : ouvrir une application", type: 'output' },
+          { text: "  close [id]       : fermer une fenêtre par ID", type: 'output' },
+          { text: "  wallpaper [url]  : changer le fond d'écran", type: 'output' },
+          { text: "  whoami           : afficher l'utilisateur", type: 'output' },
+          { text: "  ls               : lister les fenêtres ouvertes", type: 'output' },
+          { text: "  date             : afficher la date et l'heure", type: 'output' },
+          { text: "  echo [texte]     : afficher du texte", type: 'output' },
+          { text: "  neofetch         : infos système", type: 'output' },
+          { text: "  clear            : vider le terminal", type: 'output' },
+          { text: "  reboot           : redémarrer l'OS", type: 'output' },
           { text: "", type: 'output' },
           { text: "  Apps: browser, terminal, settings, projects, music, contact, about, ai", type: 'info' },
         ];
@@ -123,14 +123,14 @@ export const TerminalApp = () => {
         break;
 
       case 'matrix':
-        response = [{ text: '[MATRIX MODE — Bienvenue, Neo. Ferme le terminal pour sortir.]', type: 'success' }];
+        response = [{ text: '[MATRIX MODE : Bienvenue, Neo. Ferme le terminal pour sortir.]', type: 'success' }];
         pushLines([{ text: `> ${input}`, type: 'input' }, ...response]);
         setInput('');
         (window as any).__matrixMode?.();
         return;
 
       case 'whoami':
-        response = [{ text: "ethan@ethanos — Administrateur", type: 'success' }];
+        response = [{ text: "ethan@ethanos  Administrateur", type: 'success' }];
         break;
 
       case 'date':
@@ -241,7 +241,7 @@ export const TerminalApp = () => {
 
   return (
     <div className="h-full flex flex-col overflow-hidden">
-      {/* Header — glass aqua Frutiger Aero */}
+      {/* Header : glass aqua Frutiger Aero */}
       <div
         className="px-4 py-2 shrink-0 flex items-center gap-2"
         style={{

@@ -11,7 +11,7 @@ export const PDFViewerApp = ({ file, fileUrl }: PDFViewerProps) => {
 
   return (
     <div className="flex flex-col h-full aero-app">
-      {/* Toolbar — glass aqua */}
+      {/* Toolbar : glass aqua */}
       <div
         className="flex items-center gap-3 px-4 py-2 shrink-0"
         style={{

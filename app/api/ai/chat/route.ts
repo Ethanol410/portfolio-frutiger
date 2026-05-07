@@ -161,7 +161,7 @@ export async function POST(req: Request) {
               continue;
             }
 
-            // Tag potentiellement en cours de construction — envoyer ce qui précède le '['
+            // Tag potentiellement en cours de construction : envoyer ce qui précède le '['
             const bracketIdx = pendingBuffer.lastIndexOf('[');
             sendToken(pendingBuffer.slice(0, bracketIdx));
             pendingBuffer = pendingBuffer.slice(bracketIdx);

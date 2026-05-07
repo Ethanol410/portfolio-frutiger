@@ -110,7 +110,7 @@ export const PaintApp = () => {
 
   return (
     <div className="h-full flex flex-col aero-app">
-      {/* Toolbar — glass aqua */}
+      {/* Toolbar : glass aqua */}
       <div
         className="flex items-center gap-3 px-3 py-2 shrink-0 flex-wrap"
         style={{

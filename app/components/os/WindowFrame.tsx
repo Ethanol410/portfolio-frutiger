@@ -90,7 +90,7 @@ export const WindowFrame = ({ window: appWindow }: WindowFrameProps) => {
       style={{ zIndex: appWindow.zIndex, position: 'absolute' }}
       className={`flex flex-col aero-glass overflow-hidden shadow-2xl`}
     >
-      {/* Barre de titre — Vista Aero chrome */}
+      {/* Barre de titre : Vista Aero chrome */}
       <div
         className="h-9 flex items-center justify-between px-3 select-none touch-none relative overflow-hidden"
         style={{
@@ -115,7 +115,7 @@ export const WindowFrame = ({ window: appWindow }: WindowFrameProps) => {
         </div>
 
         <div className="flex gap-1.5 relative z-10">
-          {/* Minimize — amber orb */}
+          {/* Minimize : amber orb */}
           <button
             aria-label="Réduire"
             onClick={(e) => { e.stopPropagation(); soft(); minimizeApp(appWindow.id); }}
@@ -131,7 +131,7 @@ export const WindowFrame = ({ window: appWindow }: WindowFrameProps) => {
             <Minimize2 size={8} color="rgba(90,60,0,.7)" />
           </button>
 
-          {/* Maximize — green orb */}
+          {/* Maximize : green orb */}
           {!isMobile && (
             <button
               aria-label={appWindow.isMaximized ? 'Restaurer' : 'Agrandir'}
@@ -149,7 +149,7 @@ export const WindowFrame = ({ window: appWindow }: WindowFrameProps) => {
             </button>
           )}
 
-          {/* Close — red orb */}
+          {/* Close : red orb */}
           <button
             aria-label="Fermer"
             onClick={(e) => { e.stopPropagation(); soft(); playClose(); closeApp(appWindow.id); }}

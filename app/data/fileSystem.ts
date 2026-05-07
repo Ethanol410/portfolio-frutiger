@@ -30,10 +30,10 @@ export const myComputer: FileNode[] = [
     name: 'Médias',
     type: 'folder',
     children: [
-      { id: '31', name: 'Modjo — Lady.mp3', type: 'file', content: '/music/modjo-lady.mp3' },
-      { id: '32', name: 'Bob Sinclar — World Hold On.mp3', type: 'file', content: '/music/bob-sinclar-world.mp3' },
-      { id: '33', name: 'Kendji Girac — Elle m\'a aimé.mp3', type: 'file', content: '/music/kendji-aimer.mp3' },
-      { id: '34', name: 'Maitre Gims — Tout Donner.mp3', type: 'file', content: '/music/maitre-gims-tout-donner.mp3' },
+      { id: '31', name: 'Modjo -Lady.mp3', type: 'file', content: '/music/modjo-lady.mp3' },
+      { id: '32', name: 'Bob Sinclar -World Hold On.mp3', type: 'file', content: '/music/bob-sinclar-world.mp3' },
+      { id: '33', name: 'Kendji Girac -Elle m\'a aimé.mp3', type: 'file', content: '/music/kendji-aimer.mp3' },
+      { id: '34', name: 'Maitre Gims -Tout Donner.mp3', type: 'file', content: '/music/maitre-gims-tout-donner.mp3' },
     ]
   },
 ];

@@ -1,17 +1,21 @@
 'use client';
 
 import { useState } from 'react';
-import { Tv2, Power } from 'lucide-react';
+import { Tv2, Power, Radio, Leaf, CloudRain, Building2 } from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
 
-const CHANNELS = [
-  // Lofi Girl 24/7 live stream — always on
-  { id: 'lo-fi',  label: '📡 Lo-Fi',  url: 'https://www.youtube.com/embed/jfKfPfyJRdk?autoplay=1&mute=1&controls=0&rel=0' },
-  // Relaxing nature / forest sounds
-  { id: 'nature', label: '🌿 Nature', url: 'https://www.youtube.com/embed/eKFTSSKCzWA?autoplay=1&mute=1&controls=0&rel=0' },
-  // Heavy rain on window sounds
-  { id: 'rain',   label: '🌧️ Pluie',  url: 'https://www.youtube.com/embed/nDq6TstdEi8?autoplay=1&mute=1&controls=0&rel=0' },
-  // Tokyo Tachikawa evening → night walk 4K HDR (Rambalac, mars 2026)
-  { id: 'city',   label: '🏙️ Ville',  url: 'https://www.youtube.com/embed/FyNBZCNzBn4?autoplay=1&mute=1&controls=0&rel=0' },
+type Channel = {
+  id: string;
+  label: string;
+  icon: LucideIcon;
+  url: string;
+};
+
+const CHANNELS: Channel[] = [
+  { id: 'lo-fi',  label: 'Lo-Fi',  icon: Radio,      url: 'https://www.youtube.com/embed/jfKfPfyJRdk?autoplay=1&mute=1&controls=0&rel=0' },
+  { id: 'nature', label: 'Nature', icon: Leaf,        url: 'https://www.youtube.com/embed/eKFTSSKCzWA?autoplay=1&mute=1&controls=0&rel=0' },
+  { id: 'rain',   label: 'Pluie',  icon: CloudRain,   url: 'https://www.youtube.com/embed/nDq6TstdEi8?autoplay=1&mute=1&controls=0&rel=0' },
+  { id: 'city',   label: 'Ville',  icon: Building2,   url: 'https://www.youtube.com/embed/FyNBZCNzBn4?autoplay=1&mute=1&controls=0&rel=0' },
 ];
 
 export const CRTTelevisionApp = () => {
@@ -154,7 +158,7 @@ export const CRTTelevisionApp = () => {
               <button
                 key={ch.id}
                 onClick={() => { setChannel(i); if (!on) setOn(true); }}
-                className="px-2 py-1 text-[10px] rounded-md font-medium transition-all"
+                className="px-2 py-1 text-[10px] rounded-md font-medium transition-all flex items-center gap-1"
                 style={channel === i && on ? {
                   background: 'linear-gradient(180deg,#5cd683 0%,#4ecb71 49.9%,#2d8a4a 50%,#1f6e36 100%)',
                   color: 'white',
@@ -165,6 +169,7 @@ export const CRTTelevisionApp = () => {
                   border: '1px solid rgba(186,230,253,0.6)',
                 }}
               >
+                <ch.icon size={10} />
                 {ch.label}
               </button>
             ))}

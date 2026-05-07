@@ -108,12 +108,12 @@ export async function GET(req: Request) {
   </style>
 </head>
 <body>
-  <h1>Refresh token Spotify généré ✅</h1>
+  <h1>Refresh token Spotify généré [OK]</h1>
 
   <p>Scopes accordés : <code>${escapeHtml(data.scope ?? 'inconnu')}</code></p>
   ${scopeOk
-    ? '<p class="scope-ok">✅ Le scope user-read-recently-played est bien présent.</p>'
-    : '<p class="scope-warn">⚠️ Le scope user-read-recently-played est ABSENT. La route recently-played continuera à renvoyer un corpus vide.</p>'}
+    ? '<p class="scope-ok">[OK] Le scope user-read-recently-played est bien présent.</p>'
+    : '<p class="scope-warn">[WARN] Le scope user-read-recently-played est ABSENT. La route recently-played continuera à renvoyer un corpus vide.</p>'}
 
   <h2>Étapes à suivre maintenant</h2>
   <ol>
@@ -131,7 +131,7 @@ export async function GET(req: Request) {
   </ol>
 
   <p style="margin-top: 20px; color: #64748b; font-size: 13px;">
-    ⚠️ Une fois la mise à jour faite côté env vars, pense à supprimer (ou protéger derrière une auth)
+    [WARN] Une fois la mise à jour faite côté env vars, pense à supprimer (ou protéger derrière une auth)
     les routes <code>/api/spotify/login</code> et <code>/api/callback</code> avant que le portfolio
     ne reste en libre-service public sur Internet.
   </p>

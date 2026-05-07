@@ -63,7 +63,7 @@ const BIO_BLOCKS = [
   {
     num: "01",
     headline: "Concevoir sous contraintes réelles",
-    text: "À 20 ans, reprise en solo de la plateforme e-commerce d'Ici Carte Grise — plusieurs milliers de transactions par mois, PHP 8, MySQL, API métier — après le départ du tuteur. Tenu en prod deux ans, tout en encadrant une nouvelle alternante.",
+    text: "À 20 ans, reprise en solo de la plateforme e-commerce d'Ici Carte Grise (plusieurs milliers de transactions par mois, PHP 8, MySQL, API métier) après le départ du tuteur. Tenu en prod deux ans, tout en encadrant une nouvelle alternante.",
   },
   {
     num: "02",
@@ -73,7 +73,7 @@ const BIO_BLOCKS = [
   {
     num: "03",
     headline: "Je transforme les constats en action",
-    text: "Conscient d'un bagage maths à renforcer, j'ai construit MathQuest — une PWA d'auto-formation utilisée 15 min chaque soir. En septembre 2026, cycle ingénieur ENSSAT IAM en alternance à Lannion ou Dinan.",
+    text: "Conscient d'un bagage maths à renforcer, j'ai construit MathQuest, une PWA d'auto-formation utilisée 15 min chaque soir. En septembre 2026, cycle ingénieur ENSSAT IAM en alternance à Lannion ou Dinan.",
   },
 ];
 
@@ -291,17 +291,17 @@ export default function RecruiterPage() {
               <stop offset="100%" stopColor="rgba(80,190,230,0)"    />
             </linearGradient>
           </defs>
-          {/* Main swoosh — diagonale montante */}
+          {/* Main swoosh : diagonale montante */}
           <path
             d="M-150,720 C100,590 320,360 640,235 C860,150 1060,162 1350,218 L1350,262 C1060,206 860,194 640,278 C320,403 100,633 -150,764 Z"
             fill="url(#sw1)"
           />
-          {/* Secondary swoosh — haut */}
+          {/* Secondary swoosh : haut */}
           <path
             d="M-150,185 C80,228 280,308 520,278 C720,252 940,168 1350,212 L1350,240 C940,196 720,280 520,306 C280,336 80,256 -150,213 Z"
             fill="url(#sw2)"
           />
-          {/* Accent swoosh — milieu droit */}
+          {/* Accent swoosh : milieu droit */}
           <path
             d="M650,820 C780,740 900,620 1100,520 C1200,468 1300,460 1350,462 L1350,488 C1300,486 1200,494 1100,546 C900,646 780,766 650,846 Z"
             fill="url(#sw3)"
@@ -440,7 +440,7 @@ export default function RecruiterPage() {
           </div>
         </section>
 
-        {/* ── À PROPOS — 3 blocks ── */}
+        {/* À PROPOS : 3 blocks */}
         <section className="r-s" style={{ animationDelay: "80ms" }}>
           <AeroLabel>À propos</AeroLabel>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
@@ -756,7 +756,7 @@ export default function RecruiterPage() {
             </div>
           </div>
           <p className="text-xs font-semibold text-center" style={{ color: "#5a8098" }}>
-            Portfolio complet (EthanOS — OS simulé Frutiger Aero) :{" "}
+            Portfolio complet (EthanOS, OS simulé Frutiger Aero) :{" "}
             <Link href="/" className="hover:underline underline-offset-2" style={{ color: AQ }}>
               portfolio-frutiger.vercel.app
             </Link>

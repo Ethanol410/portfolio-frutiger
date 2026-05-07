@@ -209,7 +209,7 @@ export const AIChatApp = () => {
   return (
     <div className="h-full flex flex-col aero-app overflow-hidden">
 
-      {/* Header — bande aqua glossy */}
+      {/* Header : bande aqua glossy */}
       <div
         className="px-4 py-3 shrink-0 flex items-center gap-3"
         style={{

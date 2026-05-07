@@ -42,7 +42,7 @@ const createTone = (
     oscillator.start(t);
     oscillator.stop(t + duration);
   } catch {
-    // AudioContext can fail — silently ignore
+    // AudioContext can fail, silently ignore
   }
 };
 

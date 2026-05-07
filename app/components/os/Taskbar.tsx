@@ -211,7 +211,7 @@ export const Taskbar = () => {
         {spotifyIsListening && spotifyNowPlaying && (
           <button
             onClick={openMusicPlayer}
-            title={`${spotifyNowPlaying.title} — ${spotifyNowPlaying.artist}`}
+            title={`${spotifyNowPlaying.title} · ${spotifyNowPlaying.artist}`}
             className="flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs transition-all hover:brightness-110 active:scale-95 shrink-0"
             style={{
               background: 'rgba(29,185,84,0.15)',
