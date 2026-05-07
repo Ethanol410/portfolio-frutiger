@@ -4,10 +4,14 @@ import { useState } from 'react';
 import { Tv2, Power } from 'lucide-react';
 
 const CHANNELS = [
-  { id: 'lo-fi', label: '📡 Lo-Fi', url: 'https://www.youtube.com/embed/jfKfPfyJRdk?autoplay=1&mute=1&loop=1&playlist=jfKfPfyJRdk&controls=0&rel=0' },
-  { id: 'nature', label: '🌿 Nature', url: 'https://www.youtube.com/embed/4I9R5rBvuoQ?autoplay=1&mute=1&loop=1&playlist=4I9R5rBvuoQ&controls=0&rel=0' },
-  { id: 'rain', label: '🌧️ Pluie', url: 'https://www.youtube.com/embed/yIQd2Ya0Ziw?autoplay=1&mute=1&loop=1&playlist=yIQd2Ya0Ziw&controls=0&rel=0' },
-  { id: 'city', label: '🏙️ Ville', url: 'https://www.youtube.com/embed/h5bxuoZoFoY?autoplay=1&mute=1&loop=1&playlist=h5bxuoZoFoY&controls=0&rel=0' },
+  // Lofi Girl 24/7 live stream — always on
+  { id: 'lo-fi',  label: '📡 Lo-Fi',  url: 'https://www.youtube.com/embed/jfKfPfyJRdk?autoplay=1&mute=1&controls=0&rel=0' },
+  // Relaxing nature / forest sounds
+  { id: 'nature', label: '🌿 Nature', url: 'https://www.youtube.com/embed/eKFTSSKCzWA?autoplay=1&mute=1&controls=0&rel=0' },
+  // Heavy rain on window sounds
+  { id: 'rain',   label: '🌧️ Pluie',  url: 'https://www.youtube.com/embed/nDq6TstdEi8?autoplay=1&mute=1&controls=0&rel=0' },
+  // Tokyo Shibuya Crossing night walk 4K
+  { id: 'city',   label: '🏙️ Ville',  url: 'https://www.youtube.com/embed/wKimU8uegZQ?autoplay=1&mute=1&controls=0&rel=0' },
 ];
 
 export const CRTTelevisionApp = () => {

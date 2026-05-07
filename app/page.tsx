@@ -14,7 +14,6 @@ import { ProjectsApp } from "./apps/Projects";
 import { AboutApp } from "./apps/About";
 import { ContactApp } from "./apps/Contact";
 import { MusicPlayerApp } from "./apps/MusicPlayer";
-import { PaintApp } from "./apps/Paint";
 import { PDFViewerApp } from "./apps/PDFViewer";
 import { AIChatApp } from "./apps/AIChat";
 import { ResearchApp } from "./apps/Research";
@@ -138,9 +137,6 @@ export default function Desktop() {
         break;
       case 'Contact':
         addWindow({ ...baseWindow, id: 'contact', title: 'Me Contacter', icon: Mail, component: <ContactApp />, defaultPosition: { x: 300, y: 60 }, defaultSize: { width: 550, height: 580 } });
-        break;
-      case 'Paint':
-        addWindow({ ...baseWindow, id: 'paint', title: 'Paint', icon: Palette, component: <PaintApp />, defaultPosition: { x: 80, y: 40 }, defaultSize: { width: 900, height: 660 } });
         break;
       case 'CV':
         addWindow({ ...baseWindow, id: 'cv', title: 'Mon CV', icon: FileText, component: <PDFViewerApp file="/cv_ethan_collin.pdf" />, defaultPosition: { x: 120, y: 40 }, defaultSize: { width: 800, height: 660 } });
@@ -445,7 +441,7 @@ export default function Desktop() {
         {/* (ajouté dans la colonne gauche en fin) */}
 
         {/* Bureau — colonne droite : apps système */}
-        <div className="absolute top-0 right-0 p-4 flex flex-col gap-3 z-0">
+        <div className="absolute top-0 right-0 p-4 grid grid-cols-2 gap-3 z-0">
           <DesktopIcon name="Terminal"   type="app" iconSrc={vistaIcons["Terminal"]}   onDoubleClick={() => handleLaunch('Terminal')} />
           <DesktopIcon name="Internet"   type="app" iconSrc={vistaIcons["Internet"]}   onDoubleClick={() => handleLaunch('Browser')} />
           <DesktopIcon name="Musique"    type="app" iconSrc={vistaIcons["Musique"]}    onDoubleClick={() => handleLaunch('MusicPlayer')} />

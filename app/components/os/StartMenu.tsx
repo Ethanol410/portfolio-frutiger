@@ -10,7 +10,6 @@ import { SettingsApp } from '@/app/apps/Settings';
 import { AboutApp } from '@/app/apps/About';
 import { ProjectsApp } from '@/app/apps/Projects';
 import { MusicPlayerApp } from '@/app/apps/MusicPlayer';
-import { PaintApp } from '@/app/apps/Paint';
 import { ContactApp } from '@/app/apps/Contact';
 import { PDFViewerApp } from '@/app/apps/PDFViewer';
 import { AIChatApp } from '@/app/apps/AIChat';
@@ -80,9 +79,6 @@ export const StartMenu = ({ onClose }: StartMenuProps) => {
       case 'MusicPlayer':
         addWindow({ ...baseWindow, id: 'musicplayer', title: 'Lecteur Musique', icon: Music, component: <MusicPlayerApp />, defaultPosition: { x: 50, y: 200 } });
         break;
-      case 'Paint':
-        addWindow({ ...baseWindow, id: 'paint', title: 'Paint', icon: Palette, component: <PaintApp />, defaultPosition: { x: 80, y: 80 } });
-        break;
       case 'Contact':
         addWindow({ ...baseWindow, id: 'contact', title: 'Me Contacter', icon: Mail, component: <ContactApp />, defaultPosition: { x: 200, y: 100 } });
         break;
@@ -117,7 +113,6 @@ export const StartMenu = ({ onClose }: StartMenuProps) => {
     { name: 'Terminal', icon: Terminal, action: 'Terminal', color: 'text-gray-700', vistaKey: 'Terminal' },
     { name: 'Documents', icon: Folder, action: 'Explorer', color: 'text-yellow-500', vistaKey: 'Explorer' },
     { name: 'Musique', icon: Music, action: 'MusicPlayer', color: 'text-pink-500', vistaKey: 'MusicPlayer' },
-    { name: 'Paint', icon: Palette, action: 'Paint', color: 'text-emerald-600', vistaKey: 'Paint' },
     { name: 'Ethan IA', icon: Sparkles, action: 'AIChat', color: 'text-violet-500', vistaKey: 'AIChat' },
     { name: 'Sketchpad', icon: PenLine, action: 'Sketchbook', color: 'text-orange-500', vistaKey: 'Paint' },
     { name: 'Télévision', icon: Tv2, action: 'CRTTelevision', color: 'text-blue-700', vistaKey: 'Browser' },
