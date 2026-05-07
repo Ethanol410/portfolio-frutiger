@@ -27,7 +27,7 @@ export const myComputer: FileNode[] = [
   },
   {
     id: '3',
-    name: 'Musique',
+    name: 'Médias',
     type: 'folder',
     children: [
       { id: '31', name: 'Modjo — Lady.mp3', type: 'file', content: '/music/modjo-lady.mp3' },

@@ -19,7 +19,7 @@ export const NotificationToaster = () => {
 
   return (
     <div
-      className="fixed top-4 right-4 z-[10000] flex flex-col gap-2 pointer-events-none"
+      className="fixed top-2 right-2 left-2 sm:left-auto sm:top-4 sm:right-4 z-[10000] flex flex-col items-end gap-2 pointer-events-none"
       aria-live="polite"
       role="status"
     >
@@ -30,7 +30,7 @@ export const NotificationToaster = () => {
             initial={{ opacity: 0, x: 50, scale: 0.9 }}
             animate={{ opacity: 1, x: 0, scale: 1 }}
             exit={{ opacity: 0, x: 50, scale: 0.9 }}
-            className="pointer-events-auto w-80 bg-white/90 backdrop-blur-md border border-white/50 shadow-lg rounded-lg p-3 flex gap-3 items-start"
+            className="pointer-events-auto w-full max-w-sm sm:w-80 bg-white/90 backdrop-blur-md border border-white/50 shadow-lg rounded-lg p-3 flex gap-3 items-start"
           >
             <div className={`mt-1 ${notif.type === 'success' ? 'text-green-500' : notif.type === 'error' ? 'text-red-500' : 'text-blue-500'}`}>
               {notif.type === 'success' ? <CheckCircle size={20} /> : notif.type === 'error' ? <AlertCircle size={20} /> : <Bell size={20} />}

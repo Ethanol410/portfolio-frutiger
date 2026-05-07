@@ -65,14 +65,23 @@ export const WindowFrame = ({ window: appWindow }: WindowFrameProps) => {
       aria-label={appWindow.title}
       drag={!isActuallyMaximized}
       dragMomentum={false}
-      initial={{ scale: 0.9, opacity: 0, x: appWindow.defaultPosition?.x || 0, y: appWindow.defaultPosition?.y || 0 }}
+      initial={{
+        scale: 0.96,
+        opacity: 0,
+        x: isActuallyMaximized ? 0 : (appWindow.defaultPosition?.x || 0),
+        y: isActuallyMaximized ? 0 : (appWindow.defaultPosition?.y || 0)
+      }}
       animate={{
         scale: 1,
         opacity: 1,
         x: isActuallyMaximized ? 0 : undefined,
         y: isActuallyMaximized ? 0 : undefined,
-        width: isActuallyMaximized ? "100vw" : (appWindow.defaultSize?.width ?? 600),
-        height: isActuallyMaximized ? (isMobile ? "calc(100vh - 48px)" : "calc(100vh - 40px)") : (appWindow.defaultSize?.height ?? "auto"),
+        width: isActuallyMaximized ? "100dvw" : (appWindow.defaultSize?.width ?? 600),
+        height: isActuallyMaximized
+          ? (isMobile
+              ? "calc(100dvh - 48px - env(safe-area-inset-bottom, 0px))"
+              : "calc(100dvh - 40px)")
+          : (appWindow.defaultSize?.height ?? "auto"),
         borderRadius: isActuallyMaximized ? 0 : 8
       }}
       onPointerDown={() => { focusApp(appWindow.id); }}

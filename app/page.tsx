@@ -399,7 +399,7 @@ export default function Desktop() {
 
   return (
     <div
-      className="h-[100dvh] w-[100dvw] overflow-hidden relative bg-cover transition-all duration-500 font-sans select-none"
+      className="h-[100dvh] w-[100dvw] overflow-hidden relative bg-cover bg-center transition-all duration-500 font-sans select-none"
       style={{ backgroundImage: `url('${wallpaper}')` }}
     >
       <AnimatePresence>

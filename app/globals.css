@@ -127,10 +127,46 @@ body {
   -webkit-touch-callout: none;
 }
 
+/* Réautoriser le scroll/zoom à l'intérieur des conteneurs scrollables et
+ * iframes pour annuler le `touch-action: none` global, qui bloque sinon le
+ * pinch-zoom et le scroll natif sur mobile (PDF, contenu d'app, etc.). */
+.overflow-auto,
+.overflow-y-auto,
+.overflow-x-auto,
+iframe {
+  touch-action: pan-x pan-y pinch-zoom;
+}
+
+/* Inputs et textareas : permettre la sélection texte / curseur sur mobile. */
+input,
+textarea,
+[contenteditable="true"] {
+  touch-action: auto;
+  -webkit-user-select: text;
+  user-select: text;
+}
+
 /* Safe area padding for notch / home bar devices */
 .taskbar-safe {
   padding-bottom: env(safe-area-inset-bottom, 0px);
 }
+
+/* Hauteur disponible mobile prenant en compte la barre d'adresse dynamique
+ * et la safe-area-inset-bottom (home indicator iOS). Utilisée par WindowFrame
+ * pour qu'aucune fenêtre ne soit recouverte par la taskbar ni par la barre
+ * système iOS/Android. */
+.window-mobile-height {
+  height: calc(100dvh - 48px - env(safe-area-inset-bottom, 0px));
+}
+@media (min-width: 768px) {
+  .window-mobile-height {
+    height: calc(100dvh - 40px);
+  }
+}
+
+/* Hide scrollbar utility used in Taskbar */
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
 /* Accessibility: disable animations for users who prefer reduced motion */
 @media (prefers-reduced-motion: reduce) {

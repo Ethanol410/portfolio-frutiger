@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useOSStore, AppWindow } from '@/app/store/useOSStore';
-import { Monitor, Calendar, Music, FileText, Mail, Github, Linkedin } from 'lucide-react';
+import { Monitor, Calendar, Music, FileText, Mail, Github, Linkedin, Briefcase } from 'lucide-react';
 import { MusicPlayerApp } from '@/app/apps/MusicPlayer';
 import { ContactApp } from '@/app/apps/Contact';
 import { PDFViewerApp } from '@/app/apps/PDFViewer';
@@ -223,14 +223,15 @@ export const Taskbar = () => {
             href="/recruiter"
             title="Mode recruteur, vue CV plate scannable"
             aria-label="Mode recruteur"
-            className="px-2.5 py-1 mr-1 text-[10px] font-semibold text-white rounded-md flex items-center gap-1.5 transition-all hover:scale-105 active:scale-95"
+            className="px-2.5 py-1.5 sm:py-1 mr-1 text-[10px] font-semibold text-white rounded-md flex items-center gap-1.5 transition-all hover:scale-105 active:scale-95 shrink-0"
             style={{
               background: 'linear-gradient(180deg, rgba(15,23,42,0.85) 0%, rgba(2,6,23,0.92) 100%)',
               border: '1px solid rgba(125,211,252,0.45)',
               boxShadow: '0 2px 6px rgba(2,6,23,0.35), inset 0 1px 0 rgba(125,211,252,0.25)',
             }}
           >
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse shrink-0" />
+            <Briefcase size={13} className="sm:hidden" />
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse shrink-0 hidden sm:block" />
             <span className="hidden sm:inline">Mode recruteur</span>
           </a>
           <button

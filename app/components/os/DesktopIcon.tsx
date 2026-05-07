@@ -34,7 +34,7 @@ export const DesktopIcon = ({ name, type, onDoubleClick, iconSrc }: DesktopIconP
     <motion.div
       drag={!isMobile}
       dragMomentum={false}
-      className="flex flex-col items-center gap-1 w-20 md:w-24 p-2 rounded-lg hover:bg-white/15 border border-transparent hover:border-cyan-400/40 cursor-pointer group transition-all active:cursor-grabbing active:scale-95 hover:shadow-[0_0_20px_rgba(72,202,228,0.38)]"
+      className="flex flex-col items-center gap-1 w-[78px] md:w-24 p-1.5 md:p-2 rounded-lg hover:bg-white/15 border border-transparent hover:border-cyan-400/40 cursor-pointer group transition-all active:cursor-grabbing active:scale-95 hover:shadow-[0_0_20px_rgba(72,202,228,0.38)]"
       onClick={isMobile ? handleInteraction : undefined}
       onDoubleClick={!isMobile ? handleInteraction : undefined}
       onKeyDown={handleKeyDown}
@@ -58,7 +58,7 @@ export const DesktopIcon = ({ name, type, onDoubleClick, iconSrc }: DesktopIconP
         )}
       </div>
 
-      <span className="text-white text-[10px] md:text-xs text-center font-medium px-2 py-0.5 rounded bg-black/40 shadow-sm backdrop-blur-[2px] line-clamp-2 w-full break-words pointer-events-none transition-all group-hover:bg-[rgba(0,150,200,0.88)] group-hover:shadow-[0_0_8px_rgba(0,180,216,0.55)]">
+      <span title={name} className="text-white text-[9px] md:text-xs leading-tight text-center font-medium px-1 md:px-2 py-0.5 rounded bg-black/40 shadow-sm backdrop-blur-[2px] w-full pointer-events-none transition-all group-hover:bg-[rgba(0,150,200,0.88)] group-hover:shadow-[0_0_8px_rgba(0,180,216,0.55)] truncate md:line-clamp-2 md:[overflow-wrap:break-word] md:whitespace-normal">
         {name}
       </span>
     </motion.div>
