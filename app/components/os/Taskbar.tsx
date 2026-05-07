@@ -223,7 +223,7 @@ export const Taskbar = () => {
             <span className="max-w-[140px] truncate hidden sm:inline">
               {spotifyNowPlaying.title} · {spotifyNowPlaying.artist}
             </span>
-            <span className="sm:hidden">♫</span>
+            <Music size={12} className="sm:hidden" />
           </button>
         )}
 

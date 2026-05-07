@@ -450,7 +450,7 @@ L'application pilote en **WebHID** un **Elgato Stream Deck+** (8 touches LCD, 4 
 - **4 encodeurs** : Volume, fréquence Low-pass, fréquence High-pass, Pitch (de –12 à +12 demi-tons)
 - **Push-encoder** pour reset rapide / mute / toggle
 - **Accélération de rotation x9** sur rotation rapide (<30 ms entre events) pour balayer 20 kHz à la vitesse du geste
-- **Skin Brain City automatique** : labels remplacés par emojis selon le scénario (🐘 ELEPH, 🐝 ABEILL, 🤖 ROBOT, 🧹 BALAI, 🔎 LOUPE)
+- **Skin Brain City automatique** : labels remplacés selon le scénario (ELEPH, ABEILL, ROBOT, BALAI, LOUPE)
 - **LCD strip** affiche en temps réel chaque potentiomètre avec barre de progression et unité (Hz, st, x)
 - Une **deuxième Stream Deck** peut être branchée pour piloter la grille des suspects
 
@@ -515,7 +515,7 @@ src/
 \`\`\`
 
 ## Flow applicatif
-\`/intro\` (cinématique) → \`/setup\` (choix scénario) → \`/\` (login agent, RequireAudio) → \`/briefing\` (narratif + onboarding) → \`/workspace\` (★ écran principal) → \`/suspects\` (grille, écoute, interrogatoire) → \`/debrief\` (verdict).
+\`/intro\` (cinématique) → \`/setup\` (choix scénario) → \`/\` (login agent, RequireAudio) → \`/briefing\` (narratif + onboarding) → \`/workspace\` (écran principal) → \`/suspects\` (grille, écoute, interrogatoire) → \`/debrief\` (verdict).
 
 Routes de gameplay protégées par \`RequireAudio\` qui redirige vers \`/intro\` tant que les fichiers audio ne sont pas chargés.
 

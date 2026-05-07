@@ -324,21 +324,21 @@ export const MusicPlayerApp = () => {
       <div className="flex gap-1 px-3 pt-2 shrink-0 relative z-10">
         <button
           onClick={() => setActiveTab('local')}
-          className="flex-1 py-1.5 rounded-t-lg text-[11px] font-semibold transition-all"
+          className="flex-1 py-1.5 rounded-t-lg text-[11px] font-semibold transition-all flex items-center justify-center gap-1.5"
           style={activeTab === 'local'
             ? { background: 'rgba(14,165,233,0.15)', borderBottom: '2px solid #0ea5e9', color: '#0369a1' }
             : { background: 'rgba(255,255,255,0.3)', borderBottom: '2px solid transparent', color: '#94a3b8' }}
         >
-          🎵 Local
+          <Music size={12} /> Local
         </button>
         <button
           onClick={() => setActiveTab('spotify')}
-          className="flex-1 py-1.5 rounded-t-lg text-[11px] font-semibold transition-all"
+          className="flex-1 py-1.5 rounded-t-lg text-[11px] font-semibold transition-all flex items-center justify-center gap-1.5"
           style={activeTab === 'spotify'
             ? { background: 'rgba(29,185,84,0.12)', borderBottom: '2px solid #1db954', color: '#15803d' }
             : { background: 'rgba(255,255,255,0.3)', borderBottom: '2px solid transparent', color: '#94a3b8' }}
         >
-          🎧 Spotify
+          <Headphones size={12} /> Spotify
         </button>
       </div>
 
@@ -604,7 +604,7 @@ export const MusicPlayerApp = () => {
                 border: '1px solid rgba(186,230,253,0.5)',
               }}
             >
-              <div className="text-3xl mb-2">🎧</div>
+              <div className="flex justify-center mb-2"><Headphones size={32} className="text-sky-400/70" /></div>
               <div className="text-xs text-sky-600/70">Aucune lecture en cours sur Spotify.</div>
               <div className="text-[10px] text-sky-500/50 mt-1">Reviens plus tard pour voir ce que j&apos;écoute en direct.</div>
             </div>

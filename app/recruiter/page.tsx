@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import { Trophy } from "lucide-react";
 import { portfolio } from "@/app/data/portfolio";
 
 export const metadata: Metadata = {
@@ -646,7 +647,7 @@ export default function RecruiterPage() {
                   boxShadow: "0 4px 20px rgba(200,160,0,.1), inset 0 1px 0 rgba(255,255,255,.9)",
                 }}
               >
-                <div className="text-2xl select-none shrink-0 leading-none mt-0.5">🏆</div>
+                <div className="shrink-0 mt-0.5"><Trophy size={24} style={{ color: "#c77c00" }} /></div>
                 <div>
                   <div className="font-bold text-sm" style={{ color: "#012a4a" }}>
                     {a.title}
