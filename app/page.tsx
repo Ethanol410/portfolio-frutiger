@@ -18,6 +18,8 @@ import { PaintApp } from "./apps/Paint";
 import { PDFViewerApp } from "./apps/PDFViewer";
 import { AIChatApp } from "./apps/AIChat";
 import { ResearchApp } from "./apps/Research";
+import { SketchbookApp } from "./apps/Sketchbook";
+import { CRTTelevisionApp } from "./apps/CRTTelevision";
 import { ApprenticeshipApp } from "./apps/Apprenticeship";
 import { myComputer } from "./data/fileSystem";
 import { BootScreen } from "./components/os/BootScreen";
@@ -150,6 +152,12 @@ export default function Desktop() {
         break;
       case 'Apprenticeship':
         addWindow({ ...baseWindow, id: 'apprenticeship', title: 'Alternance IA, sept. 2026', icon: GraduationCap, component: <ApprenticeshipApp />, defaultPosition: { x: 200, y: 50 }, defaultSize: { width: 520, height: 620 } });
+        break;
+      case 'Sketchbook':
+        addWindow({ ...baseWindow, id: 'sketchbook', title: 'Sketchpad', icon: Palette, component: <SketchbookApp />, defaultPosition: { x: 80, y: 60 }, defaultSize: { width: 700, height: 520 } });
+        break;
+      case 'CRTTelevision':
+        addWindow({ ...baseWindow, id: 'crt', title: 'Télévision CRT', icon: Monitor, component: <CRTTelevisionApp />, defaultPosition: { x: 180, y: 60 }, defaultSize: { width: 520, height: 500 } });
         break;
       case 'Explorer':
         const folderId = initialData || 'root';
@@ -441,6 +449,8 @@ export default function Desktop() {
           <DesktopIcon name="Internet"   type="app" iconSrc={vistaIcons["Internet"]}   onDoubleClick={() => handleLaunch('Browser')} />
           <DesktopIcon name="Musique"    type="app" iconSrc={vistaIcons["Musique"]}    onDoubleClick={() => handleLaunch('MusicPlayer')} />
           <DesktopIcon name="Paramètres" type="app" iconSrc={vistaIcons["Paramètres"]} onDoubleClick={() => handleLaunch('Settings')} />
+          <DesktopIcon name="Sketchpad"  type="app" iconSrc={vistaIcons["Paint"]}      onDoubleClick={() => handleLaunch('Sketchbook')} />
+          <DesktopIcon name="Télévision" type="app" iconSrc={vistaIcons["Internet"]}   onDoubleClick={() => handleLaunch('CRTTelevision')} />
           {myComputer.map((node) => (
             <DesktopIcon
               key={node.id}

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useOSStore } from '@/app/store/useOSStore';
-import { Lock, Terminal, Globe, Folder, Power, Settings, User as UserIcon, LayoutGrid, Music, Palette, Search, FileText, Mail, Sparkles } from 'lucide-react';
+import { Lock, Terminal, Globe, Folder, Power, Settings, User as UserIcon, LayoutGrid, Music, Palette, Search, FileText, Mail, Sparkles, Tv2, PenLine } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 import { TerminalApp } from '@/app/apps/Terminal';
@@ -14,6 +14,8 @@ import { PaintApp } from '@/app/apps/Paint';
 import { ContactApp } from '@/app/apps/Contact';
 import { PDFViewerApp } from '@/app/apps/PDFViewer';
 import { AIChatApp } from '@/app/apps/AIChat';
+import { SketchbookApp } from '@/app/apps/Sketchbook';
+import { CRTTelevisionApp } from '@/app/apps/CRTTelevision';
 import { portfolio } from '@/app/data/portfolio';
 
 interface StartMenuProps {
@@ -90,6 +92,12 @@ export const StartMenu = ({ onClose }: StartMenuProps) => {
       case 'AIChat':
         addWindow({ ...baseWindow, id: 'aichat', title: 'Ethan IA', icon: Sparkles, component: <AIChatApp />, defaultSize: { width: 420, height: 560 } });
         break;
+      case 'Sketchbook':
+        addWindow({ ...baseWindow, id: 'sketchbook', title: 'Sketchpad', icon: PenLine, component: <SketchbookApp />, defaultSize: { width: 700, height: 520 } });
+        break;
+      case 'CRTTelevision':
+        addWindow({ ...baseWindow, id: 'crt', title: 'Télévision CRT', icon: Tv2, component: <CRTTelevisionApp />, defaultSize: { width: 520, height: 480 } });
+        break;
     }
     onClose();
   };
@@ -111,6 +119,8 @@ export const StartMenu = ({ onClose }: StartMenuProps) => {
     { name: 'Musique', icon: Music, action: 'MusicPlayer', color: 'text-pink-500', vistaKey: 'MusicPlayer' },
     { name: 'Paint', icon: Palette, action: 'Paint', color: 'text-emerald-600', vistaKey: 'Paint' },
     { name: 'Ethan IA', icon: Sparkles, action: 'AIChat', color: 'text-violet-500', vistaKey: 'AIChat' },
+    { name: 'Sketchpad', icon: PenLine, action: 'Sketchbook', color: 'text-orange-500', vistaKey: 'Paint' },
+    { name: 'Télévision', icon: Tv2, action: 'CRTTelevision', color: 'text-blue-700', vistaKey: 'Browser' },
   ];
 
   const filteredApps = apps.filter(app => app.name.toLowerCase().includes(searchTerm.toLowerCase()));
