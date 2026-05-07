@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { Play, Pause, SkipForward, SkipBack, Volume2, VolumeX, Music, ExternalLink, Sparkles, Clock, Headphones, Loader2 } from 'lucide-react';
 import { useOSStore } from '@/app/store/useOSStore';
+import { useSound } from '@/app/hooks/useSound';
 
 const tracks = [
   { title: "Lady Hear Me Tonight", artist: "Modjo",       url: "/music/modjo-lady.mp3" },
@@ -85,6 +86,7 @@ export const MusicPlayerApp = () => {
     musicRecos, musicRecosLoading, musicRecosError, fetchMusicRecos,
   } = useOSStore();
 
+  const { playCDStart } = useSound();
   const [isPlaying, setIsPlaying]       = useState(false);
   const [currentTrack, setCurrentTrack] = useState(0);
   const [currentTime, setCurrentTime]   = useState(0);
@@ -236,8 +238,12 @@ export const MusicPlayerApp = () => {
     if (audioCtxRef.current?.state === 'suspended') {
       void audioCtxRef.current.resume();
     }
-    if (isPlaying) { audioRef.current.pause(); }
-    else { audioRef.current.play().catch(() => setIsPlaying(false)); }
+    if (isPlaying) {
+      audioRef.current.pause();
+    } else {
+      audioRef.current.play().catch(() => setIsPlaying(false));
+      playCDStart();
+    }
     setIsPlaying(p => !p);
   };
 
@@ -260,8 +266,6 @@ export const MusicPlayerApp = () => {
     setVolume(parseFloat(e.target.value));
     setMuted(false);
   };
-
-  const progress = duration > 0 ? (currentTime / duration) * 100 : 0;
 
   // Background ambient pour l'onglet Spotify, basé sur la couleur dominante.
   const ambientBg = ambientColor

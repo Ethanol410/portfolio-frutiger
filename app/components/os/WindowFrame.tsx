@@ -5,6 +5,7 @@ import { X, Minimize2, Maximize2, Copy } from 'lucide-react';
 import { useOSStore, AppWindow } from '@/app/store/useOSStore';
 import { useIsMobile } from '@/app/hooks/useIsMobile';
 import { useHaptics } from '@/app/hooks/useHaptics';
+import { useSound } from '@/app/hooks/useSound';
 
 interface WindowFrameProps {
   window: AppWindow;
@@ -14,6 +15,7 @@ export const WindowFrame = ({ window: appWindow }: WindowFrameProps) => {
   const { closeApp, focusApp, minimizeApp, toggleMaximizeApp } = useOSStore();
   const isMobile = useIsMobile();
   const { soft } = useHaptics();
+  const { playClose } = useSound();
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -150,7 +152,7 @@ export const WindowFrame = ({ window: appWindow }: WindowFrameProps) => {
           {/* Close — red orb */}
           <button
             aria-label="Fermer"
-            onClick={(e) => { e.stopPropagation(); soft(); closeApp(appWindow.id); }}
+            onClick={(e) => { e.stopPropagation(); soft(); playClose(); closeApp(appWindow.id); }}
             className="p-3 md:p-0.5 hover:brightness-110 transition-all"
             style={{
               width: 18, height: 18, borderRadius: '50%',

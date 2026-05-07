@@ -63,7 +63,7 @@ export default function Desktop() {
     return true;
   });
   const [showMatrix, setShowMatrix] = useState(false);
-  const { playStartup } = useSound();
+  const { playStartup, playOpen } = useSound();
 
   // Déverrouille directement si ?recruiter=1 (skip BIOS + LockScreen)
   useEffect(() => {
@@ -108,6 +108,7 @@ export default function Desktop() {
   }, []);
 
   const handleLaunch = useCallback((appName: string, initialData?: any) => {
+    playOpen();
     const baseWindow = {
       isOpen: true,
       isMinimized: false,
