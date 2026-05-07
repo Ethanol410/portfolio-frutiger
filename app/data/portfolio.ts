@@ -49,6 +49,11 @@ interface Engagement {
   period: string;
 }
 
+interface BioBlock {
+  title: string;
+  text: string;
+}
+
 export interface Portfolio {
   name: string;
   fullName: string;
@@ -62,7 +67,7 @@ export interface Portfolio {
   avatar: string;
   availability: Availability;
   tagline: string;
-  bio: string;
+  bio: BioBlock[];
   skills: Record<string, string[]>;
   experience: Experience[];
   projects: Project[];
@@ -90,7 +95,28 @@ export const portfolio: Portfolio = {
 
   tagline: "Co-auteur d'un projet de recherche IA et interaction humain-machine soumis à UIST 2026. 2 ans d'alternance full-stack en production. Je veux passer de l'utilisation à la conception de l'IA, et concevoir sous contraintes réelles.",
 
-  bio: "À 20 ans, j'ai repris seul la plateforme e-commerce d'Ici Carte Grise après le départ de mon tuteur (plusieurs milliers de transactions par mois en PHP 8, MySQL, intégrations API), et je l'ai tenue en prod tout en encadrant une nouvelle alternante. C'est cette capacité à concevoir sous contraintes réelles qui définit mon profil. Cette expérience m'a aussi appris que maintenir un code existant demande autant d'ingénierie que d'écrire du neuf. En parallèle, à l'IUT MMI de Lannion, j'ai contribué à un projet de recherche couplant IA et interaction humain-machine, encadré par un chercheur de l'IRISA (Université de Rennes). L'article a été soumis à la conférence ACM UIST 2026. J'ai aussi créé Agentix Canvas, un outil de brainstorming collaboratif piloté par agents IA. En première année de BUT MMI, j'ai monté Modall avec deux étudiants de l'ENSSAT, un projet d'enceintes audio modulaires lauréat du Prix Pépite Campus à Quimper en mars 2024. Conscient que mon bagage maths est à renforcer pour un cycle ingénieur, j'ai construit MathQuest, une PWA d'auto-formation aux mathématiques que j'utilise quotidiennement. Je n'attends pas l'école pour combler mes lacunes : je transforme les constats en action. En septembre 2026, je rejoins le cycle ingénieur ENSSAT, option IAM (IA et Multimédia) en alternance. Je cherche une entreprise d'accueil à Lannion ou Dinan pour passer de l'utilisation à la conception de l'IA, sur trois ans.",
+  bio: [
+    {
+      title: "Concevoir sous contraintes réelles",
+      text: "À 20 ans, j'ai repris seul la plateforme e-commerce d'Ici Carte Grise après le départ de mon tuteur (plusieurs milliers de transactions par mois en PHP 8, MySQL, intégrations API), et je l'ai tenue en prod tout en encadrant une nouvelle alternante. Maintenir un code existant demande autant d'ingénierie que d'écrire du neuf.",
+    },
+    {
+      title: "Recherche IA & interaction humain-machine",
+      text: "À l'IUT MMI de Lannion, j'ai contribué à un projet de recherche couplant IA et interaction humain-machine, encadré par un chercheur de l'IRISA (Université de Rennes). L'article a été soumis à la conférence ACM UIST 2026. J'ai aussi créé Agentix Canvas, un outil de brainstorming collaboratif piloté par agents IA.",
+    },
+    {
+      title: "Modall, lauréat Pépite Campus 2024",
+      text: "En première année de BUT MMI, j'ai monté Modall avec deux étudiants de l'ENSSAT, un projet d'enceintes audio modulaires lauréat du Prix Pépite Campus à Quimper en mars 2024.",
+    },
+    {
+      title: "Je transforme les constats en action",
+      text: "Conscient que mon bagage maths est à renforcer pour un cycle ingénieur, j'ai construit MathQuest, une PWA d'auto-formation aux mathématiques que j'utilise quotidiennement. Je n'attends pas l'école pour combler mes lacunes.",
+    },
+    {
+      title: "Cap sur l'alternance IA, septembre 2026",
+      text: "En septembre 2026, je rejoins le cycle ingénieur ENSSAT, option IAM (IA et Multimédia) en alternance. Je cherche une entreprise d'accueil à Lannion ou Dinan pour passer de l'utilisation à la conception de l'IA, sur trois ans.",
+    },
+  ],
 
   skills: {
     ia: [

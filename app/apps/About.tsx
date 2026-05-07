@@ -1,7 +1,8 @@
 import React from 'react';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
-import { Github, Linkedin, Mail, MapPin, Award, Quote, Phone, Zap, Users } from 'lucide-react';
+import { Github, Linkedin, Mail, MapPin, Award, Quote, Phone, Zap, Users, Wrench, FlaskConical, Trophy, Target, GraduationCap } from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
 import { portfolio } from '@/app/data/portfolio';
 
 const stagger = {
@@ -25,6 +26,8 @@ const SKILL_LABELS: Record<string, string> = {
   tools: 'Outils',
   databases: 'Bases de données',
 };
+
+const BIO_ICONS: LucideIcon[] = [Wrench, FlaskConical, Trophy, Target, GraduationCap];
 
 const SKILL_COLORS: Record<string, string> = {
   ia: 'bg-violet-50 text-violet-700 border-violet-100',
@@ -93,10 +96,33 @@ export const AboutApp = () => {
         </div>
       </motion.div>
 
-      {/* Bio */}
+      {/* Bio - blocs thématiques pour faciliter la lecture */}
       <motion.div variants={fadeUp} className="w-full aero-card rounded-xl p-6">
-        <h3 className="font-bold text-gray-800 mb-2 border-b pb-2">Biographie</h3>
-        <p className="text-gray-600 text-sm leading-relaxed">{portfolio.bio}</p>
+        <h3 className="font-bold text-gray-800 mb-4 border-b pb-2">Biographie</h3>
+        <div className="flex flex-col gap-4">
+          {portfolio.bio.map((block, i) => {
+            const Icon = BIO_ICONS[i] ?? Wrench;
+            return (
+              <div key={i} className="flex gap-3">
+                <div className="shrink-0">
+                  <div
+                    className="w-9 h-9 rounded-full flex items-center justify-center"
+                    style={{
+                      background: 'linear-gradient(160deg, #cce9ff 0%, #7fc4f0 100%)',
+                      boxShadow: '0 2px 6px rgba(80,150,220,0.25), inset 0 1px 0 rgba(255,255,255,0.7)',
+                    }}
+                  >
+                    <Icon size={15} className="text-blue-900" />
+                  </div>
+                </div>
+                <div className="flex-1 min-w-0">
+                  <div className="font-semibold text-gray-800 text-sm mb-1">{block.title}</div>
+                  <p className="text-gray-600 text-xs leading-relaxed">{block.text}</p>
+                </div>
+              </div>
+            );
+          })}
+        </div>
       </motion.div>
 
       {/* Skills */}
