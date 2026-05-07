@@ -1,0 +1,14 @@
+{
+  "humanstxt": "https://humanstxt.org/",
+  "author": {
+    "name": "Ethan Collin",
+    "role": "Apprenti Ingénieur IA & Interfaces Intelligentes",
+    "location": "Lannion / Dinan, France",
+    "github": "https://github.com/Ethanol410",
+    "linkedin": "https://www.linkedin.com/in/ethan-collin-0a4869236/"
+  },
+  "site": "EthanOS Portfolio",
+  "built_with": ["Next.js", "TypeScript", "Tailwind CSS", "Framer Motion", "Zustand"],
+  "design": "Frutiger Aero (2004–2013 aesthetic)",
+  "note": "This is a hand-crafted portfolio. No tracking, no cookies, no AI slop."
+}

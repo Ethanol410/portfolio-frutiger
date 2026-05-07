@@ -42,23 +42,27 @@ export const ContactApp = () => {
 
   return (
     <div className="h-full flex flex-col aero-app">
-      {/* Header */}
+      {/* Header aqua glossy */}
       <div
         className="px-4 py-3 flex items-center gap-3 shrink-0"
         style={{
-          background: 'linear-gradient(180deg,rgba(255,255,255,0.75) 0%,rgba(224,242,255,0.85) 100%)',
-          backdropFilter: 'blur(10px)',
-          borderBottom: '1px solid rgba(186,230,253,0.6)',
-          boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.9)',
+          background: 'linear-gradient(180deg, #cce9ff 0%, #a8d8f8 50%, #7fc4f0 100%)',
+          borderBottom: '1px solid rgba(255,255,255,0.7)',
+          boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.9), 0 1px 4px rgba(80,160,220,0.2)',
         }}
       >
         <div
-          className="w-7 h-7 rounded-lg flex items-center justify-center"
-          style={{ background: 'linear-gradient(135deg,#0ea5e9,#0284c7)', boxShadow: '0 2px 6px rgba(14,165,233,0.35)' }}
+          className="w-7 h-7 rounded-full flex items-center justify-center relative overflow-hidden shrink-0"
+          style={{ background: 'linear-gradient(160deg,#5bbef5 0%,#2196f3 55%,#0d6fba 100%)', boxShadow: '0 2px 8px rgba(30,100,200,0.35), inset 0 1px 0 rgba(255,255,255,0.5)' }}
         >
-          <Mail size={14} className="text-white" />
+          <div className="absolute top-0 left-0 right-0 h-1/2 rounded-full"
+            style={{ background: 'linear-gradient(180deg,rgba(255,255,255,0.55) 0%,transparent 100%)' }} />
+          <Mail size={13} className="text-white relative z-10" />
         </div>
-        <span className="font-bold text-sky-900 text-sm">Nouveau Message</span>
+        <div>
+          <div className="font-bold text-[13px] text-blue-950">Nouveau Message</div>
+          <div className="text-[10px] text-blue-700/70">Envoi direct à ma boîte mail</div>
+        </div>
       </div>
 
       {status === 'success' ? (
@@ -79,7 +83,7 @@ export const ContactApp = () => {
       ) : (
         <form onSubmit={handleSubmit} className="flex-1 p-6 overflow-auto flex flex-col gap-4">
           <div className="flex flex-col gap-1">
-            <label className="text-[11px] font-bold text-sky-500 uppercase tracking-wider">À :</label>
+            <label className="text-[11px] font-bold text-emerald-600 uppercase tracking-wider">À :</label>
             <div
               className="text-sky-700 px-3 py-2 rounded-xl text-sm font-medium"
               style={{ background: 'rgba(14,165,233,0.07)', border: '1px solid rgba(125,211,252,0.35)' }}
@@ -89,7 +93,7 @@ export const ContactApp = () => {
           </div>
 
           <div className="flex flex-col gap-1">
-            <label className="text-[11px] font-bold text-sky-500 uppercase tracking-wider">Votre Nom :</label>
+            <label className="text-[11px] font-bold text-emerald-600 uppercase tracking-wider">Votre Nom :</label>
             <input
               required
               className="px-3 py-2 rounded-xl text-sm text-sky-900 outline-none transition-all placeholder:text-sky-300"
@@ -101,7 +105,7 @@ export const ContactApp = () => {
           </div>
 
           <div className="flex flex-col gap-1">
-            <label className="text-[11px] font-bold text-sky-500 uppercase tracking-wider">Votre Email :</label>
+            <label className="text-[11px] font-bold text-emerald-600 uppercase tracking-wider">Votre Email :</label>
             <input
               required
               type="email"
@@ -114,7 +118,7 @@ export const ContactApp = () => {
           </div>
 
           <div className="flex flex-col gap-1">
-            <label className="text-[11px] font-bold text-sky-500 uppercase tracking-wider">Sujet :</label>
+            <label className="text-[11px] font-bold text-emerald-600 uppercase tracking-wider">Sujet :</label>
             <input
               required
               className="px-3 py-2 rounded-xl text-sm text-sky-900 outline-none transition-all placeholder:text-sky-300"
@@ -126,7 +130,7 @@ export const ContactApp = () => {
           </div>
 
           <div className="flex-1 flex flex-col gap-1 min-h-[150px]">
-            <label className="text-[11px] font-bold text-sky-500 uppercase tracking-wider">Message :</label>
+            <label className="text-[11px] font-bold text-emerald-600 uppercase tracking-wider">Message :</label>
             <textarea
               required
               className="flex-1 px-3 py-2 rounded-xl text-sm text-sky-900 outline-none transition-all resize-none placeholder:text-sky-300"
@@ -151,8 +155,7 @@ export const ContactApp = () => {
             <button
               type="submit"
               disabled={status === 'sending'}
-              className="disabled:opacity-60 text-white px-6 py-2 rounded-full font-medium text-sm flex items-center gap-2 transition-all hover:opacity-90"
-              style={{ background: 'linear-gradient(135deg,#0284c7,#38bdf8)', boxShadow: '0 2px 10px rgba(14,165,233,0.4)' }}
+              className="disabled:opacity-60 text-white px-6 py-2 font-semibold text-sm flex items-center gap-2 btn-aero-glossy"
             >
               {status === 'sending' ? (
                 <><Loader2 size={16} className="animate-spin" /> Envoi...</>

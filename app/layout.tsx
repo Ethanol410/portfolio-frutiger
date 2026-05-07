@@ -69,6 +69,8 @@ export default function RootLayout({
     <html lang="fr">
       <head>
         <meta name="darkreader-lock" />
+        <link rel="me" href="https://github.com/Ethanol410" />
+        <link rel="me" href="https://www.linkedin.com/in/ethan-collin-0a4869236/" />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${nunito.variable} antialiased`}
