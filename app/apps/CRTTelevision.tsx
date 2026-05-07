@@ -10,8 +10,8 @@ const CHANNELS = [
   { id: 'nature', label: '🌿 Nature', url: 'https://www.youtube.com/embed/eKFTSSKCzWA?autoplay=1&mute=1&controls=0&rel=0' },
   // Heavy rain on window sounds
   { id: 'rain',   label: '🌧️ Pluie',  url: 'https://www.youtube.com/embed/nDq6TstdEi8?autoplay=1&mute=1&controls=0&rel=0' },
-  // Tokyo Shibuya Crossing night walk 4K
-  { id: 'city',   label: '🏙️ Ville',  url: 'https://www.youtube.com/embed/wKimU8uegZQ?autoplay=1&mute=1&controls=0&rel=0' },
+  // Tokyo Tachikawa evening → night walk 4K HDR (Rambalac, mars 2026)
+  { id: 'city',   label: '🏙️ Ville',  url: 'https://www.youtube.com/embed/FyNBZCNzBn4?autoplay=1&mute=1&controls=0&rel=0' },
 ];
 
 export const CRTTelevisionApp = () => {
