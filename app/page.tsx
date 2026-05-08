@@ -47,6 +47,7 @@ const vistaIcons: Record<string, string> = {
   "Ethan IA": "/icons/window-vista/vista_collab.ico",
   Recherche: "/icons/window-vista/vista_search_globe.ico",
   Alternance: "/icons/window-vista/vista_get_started.ico",
+  Télévision: "/icons/window-vista/vista_movie.ico",
 };
 
 export default function Desktop() {
@@ -446,7 +447,7 @@ export default function Desktop() {
           <DesktopIcon name="Musique"    type="app" iconSrc={vistaIcons["Musique"]}    onDoubleClick={() => handleLaunch('MusicPlayer')} />
           <DesktopIcon name="Paramètres" type="app" iconSrc={vistaIcons["Paramètres"]} onDoubleClick={() => handleLaunch('Settings')} />
           <DesktopIcon name="Sketchpad"  type="app" iconSrc={vistaIcons["Paint"]}      onDoubleClick={() => handleLaunch('Sketchbook')} />
-          <DesktopIcon name="Télévision" type="app" iconSrc={vistaIcons["Internet"]}   onDoubleClick={() => handleLaunch('CRTTelevision')} />
+          <DesktopIcon name="Télévision" type="app" iconSrc={vistaIcons["Télévision"]} onDoubleClick={() => handleLaunch('CRTTelevision')} />
         </div>
 
         {Object.values(windows).map((win) => (

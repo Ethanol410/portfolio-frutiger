@@ -33,6 +33,7 @@ const vistaIcons: Record<string, string> = {
   Contact: "/icons/wlm1.ico",
   CV: "/icons/window-vista/vista_bench.ico",
   AIChat: "/icons/window-vista/vista_collab.ico",
+  Television: "/icons/window-vista/vista_movie.ico",
 };
 
 export const StartMenu = ({ onClose }: StartMenuProps) => {
@@ -114,7 +115,7 @@ export const StartMenu = ({ onClose }: StartMenuProps) => {
     { name: 'Musique', icon: Music, action: 'MusicPlayer', color: 'text-pink-500', vistaKey: 'MusicPlayer' },
     { name: 'Ethan IA', icon: Sparkles, action: 'AIChat', color: 'text-violet-500', vistaKey: 'AIChat' },
     { name: 'Sketchpad', icon: PenLine, action: 'Sketchbook', color: 'text-orange-500', vistaKey: 'Paint' },
-    { name: 'Télévision', icon: Tv2, action: 'CRTTelevision', color: 'text-blue-700', vistaKey: 'Browser' },
+    { name: 'Télévision', icon: Tv2, action: 'CRTTelevision', color: 'text-blue-700', vistaKey: 'Television' },
   ];
 
   const filteredApps = apps.filter(app => app.name.toLowerCase().includes(searchTerm.toLowerCase()));
