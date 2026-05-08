@@ -80,7 +80,7 @@ export const portfolio: Portfolio = {
   name: "Ethan",
   fullName: "Ethan Collin",
   title: "Apprenti ingénieur IA & interfaces intelligentes",
-  subtitle: "BUT MMI Lannion (parcours Développement Web et dispositifs interactifs). Cycle ENSSAT IAM dès septembre 2026.",
+  subtitle: "BUT MMI Lannion (parcours Développement Web et dispositifs interactifs). Cycle ENSSAT IAM dès le 7 septembre 2026.",
   location: "Lannion · Dinan · Côtes-d'Armor",
   email: "ethan.collin2304@gmail.com",
   phone: "06 04 46 10 27",
@@ -90,7 +90,7 @@ export const portfolio: Portfolio = {
 
   availability: {
     status: "disponible",
-    label: "Alternance ingénieur IA, septembre 2026, Lannion ou Dinan",
+    label: "Alternance ingénieur IA, 7 sept. 2026 → 6 sept. 2029, Lannion ou Dinan",
   },
 
   tagline: "Co-auteur d'un projet de recherche IA et interaction humain-machine soumis à UIST 2026. 2 ans d'alternance full-stack en production. Je veux passer de l'utilisation à la conception de l'IA, et concevoir sous contraintes réelles.",

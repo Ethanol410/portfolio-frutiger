@@ -148,7 +148,7 @@ export default function Desktop() {
         addWindow({ ...baseWindow, id: 'research', title: 'Recherche', icon: FlaskConical, component: <ResearchApp />, defaultPosition: { x: 200, y: 60 }, defaultSize: { width: 520, height: 580 } });
         break;
       case 'Apprenticeship':
-        addWindow({ ...baseWindow, id: 'apprenticeship', title: 'Alternance IA, sept. 2026', icon: GraduationCap, component: <ApprenticeshipApp />, defaultPosition: { x: 200, y: 50 }, defaultSize: { width: 520, height: 620 } });
+        addWindow({ ...baseWindow, id: 'apprenticeship', title: 'Alternance IA, sept. 2026', icon: GraduationCap, component: <ApprenticeshipApp />, defaultPosition: { x: 180, y: 40 }, defaultSize: { width: 640, height: 720 } });
         break;
       case 'Sketchbook':
         addWindow({ ...baseWindow, id: 'sketchbook', title: 'Sketchpad', icon: Palette, component: <SketchbookApp />, defaultPosition: { x: 80, y: 60 }, defaultSize: { width: 700, height: 520 } });
@@ -179,6 +179,18 @@ export default function Desktop() {
       delete (window as any).__launchApp;
     };
   }, [handleLaunch]);
+
+  // Deep-link ?app=<name> : ouvre l'app correspondante après boot et déverrouillage
+  useEffect(() => {
+    if (isBooting || isLocked) return;
+    const params = new URLSearchParams(window.location.search);
+    const app = params.get('app');
+    if (!app) return;
+    handleLaunch(app);
+    params.delete('app');
+    const next = params.toString();
+    window.history.replaceState({}, '', next ? `${window.location.pathname}?${next}` : window.location.pathname);
+  }, [isBooting, isLocked, handleLaunch]);
 
   // Global keyboard shortcuts
   useEffect(() => {

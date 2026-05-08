@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { Trophy } from "lucide-react";
+import { Trophy, Wallet, Calendar as CalendarIcon, FolderDown, ExternalLink } from "lucide-react";
 import { portfolio } from "@/app/data/portfolio";
+import { APPRENTICESHIP } from "@/app/data/apprenticeship";
 
 export const metadata: Metadata = {
   title: `${portfolio.fullName}, mode recruteur`,
@@ -441,6 +442,113 @@ export default function RecruiterPage() {
           </div>
         </section>
 
+        {/* ── ALTERNANCE 2026-2029 ── */}
+        <section className="r-s" style={{ animationDelay: "40ms" }}>
+          <AeroLabel>Alternance ingénieur IA, 2026 → 2029</AeroLabel>
+          <div style={GLASS_CARD} className="p-5 aero-dewdrop">
+            <div className="grid grid-cols-3 gap-2 mb-4">
+              <div className="flex flex-col items-center justify-center px-2 py-2.5 rounded-xl"
+                style={{ background: "rgba(255,255,255,.65)", border: `1px solid ${AQL}55` }}>
+                <span className="text-lg sm:text-xl font-black leading-none" style={{ color: AQD }}>36 mois</span>
+                <span className="text-[10px] font-medium text-slate-500 mt-0.5 text-center">1800 h de formation</span>
+              </div>
+              <div className="flex flex-col items-center justify-center px-2 py-2.5 rounded-xl"
+                style={{ background: "rgba(255,255,255,.65)", border: `1px solid ${AQL}55` }}>
+                <span className="text-lg sm:text-xl font-black leading-none" style={{ color: AQD }}>≈ 50/50</span>
+                <span className="text-[10px] font-medium text-slate-500 mt-0.5 text-center">école / entreprise</span>
+              </div>
+              <div className="flex flex-col items-center justify-center px-2 py-2.5 rounded-xl"
+                style={{ background: "rgba(220,252,231,.85)", border: "1px solid rgba(34,197,94,.5)" }}>
+                <span className="text-lg sm:text-xl font-black leading-none" style={{ color: "#15803d" }}>750 €/an</span>
+                <span className="text-[10px] font-bold mt-0.5 text-center" style={{ color: "#166534" }}>coût employeur</span>
+              </div>
+            </div>
+
+            {/* Mini-timeline horizontale 1ère année */}
+            <div className="mb-3">
+              <div className="text-[10px] font-bold uppercase tracking-wider mb-1.5" style={{ color: AQ, fontFamily: MONO }}>
+                Calendrier année 1
+              </div>
+              <div className="flex items-stretch w-full rounded-md overflow-hidden" style={{ height: 22 }}>
+                {APPRENTICESHIP.year1Schedule.map((p, i) => (
+                  <div
+                    key={p.code}
+                    className="flex items-center justify-center text-[9px] font-bold text-white"
+                    style={{
+                      flex: 1,
+                      background: p.kind === "school"
+                        ? "linear-gradient(180deg, #38bdf8 0%, #0284c7 100%)"
+                        : "linear-gradient(180deg, #34d399 0%, #059669 100%)",
+                      borderRight: i < APPRENTICESHIP.year1Schedule.length - 1 ? "1px solid rgba(255,255,255,.4)" : "none",
+                    }}
+                    title={`${p.code}, ${p.label}, ${p.start} → ${p.end}`}
+                  >
+                    {p.code}
+                  </div>
+                ))}
+              </div>
+              <div className="flex justify-between text-[9px] text-slate-500 mt-1 font-mono">
+                <span>07/09/2026</span>
+                <span>05/09/2027</span>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 text-[11px]">
+              <div className="flex items-start gap-1.5">
+                <CalendarIcon size={12} className="shrink-0 mt-0.5" style={{ color: AQ }} />
+                <div>
+                  <div className="font-bold" style={{ color: "#012a4a" }}>Dates contrat</div>
+                  <div className="text-slate-600">07/09/2026 → 06/09/2029</div>
+                </div>
+              </div>
+              <div className="flex items-start gap-1.5">
+                <Wallet size={12} className="shrink-0 mt-0.5" style={{ color: "#15803d" }} />
+                <div>
+                  <div className="font-bold" style={{ color: "#012a4a" }}>Reste à charge</div>
+                  <div className="text-slate-600">750 €/an, OPCO finance le reste</div>
+                </div>
+              </div>
+              <div className="flex items-start gap-1.5">
+                <ExternalLink size={12} className="shrink-0 mt-0.5" style={{ color: AQ }} />
+                <div>
+                  <div className="font-bold" style={{ color: "#012a4a" }}>Diplôme</div>
+                  <div className="text-slate-600">RNCP {APPRENTICESHIP.diploma.rncp}, ENSSAT IAM</div>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex flex-wrap gap-2 mt-4">
+              <a
+                href="/alternance/notice-cfai-2026.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-aqua flex items-center gap-1.5"
+              >
+                <FolderDown size={13} /> Notice CFAI (CERFA)
+              </a>
+              <a
+                href="/alternance/calendrier-fisa-2026-2029.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-glass flex items-center gap-1.5"
+              >
+                <CalendarIcon size={13} /> Calendrier 2026-2029
+              </a>
+              <a
+                href="/alternance/pack-alternance-ethan-collin.zip"
+                download="pack-alternance-ethan-collin.zip"
+                className="btn-glass flex items-center gap-1.5"
+              >
+                <FolderDown size={13} /> Télécharger le pack complet (.zip)
+              </a>
+            </div>
+
+            <p className="text-[11px] text-slate-500 italic mt-3 leading-snug">
+              Le pack documents complet (8 PDFs officiels, contacts ENSSAT et CFAI, période internationale, process de signature) est disponible dans l&apos;app <strong>Alternance</strong> du portfolio EthanOS.
+            </p>
+          </div>
+        </section>
+
         {/* À PROPOS : 3 blocks */}
         <section className="r-s" style={{ animationDelay: "80ms" }}>
           <AeroLabel>À propos</AeroLabel>
@@ -474,8 +582,7 @@ export default function RecruiterPage() {
                   className="aero-dewdrop"
                   style={{
                     ...GLASS_CARD,
-                    borderLeft: `3px solid ${accent}`,
-                    padding: "1.25rem 1.25rem 1.25rem 1rem",
+                    padding: "1.25rem",
                   }}
                 >
                   <div className="flex items-start justify-between gap-2 flex-wrap">
@@ -669,7 +776,7 @@ export default function RecruiterPage() {
               return (
                 <article
                   key={p.id}
-                  style={{ ...GLASS_CARD, borderTop: `3px solid ${accent}` }}
+                  style={GLASS_CARD}
                   className="p-4 aero-dewdrop"
                 >
                   <h3 className="font-bold text-sm" style={{ color: "#012a4a" }}>{p.title}</h3>
