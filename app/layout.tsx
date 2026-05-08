@@ -29,7 +29,7 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://portfolio-frutiger.vercel.app"),
+  metadataBase: new URL("https://ethan-collin.com"),
   title: "Ethan Collin, apprenti ingénieur IA",
   description: "Portfolio interactif d'Ethan Collin, apprenti ingénieur IA et interfaces intelligentes. Co-auteur d'un projet de recherche soumis à ACM UIST 2026, lauréat Pépite Campus 2024 (Modall). Recherche alternance ingénieur IA, septembre 2026, Lannion ou Dinan.",
   manifest: "/manifest.json",
@@ -40,7 +40,7 @@ export const metadata: Metadata = {
     title: "Ethan Collin, apprenti ingénieur IA",
     description: "Portfolio interactif en OS simulé (Frutiger Aero). Co-auteur d'une publication soumise à ACM UIST 2026, lauréat Pépite Campus 2024 (Modall). Alternance IA, septembre 2026, Lannion ou Dinan.",
     siteName: "EthanOS Portfolio",
-    url: "https://portfolio-frutiger.vercel.app",
+    url: "https://ethan-collin.com",
     locale: "fr_FR",
     images: [
       {
