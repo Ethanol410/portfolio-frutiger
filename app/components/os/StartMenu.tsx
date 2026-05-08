@@ -111,7 +111,6 @@ export const StartMenu = ({ onClose }: StartMenuProps) => {
     { name: 'Me Contacter', icon: Mail, action: 'Contact', color: 'text-green-600', vistaKey: 'Contact' },
     { name: 'Internet', icon: Globe, action: 'Browser', color: 'text-blue-500', vistaKey: 'Browser' },
     { name: 'Terminal', icon: Terminal, action: 'Terminal', color: 'text-gray-700', vistaKey: 'Terminal' },
-    { name: 'Documents', icon: Folder, action: 'Explorer', color: 'text-yellow-500', vistaKey: 'Explorer' },
     { name: 'Musique', icon: Music, action: 'MusicPlayer', color: 'text-pink-500', vistaKey: 'MusicPlayer' },
     { name: 'Ethan IA', icon: Sparkles, action: 'AIChat', color: 'text-violet-500', vistaKey: 'AIChat' },
     { name: 'Sketchpad', icon: PenLine, action: 'Sketchbook', color: 'text-orange-500', vistaKey: 'Paint' },

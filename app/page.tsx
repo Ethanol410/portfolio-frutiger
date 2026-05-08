@@ -19,7 +19,6 @@ import { ResearchApp } from "./apps/Research";
 import { SketchbookApp } from "./apps/Sketchbook";
 import { CRTTelevisionApp } from "./apps/CRTTelevision";
 import { ApprenticeshipApp } from "./apps/Apprenticeship";
-import { myComputer } from "./data/fileSystem";
 import { BootScreen } from "./components/os/BootScreen";
 import { NotificationToaster } from "./components/os/NotificationToaster";
 import { AnimatePresence, motion } from "framer-motion";
@@ -448,14 +447,6 @@ export default function Desktop() {
           <DesktopIcon name="Paramètres" type="app" iconSrc={vistaIcons["Paramètres"]} onDoubleClick={() => handleLaunch('Settings')} />
           <DesktopIcon name="Sketchpad"  type="app" iconSrc={vistaIcons["Paint"]}      onDoubleClick={() => handleLaunch('Sketchbook')} />
           <DesktopIcon name="Télévision" type="app" iconSrc={vistaIcons["Internet"]}   onDoubleClick={() => handleLaunch('CRTTelevision')} />
-          {myComputer.map((node) => (
-            <DesktopIcon
-              key={node.id}
-              name={node.name}
-              type={node.type as "app" | "folder" | "file"}
-              onDoubleClick={() => handleLaunch('Explorer', node.id)}
-            />
-          ))}
         </div>
 
         {Object.values(windows).map((win) => (
