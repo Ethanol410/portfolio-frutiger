@@ -3,7 +3,6 @@ import React, { useEffect, useState, useCallback } from "react";
 import Image from "next/image";
 import { useOSStore } from "./store/useOSStore";
 import { WindowFrame } from "./components/os/WindowFrame";
-import { ContextMenu } from "./components/ui/ContextMenu";
 import { Taskbar } from "./components/os/Taskbar";
 import { DesktopIcon } from "./components/os/DesktopIcon";
 import { TerminalApp } from "./apps/Terminal";
@@ -386,20 +385,12 @@ export default function Desktop() {
       defaultSize: { width: 420, height: 720 }
     });
 
-    // Garde anti double-mount (React StrictMode) : la welcome window et la
-    // notification "Système prêt" ne doivent être déclenchées qu'une fois.
+    // Garde anti double-mount (React StrictMode) : le startup chime ne doit
+    // être joué qu'une fois.
     if ((window as unknown as { __ethanosBootDone?: boolean }).__ethanosBootDone) return;
     (window as unknown as { __ethanosBootDone?: boolean }).__ethanosBootDone = true;
 
     setTimeout(() => playStartup(), 1000);
-
-    setTimeout(() => {
-      useOSStore.getState().addNotification({
-        title: "Système prêt",
-        message: "Bienvenue sur EthanOS v1.1.0. Double-cliquez sur une icône pour démarrer.",
-        type: 'info'
-      });
-    }, 4500);
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   if (isCrashed) {
@@ -418,6 +409,7 @@ export default function Desktop() {
     <div
       className="h-[100dvh] w-[100dvw] overflow-hidden relative bg-cover bg-center transition-all duration-500 font-sans select-none"
       style={{ backgroundImage: `url('${wallpaper}')` }}
+      onContextMenu={(e) => e.preventDefault()}
     >
       <AnimatePresence>
         {isLocked && <LockScreen />}
@@ -435,7 +427,6 @@ export default function Desktop() {
         </div>
 
         <NotificationToaster />
-        <ContextMenu />
 
         {/* Bureau, colonne gauche : apps portfolio en premier */}
         <div className="absolute top-0 left-0 p-4 flex flex-col gap-3 z-0">
