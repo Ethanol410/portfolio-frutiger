@@ -611,6 +611,74 @@ Seuls les items **score ≥ seuil** sont publiés. Le seuil est ajustable par va
       demoUrl: null,
       classement: "star",
     },
+    {
+      id: 11,
+      title: "LocalGuard SLM",
+      subtitle: "PoC d'évaluation de Small Language Models locaux pour la détection de signaux de cyberharcèlement",
+      desc: "Mini PoC Python qui benchmark 3 SLM exécutés en local via Ollama (gemma3 4B, qwen3 1.7B, llama3.2 1B) sur la classification de 30 messages courts en français en 7 labels (neutral, insulte, humiliation, exclusion, menace, etc.). Sortie JSON forcée côté Ollama, parsing tolérant côté Python, métriques (accuracy, F1 macro, latence), matrice de confusion et rapport comparatif Markdown généré automatiquement.",
+      details: `## L'idée
+Manipuler de bout en bout la chaîne d'évaluation d'un Small Language Model local sur une tâche sensible : classer des messages courts en français pour faire émerger des signaux liés au cyberharcèlement. Le but n'est pas un outil de production, c'est un terrain d'apprentissage rigoureux sur le prompt, le format JSON, le parsing tolérant, les métriques, les faux positifs et les limites du zero-shot sur petits modèles.
+
+## Pourquoi local
+- **Confidentialité** : les messages traités peuvent être sensibles, on ne les envoie pas dans le cloud
+- **Latence stable** et **coût nul** à l'inférence
+- Possibilité d'embarquer le modèle sur un terminal contraint à terme (PC, smartphone)
+- Compromis assumé : compréhension plus limitée qu'un gros modèle, donc le prompt et l'évaluation doivent être soignés
+
+## Pipeline reproductible
+1. Lecture du jeu de 30 messages fictifs annotés à la main
+2. Appel d'un SLM via Ollama avec \`format=json\` activé côté serveur
+3. Parsing tolérant côté Python (récupération même si la sortie est sale)
+4. Mesure de la latence par message
+5. Comparaison aux labels attendus
+6. Calcul accuracy, F1 macro, F1 par classe, matrice de confusion
+7. Génération automatique d'un rapport Markdown lisible
+8. Comparaison multi-modèles dans un second rapport
+
+## Labels et niveaux de risque
+Sept labels : \`neutral\`, \`constructive_criticism\`, \`insult\`, \`humiliation\`, \`exclusion\`, \`threat\`, \`ambiguous\`. Quatre niveaux de risque associés : \`none\`, \`low\`, \`medium\`, \`high\`.
+
+## Résultats du benchmark intégré
+Trois modèles évalués sur le même dataset (résultats indicatifs, pas scientifiques) :
+
+| Modèle | Taille | Accuracy | F1 macro | Latence moy. |
+| --- | --- | --- | --- | --- |
+| \`gemma3:latest\` | 4B | 66,7 % | 59,6 % | 3,63 s |
+| \`qwen3:1.7b\` | 1.7B | 53,3 % | 47,0 % | 5,48 s |
+| \`llama3.2:1b\` | 1B | 30,0 % | 16,9 % | 4,64 s |
+
+Lecture rapide :
+- **Profils complémentaires** : aucun modèle n'est strictement meilleur, gemma3 attrape les menaces, qwen3 est le seul à détecter l'humiliation, llama3.2 s'effondre sur 5 classes sur 7
+- **100 % de JSON valide** sur les trois modèles grâce à \`format=json\` côté Ollama et au parsing tolérant côté Python
+- Catégorie \`humiliation\` particulièrement difficile, confondue avec \`insult\` ou \`exclusion\` selon le modèle
+- Catégorie \`ambiguous\` largement sous-détectée : les SLM en zero-shot préfèrent trancher plutôt que dire "je ne sais pas"
+
+## Stack technique
+- **Python 3.10+** (testé sur 3.12)
+- **Ollama** en local, API HTTP sur \`localhost:11434\`
+- Modèles testés : \`gemma3:latest\` (4B), \`qwen3:1.7b\`, \`llama3.2:1b\`
+- Sortie **JSON forcée** côté Ollama, parsing tolérant et fallback côté Python
+- Modules dédiés : \`config\`, \`prompts\`, \`ollama_client\`, \`json_utils\`, \`metrics\`, \`classify_messages\`, \`evaluate_results\`, \`compare_models\`, \`run_demo\`
+- Script Windows \`.bat\` pour lancer le benchmark en un clic
+
+## Limites assumées
+- Jeu de 30 messages fictifs uniquement, les chiffres sont indicatifs
+- Annotations personnelles, discutables sur les cas ambigus
+- Compréhension du français limitée pour des SLM 1B à 4B
+- La détection réelle du cyberharcèlement suppose un contexte (historique, relation, répétition) non modélisé ici
+- Aucune validation humaine ni revue éthique conduite
+
+## Ce que ça démontre
+- Capacité à monter un **pipeline d'évaluation reproductible** d'un SLM local de A à Z
+- Maîtrise de la **contrainte JSON** sur un modèle qui n'aime pas la respecter (parsing tolérant, fallback)
+- Pratique de **métriques classiques** au-delà de l'accuracy (F1 macro et par classe, matrice de confusion, latence)
+- Sens de l'**honnêteté méthodologique** : préciser ce que le PoC ne mesure pas compte autant que les chiffres affichés`,
+      tech: ["Python 3.12", "Ollama", "gemma3", "qwen3", "llama3.2", "JSON parsing", "Métriques (F1, confusion)"],
+      color: "bg-teal-600",
+      githubUrl: "https://github.com/Ethanol410/localguard-slm",
+      demoUrl: null,
+      classement: "star",
+    },
   ],
 
   awards: [

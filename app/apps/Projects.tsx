@@ -2,6 +2,7 @@
 
 import { useState, useMemo } from 'react';
 import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 import {
   Github, ExternalLink, Sparkles, Trophy, FlaskConical, Code2, ArrowLeft,
 } from 'lucide-react';
@@ -28,6 +29,7 @@ const PROJECT_GRADIENTS: Record<string, [string, string]> = {
   'bg-rose-500':    ['#f43f5e', '#fb7185'],
   'bg-indigo-600':  ['#4f46e5', '#818cf8'],
   'bg-amber-500':   ['#f59e0b', '#fcd34d'],
+  'bg-teal-600':    ['#0d9488', '#2dd4bf'],
 };
 
 // ─── CuratedProjectCard ──────────────────────────────────────────────────────
@@ -226,8 +228,8 @@ function CuratedProjectDetail({
 
           {/* Détails markdown */}
           {project.details && (
-            <div className="prose prose-sm max-w-none text-gray-700 [&_h2]:text-base [&_h2]:font-bold [&_h2]:text-gray-800 [&_h2]:mt-4 [&_h2]:mb-2 [&_h2]:pb-1 [&_h2]:border-b [&_h2]:border-blue-100 [&_p]:text-sm [&_p]:leading-relaxed [&_p]:text-gray-600 [&_p]:mb-2 [&_ul]:my-2 [&_li]:text-sm [&_li]:text-gray-600 [&_li]:leading-relaxed [&_strong]:text-blue-700 [&_strong]:font-semibold">
-              <ReactMarkdown>{project.details}</ReactMarkdown>
+            <div className="prose prose-sm max-w-none text-gray-700 [&_h2]:text-base [&_h2]:font-bold [&_h2]:text-gray-800 [&_h2]:mt-4 [&_h2]:mb-2 [&_h2]:pb-1 [&_h2]:border-b [&_h2]:border-blue-100 [&_p]:text-sm [&_p]:leading-relaxed [&_p]:text-gray-600 [&_p]:mb-2 [&_ul]:my-2 [&_li]:text-sm [&_li]:text-gray-600 [&_li]:leading-relaxed [&_strong]:text-blue-700 [&_strong]:font-semibold [&_code]:bg-blue-50 [&_code]:text-blue-700 [&_code]:px-1.5 [&_code]:py-0.5 [&_code]:rounded [&_code]:text-[12px] [&_code]:before:content-none [&_code]:after:content-none [&_table]:w-full [&_table]:my-3 [&_table]:text-xs [&_table]:border-collapse [&_th]:px-3 [&_th]:py-2 [&_th]:text-left [&_th]:font-semibold [&_th]:bg-blue-50 [&_th]:text-blue-800 [&_th]:border-b [&_th]:border-blue-200 [&_td]:px-3 [&_td]:py-1.5 [&_td]:border-b [&_td]:border-gray-100 [&_td]:text-gray-700">
+              <ReactMarkdown remarkPlugins={[remarkGfm]}>{project.details}</ReactMarkdown>
             </div>
           )}
 
