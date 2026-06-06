@@ -679,6 +679,81 @@ Lecture rapide :
       demoUrl: null,
       classement: "star",
     },
+    {
+      id: 12,
+      title: "PromptForge",
+      subtitle: "Générateur de prompts optimisés (web + desktop), BYOK ou modèle local",
+      desc: "Application web et desktop qui transforme une intention en langage naturel en un prompt clair, contraint et réutilisable. Applique les bonnes pratiques de prompt engineering (rôle, contexte, étapes, contraintes vérifiables, format de sortie) à la place de l'utilisateur. BYOK ou modèle local : la clé d'API et l'intention ne quittent jamais l'appareil, l'inférence va directement du client au provider. Monorepo TypeScript en architecture ports & adapters, desktop natif via Tauri 2 (Rust).",
+      details: `## L'idée
+La qualité d'une sortie LLM dépend massivement de la qualité du prompt. PromptForge structure une idée écrite en langage naturel en un prompt professionnel (rôle, contexte, étapes, **contraintes vérifiables**, format de sortie) sans que l'utilisateur ait à connaître ces techniques. Le livrable, c'est le prompt : on l'emporte où on veut, dans ChatGPT, Claude, Gemini ou ailleurs.
+
+## BYOK ou 100 % local
+- **Bring Your Own Key** : la clé utilisateur reste sur l'appareil, jamais envoyée à un backend éditeur, jamais loggée, jamais en clair
+- **Inférence directe** client vers provider, sans proxy d'inférence côté éditeur
+- **Modèle local** (Ollama, LM Studio) : fonctionnement entièrement hors-ligne, aucune requête externe
+
+## Fonctionnalités
+- **8 catégories** prêtes à l'emploi : PRD technique, Code et code review, Email et communication, Design et UX, Réseaux sociaux, Résumé et synthèse, Apprentissage et explication, Idéation et brainstorming
+- **Génération hybride** : template structurant plus une passe d'optimisation par le modèle
+- **Affinage** : presets (plus court, technique, formel), consigne libre, et bouton "Améliorer encore" (le modèle critique puis réécrit) avec **diff** entre versions
+- **Ouverture en un clic** dans ChatGPT, Claude ou Gemini, ou export en \`.md\` / \`.txt\`
+- **Templates personnalisés** avec variables, import / export \`.json\` et score qualité
+- **Historique local** avec recherche, filtre, favoris et comparaison A/B
+- **Streaming** token par token, estimation de coût, validation de clé, raccourci \`Ctrl/Cmd+Entrée\`, bouton Stop
+
+## Providers
+| Provider | Web | Desktop |
+| --- | :---: | :---: |
+| Anthropic | oui | oui |
+| Ollama (local) | oui | oui |
+| LM Studio (local) | oui | oui |
+| OpenRouter | oui | oui |
+| OpenAI | non (CORS) | oui |
+| Mistral | non (CORS) | oui |
+| Gemini | non (CORS) | oui |
+
+Sur le web, les providers qui bloquent les appels navigateur (CORS) sont réservés au desktop, qui passe par un client HTTP natif en Rust. Aucun proxy d'inférence côté éditeur.
+
+## Architecture
+Monorepo **npm workspaces** en **ports & adapters** : le cœur est agnostique de la plateforme et ne dépend que de 3 ports (\`SecretStore\`, \`HistoryStore\`, \`HttpClient\`). Chaque app fournit ses adaptateurs.
+
+\`\`\`
+packages/
+  core/   TS pur, modèles, ports, providers, moteur de génération (zéro dépendance plateforme)
+  ui/     composants React partagés (thème dessiné main)
+apps/
+  web/      Vite + React, adapters fetch / WebCrypto / IndexedDB
+  desktop/  Tauri 2 (Rust), adapters keychain / SQLite / HTTP natif
+\`\`\`
+
+Décision d'architecture clé : sur web le transport \`fetch\` ne peut pas débloquer OpenAI (CORS), sur desktop le transport HTTP natif Rust le débloque. Ajouter un provider revient à écrire un adaptateur, sans toucher au cœur.
+
+## Sécurité et confidentialité
+- Clé utilisateur jamais envoyée à un backend éditeur, jamais loggée, jamais en clair
+- **Desktop** : clés dans le keychain de l'OS (Windows Credential Manager via \`keyring-rs\`)
+- **Web** : clés chiffrées en **AES-GCM 256 (WebCrypto)** avant IndexedDB, jamais dans \`localStorage\`, **CSP stricte**
+- Modèle local : 100 % hors-ligne, aucune requête externe
+- Analytics web : PostHog EU, événements anonymes uniquement, jamais de contenu utilisateur, opt-out possible
+
+## Stack technique
+- **React** + **TypeScript** + **Vite** + **Tailwind CSS v4**
+- **Tauri 2 (Rust)** pour le desktop natif (Windows), client HTTP natif et keychain OS
+- **Vitest** (unitaires) et **Playwright** (E2E web)
+- Thème "dessiné main" : Caveat, Nunito, JetBrains Mono, **Rough.js**
+- Releases desktop automatisées via GitHub Actions (tag \`v*\`)
+
+## Ce que ça démontre
+- Capacité à livrer un produit **multi-cibles** (web déployé plus installeur Windows) à partir d'une seule base de code
+- Maîtrise d'une **architecture propre** (ports & adapters) qui isole le métier des contraintes de plateforme
+- Sérieux sur la **sécurité** : modèle BYOK sans backend, chiffrement WebCrypto, secrets dans le keychain OS, CSP stricte
+- Polyvalence **TypeScript et Rust**, du moteur de génération au client HTTP natif
+- Souci de l'**expérience produit** : onboarding, streaming, diff, historique, estimation de coût`,
+      tech: ["React", "TypeScript", "Vite", "Tailwind CSS v4", "Tauri 2 (Rust)", "Vitest", "Playwright", "Rough.js", "WebCrypto"],
+      color: "bg-orange-600",
+      githubUrl: "https://github.com/Ethanol410/prompt-forge",
+      demoUrl: "https://prompt-forge-desktop.vercel.app/",
+      classement: "star",
+    },
   ],
 
   awards: [

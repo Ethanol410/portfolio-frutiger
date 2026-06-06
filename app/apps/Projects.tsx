@@ -30,6 +30,7 @@ const PROJECT_GRADIENTS: Record<string, [string, string]> = {
   'bg-indigo-600':  ['#4f46e5', '#818cf8'],
   'bg-amber-500':   ['#f59e0b', '#fcd34d'],
   'bg-teal-600':    ['#0d9488', '#2dd4bf'],
+  'bg-orange-600':  ['#e8743b', '#f5a97f'],
 };
 
 // ─── CuratedProjectCard ──────────────────────────────────────────────────────
